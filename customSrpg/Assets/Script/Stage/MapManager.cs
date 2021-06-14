@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 地形の管理クラス
+/// </summary>
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }

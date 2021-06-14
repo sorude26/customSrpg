@@ -9,6 +9,9 @@ public enum WeaponPosition
     RShoulder,
     Body,
 }
+/// <summary>
+/// ユニットのパーツデータを管理するクラス
+/// </summary>
 public class UnitMaster : MonoBehaviour
 {
     /// <summary> 機体胴体 </summary>
