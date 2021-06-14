@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum AttackParts
+public enum WeaponPosition
 {
     LArm,
     RArm,
@@ -31,7 +31,7 @@ public class UnitMaster : MonoBehaviour
     protected WeaponMaster m_rSWeapon = null;
     /// <summary> 胴体武器 </summary>
     protected WeaponMaster m_bodyWeapon = null;
-
+    
     /// <summary>
     /// 現在の総パーツ耐久値を返す
     /// </summary>
@@ -50,6 +50,26 @@ public class UnitMaster : MonoBehaviour
         return hp;
     }
     /// <summary>
+    /// 現在の移動力を返す
+    /// </summary>
+    /// <returns></returns>
+    public int GetMovePower()
+    {
+        int move = m_body.MovePower;
+        if (m_leg)
+        {
+            if (!m_leg.Break)
+            {
+                move += m_leg.CurrentMovePower;
+            }
+        }
+        if (m_body.UnitOutput - GetWeight() * 2 > 0)
+        {
+            move += 5;
+        }
+        return move;
+    }
+    /// <summary>
     /// 現在の回避率を返す
     /// </summary>
     /// <returns></returns>
@@ -60,7 +80,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (!m_leg.Break)
             {
-                avoidance += m_leg.Avoidance;
+                avoidance += m_leg.CurrentAvoidance;
             }
         }
         if (m_head)
@@ -127,7 +147,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts)
             {
-                if (parts.CurrentPartsHp > 0)
+                if (parts.Break)
                 {
                     continue;
                 }
@@ -140,7 +160,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts)
             {
-                if (parts.CurrentPartsHp > 0)
+                if (parts.Break)
                 {
                     continue;
                 }
@@ -151,6 +171,75 @@ public class UnitMaster : MonoBehaviour
                     break;
                 }
             }
+        }
+    }
+    /// <summary>
+    /// 胴体を登録する
+    /// </summary>
+    /// <param name="body"></param>
+    public void SetParts(PartsBody body)
+    {
+        m_body = body;
+    }
+    /// <summary>
+    /// 頭部を登録する
+    /// </summary>
+    /// <param name="head"></param>
+    public void SetParts(PartsHead head)
+    {
+        m_head = head;
+    }
+    /// <summary>
+    /// 腕部を登録する
+    /// </summary>
+    /// <param name="arm"></param>
+    public void SetParts(PartsArm arm)
+    {
+        switch (arm.Arm)
+        {
+            case ArmType.Left:
+                m_lArm = arm;
+                break;
+            case ArmType.Right:
+                m_rArm = arm;
+                break;
+            default:
+                break;
+        }
+    }
+    /// <summary>
+    /// 脚部を登録する
+    /// </summary>
+    /// <param name="leg"></param>
+    public void SetParts(PartsLeg leg)
+    {
+        m_leg = leg;
+    }
+    /// <summary>
+    /// 武装を振り分け登録する
+    /// </summary>
+    /// <param name="weapon"></param>
+    public void SetParts(WeaponMaster weapon)
+    {
+        switch (weapon.WPosition)
+        {
+            case WeaponPosition.LArm:
+                m_lAWeapon = weapon;
+                break;
+            case WeaponPosition.RArm:
+                m_rAWeapon = weapon;
+                break;
+            case WeaponPosition.LShoulder:
+                m_lSWeapon = weapon;
+                break;
+            case WeaponPosition.RShoulder:
+                m_rAWeapon = weapon;
+                break;
+            case WeaponPosition.Body:
+                m_bodyWeapon = weapon;
+                break;
+            default:
+                break;
         }
     }
 }

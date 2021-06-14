@@ -42,10 +42,7 @@ public class PartsBody : UnitPartsMaster
     [SerializeField] WeaponMaster m_weapon;
     /// <summary> 内蔵武器 </summary>
     public WeaponMaster BodyWeapon { get => m_weapon; }
-    void Start()
-    {
-        StartSet();
-    }
+    
     protected override void PartsBreak()
     {
         Break = true;

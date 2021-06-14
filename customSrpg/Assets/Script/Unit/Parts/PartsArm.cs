@@ -24,10 +24,7 @@ public class PartsArm : UnitPartsMaster
     public WeaponMaster GripWeapon { get; private set; }
     /// <summary> 肩装備武器 </summary>
     public WeaponMaster ShoulderWeapon { get; private set; }
-    void Start()
-    {
-        StartSet();
-    }
+    
     public void SetGripWeapon(WeaponMaster weapon) { GripWeapon = weapon; }
     public void SetShoulderWeapon(WeaponMaster weapon) { ShoulderWeapon = weapon; }
     public override int GetPartsSize()

@@ -28,4 +28,9 @@ public class WeaponMaster : PartsMaster
     [SerializeField] int m_maxAttackNumber = 1;
     /// <summary> 総攻撃回数 </summary>
     public int MaxAttackNumber { get => m_maxAttackNumber; }
+    public WeaponPosition WPosition { get; private set; }
+    public void SetWeaponPosition(WeaponPosition position)
+    {
+        WPosition = position;
+    }
 }

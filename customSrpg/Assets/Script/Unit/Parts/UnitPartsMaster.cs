@@ -14,7 +14,10 @@ public class UnitPartsMaster : PartsMaster
     public int Defense { get => m_defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
-
+    void Start()
+    {
+        StartSet();
+    }
     /// <summary>
     /// パーツの初期化処理
     /// </summary>
