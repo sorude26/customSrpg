@@ -42,5 +42,5 @@ public class MapData
         PosZ = posZ;
         Level = level;
         MovePoint = 0;
-    }
+    }    
 }
