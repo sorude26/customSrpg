@@ -61,16 +61,29 @@ public class UnitMaster : MonoBehaviour
         int move = m_body.MovePower;
         if (m_leg)
         {
-            if (!m_leg.Break)
-            {
-                move += m_leg.CurrentMovePower;
-            }
+            move += m_leg.CurrentMovePower;
         }
         if (m_body.UnitOutput - GetWeight() * 2 > 0)
         {
             move += 5;
         }
         return move;
+    }
+    /// <summary>
+    /// 現在の昇降力を得る
+    /// </summary>
+    /// <returns></returns>
+    public float GetLiftingForce()
+    {
+        float liftingForce = m_body.LiftingForce;
+        if (m_leg)
+        {
+            if (!m_leg.Break)
+            {
+                liftingForce += m_leg.CurrentLiftingForce;
+            }
+        }
+        return liftingForce;
     }
     /// <summary>
     /// 現在の回避率を返す
@@ -81,10 +94,7 @@ public class UnitMaster : MonoBehaviour
         int avoidance = m_body.GetAvoidance() - GetWeight();
         if (m_leg)
         {
-            if (!m_leg.Break)
-            {
-                avoidance += m_leg.CurrentAvoidance;
-            }
+            avoidance += m_leg.CurrentAvoidance;
         }
         if (m_head)
         {
