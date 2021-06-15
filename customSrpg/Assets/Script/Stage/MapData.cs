@@ -28,6 +28,8 @@ public class MapData
     public MapType MapType { get; private set; }
     /// <summary> 移動計算用データ </summary>
     public int MovePoint { get; set; }
+    /// <summary> 地形のパネル </summary>
+    public StagePanel StagePanel { get; private set; }
     /// <summary>
     /// 初期設定
     /// </summary>
@@ -35,12 +37,13 @@ public class MapData
     /// <param name="posX"></param>
     /// <param name="posZ"></param>
     /// <param name="level"></param>
-    public MapData(MapType mapType, int posX, int posZ, float level)
+    public MapData(MapType mapType, int posX, int posZ, float level,StagePanel stagePanel)
     {
         MapType = mapType;
         PosX = posX;
         PosZ = posZ;
         Level = level;
         MovePoint = 0;
+        StagePanel = stagePanel;
     }    
 }

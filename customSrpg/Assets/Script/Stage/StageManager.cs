@@ -7,14 +7,17 @@ using UnityEngine;
 /// </summary>
 public class StageManager : MonoBehaviour
 {
+    public static StageManager Instance { get; private set; }
     [SerializeField] Unit m_testUnit;
-    void Start()
+    private void Awake()
     {
-        
+        Instance = this;
     }
-
-    void Update()
+    public void OnClickMoveSearch()
     {
-        
+        foreach (var panel in MapManager.Instance.StartSearch(m_testUnit))
+        {
+            panel.StagePanel.ViewMovePanel();
+        }
     }
 }

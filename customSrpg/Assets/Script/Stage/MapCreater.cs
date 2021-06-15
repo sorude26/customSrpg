@@ -8,7 +8,7 @@ using UnityEngine;
 public class MapCreater : MonoBehaviour
 {
     /// <summary> 地形に合わせたオブジェクトのPrefab </summary>
-    [SerializeField] GameObject[] m_stagePrefabs;
+    [SerializeField] StagePanel[] m_stagePanels;
     /// <summary>
     /// 平らな地形を生成しデータを返す
     /// </summary>
@@ -22,11 +22,11 @@ public class MapCreater : MonoBehaviour
         {
             for (int j = 0; j < maxX; j++)
             {
-                MapData map = new MapData(MapType.Normal, j, i, 0);
-                mapDates[j + i * maxX] = map;
-                GameObject mapPanel = Instantiate(m_stagePrefabs[0]);
+                StagePanel mapPanel = Instantiate(m_stagePanels[0]);
                 mapPanel.transform.position = new Vector3(j * mapScale, 0, i * mapScale);
                 mapPanel.transform.SetParent(parent);
+                MapData map = new MapData(MapType.Normal, j, i, 0, mapPanel);
+                mapDates[j + i * maxX] = map;
             }
         }
         return mapDates;
