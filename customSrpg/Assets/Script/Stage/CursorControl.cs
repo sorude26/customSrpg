@@ -39,6 +39,12 @@ public class CursorControl : MonoBehaviour
         }
         if (!m_move)
         {
+            if (Input.GetButtonDown("Jump"))
+            {
+                Debug.Log("cursor");
+                StageManager.Instance.PointMoveTest(m_currentPosX, m_currentPosZ);
+                return;
+            }
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
             if (Input.GetButtonDown("Horizontal"))
