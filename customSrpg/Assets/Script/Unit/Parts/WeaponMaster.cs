@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 武器種類
+/// </summary>
 public enum WeaponType
 {
     Rifle,
@@ -9,6 +12,17 @@ public enum WeaponType
     Shotgun,
     MShotGun,
     Melee,
+}
+/// <summary>
+/// 武器装備部位
+/// </summary>
+public enum WeaponPosition
+{
+    Body,
+    LArm,
+    RArm,
+    LShoulder,
+    RShoulder,
 }
 public class WeaponMaster : PartsMaster
 {
@@ -28,7 +42,12 @@ public class WeaponMaster : PartsMaster
     [SerializeField] int m_maxAttackNumber = 1;
     /// <summary> 総攻撃回数 </summary>
     public int MaxAttackNumber { get => m_maxAttackNumber; }
+    /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
+    /// <summary>
+    /// 武装部位を設定する
+    /// </summary>
+    /// <param name="position"></param>
     public void SetWeaponPosition(WeaponPosition position)
     {
         WPosition = position;

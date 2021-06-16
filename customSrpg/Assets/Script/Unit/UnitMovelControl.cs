@@ -11,6 +11,8 @@ public class UnitMovelControl : MonoBehaviour
     List<Vector2Int> m_unitMoveList;
     /// <summary> マップデータの保存場所 </summary>
     MapManager m_gameMap;
+    /// <summary> このスクリプトを持つユニット </summary>
+    Unit m_owner;
     /// <summary> 移動モードフラグ </summary>
     bool m_moveMode;
     /// <summary> 移動場所データ数 </summary>
@@ -21,8 +23,6 @@ public class UnitMovelControl : MonoBehaviour
     int m_currentPosZ;
     /// <summary> 現在座標Y </summary>
     float m_currentPosY;
-    /// <summary> 昇降力 </summary>
-    float m_liftingForce = 0f;
     /// <summary> 移動中座標 </summary>
     Vector3 m_movePos;
     /// <summary> 移動目標座標 </summary>
@@ -47,6 +47,15 @@ public class UnitMovelControl : MonoBehaviour
     private void Start()
     {
         m_gameMap = MapManager.Instance;
+    }
+
+    /// <summary>
+    /// 所有者を設定する
+    /// </summary>
+    /// <param name="owner"></param>
+    public void SetOwner(Unit owner)
+    {
+        m_owner = owner;
     }
     /// <summary>
     /// 位置を保存する
@@ -204,7 +213,7 @@ public class UnitMovelControl : MonoBehaviour
         UnitAngleControl();
     }
     /// <summary>
-    /// 4方向向き変更
+    /// 向き変更されていたらモデルをその方向へ向ける
     /// </summary>
     protected void UnitAngleControl()
     {
@@ -290,8 +299,8 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (m_moveMode) { return; }//検索終了か確認
         if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return; }//マップ範囲内か確認
-        if (movePower + moveCost != moveList[p].MovePoint) { return; } //一つ前の座標か確認   
-        if (Mathf.Abs(moveList[p].Level - currentLevel) > m_liftingForce) { return; }
+        if (movePower + moveCost != moveList[p].MovePoint) { return; } //一つ前の座標か確認
+        if (Mathf.Abs(moveList[p].Level - currentLevel) > m_owner.GetUnitData().GetLiftingForce()) { return; }
         movePower = moveList[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存

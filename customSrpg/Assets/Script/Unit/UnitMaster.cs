@@ -1,14 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum WeaponPosition
-{
-    LArm,
-    RArm,
-    LShoulder,
-    RShoulder,
-    Body,
-}
+
 /// <summary>
 /// ユニットのパーツデータを管理するクラス
 /// </summary>
