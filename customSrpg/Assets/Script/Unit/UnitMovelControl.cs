@@ -17,10 +17,10 @@ public class UnitMovelControl : MonoBehaviour
     bool m_moveMode;
     /// <summary> 移動場所データ数 </summary>
     int m_moveCount;
-    /// <summary> 現在座標X </summary>
-    int m_currentPosX;
-    /// <summary> 現在座標X </summary>
-    int m_currentPosZ;
+    /// <summary> 移動前座標X </summary>
+    int m_startPosX;
+    /// <summary> 移動前座標Z </summary>
+    int m_startPosZ;
     /// <summary> 現在座標Y </summary>
     float m_currentPosY;
     /// <summary> 移動中座標 </summary>
@@ -65,9 +65,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="z"></param>
     public void SetPos(int x, float y, int z)
     {
-        m_currentPosX = x;
+        m_startPosX = x;
         m_currentPosY = y;
-        m_currentPosZ = z;
+        m_startPosZ = z;
     }
     /// <summary>
     /// ユニットを移動させる
@@ -75,7 +75,7 @@ public class UnitMovelControl : MonoBehaviour
     /// <returns></returns>
     IEnumerator UnitMove()
     {
-        m_movePos = new Vector3(m_currentPosX * m_gameMap.MapScale, m_currentPosY, m_currentPosZ * m_gameMap.MapScale);
+        m_movePos = new Vector3(m_startPosX * m_gameMap.MapScale, m_currentPosY, m_startPosZ * m_gameMap.MapScale);
         TargetSet();
         while (m_moveCount >= 0)
         {
@@ -91,6 +91,7 @@ public class UnitMovelControl : MonoBehaviour
             this.transform.position = m_movePos;
             yield return new WaitForEndOfFrame();
         }
+        m_owner.SetCurrentPos(m_unitMoveList[0].x, m_unitMoveList[0].y);
         m_moveMode = false;
     }
 
@@ -212,6 +213,17 @@ public class UnitMovelControl : MonoBehaviour
         }
         UnitAngleControl();
     }
+    
+    /// <summary>
+    /// ユニットを指定箇所に瞬間移動させる
+    /// </summary>
+    /// <param name="posX"></param>
+    /// <param name="posZ"></param>
+    protected void Warp(int posX,int posZ)
+    {
+        m_owner.SetCurrentPos(posX, posZ);
+        transform.position = new Vector3(posX * m_gameMap.MapScale, m_gameMap.MapDatas[posX + posZ * m_gameMap.MaxX].Level, posZ * m_gameMap.MapScale);
+    }
     /// <summary>
     /// 向き変更されていたらモデルをその方向へ向ける
     /// </summary>
@@ -250,6 +262,11 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (m_moveMode)
         {
+            return;
+        }
+        if (targetX == m_startPosX && targetZ == m_startPosZ)
+        {
+            Warp(targetX, targetZ);
             return;
         }
         m_unitMoveList = new List<Vector2Int>();
@@ -304,7 +321,7 @@ public class UnitMovelControl : MonoBehaviour
         movePower = moveList[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存
-        if (m_currentPosX == m_gameMap.MapDatas[p].PosX && m_currentPosZ == m_gameMap.MapDatas[p].PosZ) //初期地点か確認
+        if (m_startPosX == m_gameMap.MapDatas[p].PosX && m_startPosZ == m_gameMap.MapDatas[p].PosZ) //初期地点か確認
         {
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
