@@ -21,11 +21,12 @@ public class MapManager : MonoBehaviour
     [SerializeField] int m_maxZ = 15;
     /// <summary> 地形サイズ </summary>
     [SerializeField] int m_mapScale = 10;
-    public int MapScale { get => m_mapScale; }
     /// <summary> ステージの最大X座標 </summary>
     public int MaxX { get => m_maxX; }
     /// <summary> ステージの最大Z座標 </summary>
     public int MaxZ { get => m_maxZ; }
+    /// <summary> 地形サイズ </summary>
+    public int MapScale { get => m_mapScale; }
     private void Awake()
     {
         Instance = this;

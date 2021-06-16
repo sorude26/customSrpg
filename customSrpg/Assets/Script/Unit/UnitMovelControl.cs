@@ -213,7 +213,18 @@ public class UnitMovelControl : MonoBehaviour
         }
         UnitAngleControl();
     }
-    
+    /// <summary>
+    /// 移動処理中ならば処理を停止しワープさせる。
+    /// </summary>
+    protected void SkipMove(int posX, int posZ)
+    {
+        if (m_moveMode)
+        {
+            StopAllCoroutines();
+            Warp(posX, posZ);
+            m_moveMode = false;
+        }        
+    }
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる
     /// </summary>
@@ -262,7 +273,15 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (m_moveMode)
         {
-            return;
+            if (m_unitMoveList[0].x == targetX && m_unitMoveList[0].y == targetZ)
+            {
+                SkipMove(targetX,targetZ);
+                return;
+            }
+            else
+            {
+                SkipMove(m_startPosX, m_startPosZ);
+            }
         }
         if (targetX == m_startPosX && targetZ == m_startPosZ)
         {
