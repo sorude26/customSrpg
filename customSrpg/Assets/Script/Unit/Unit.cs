@@ -9,6 +9,7 @@ public class Unit : MonoBehaviour
 {
     [SerializeField] protected UnitMaster m_master;
     [SerializeField] protected UnitMovelControl m_movelControl;
+    [SerializeField] protected MotionController m_motion;
     /// <summary> 初期座標 </summary>
     [SerializeField] protected Vector2Int m_startPos;
     /// <summary> 現在のX座標 </summary>
@@ -36,4 +37,9 @@ public class Unit : MonoBehaviour
         m_master.SetParts(m_leg);
     }
     public UnitMaster GetUnitData() { return m_master; }
+    public void TargetPositionMoveStart(int x, int z)
+    {
+        m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z);
+        m_motion.MotionTypeChange(MotionType.Walk);
+    }
 }
