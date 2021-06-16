@@ -9,16 +9,28 @@ public enum CursorState
 }
 public class CursorControl : MonoBehaviour
 {
+    /// <summary> ステージの拡大率記憶用数 </summary>
     int m_stageScale;
+    /// <summary> ステージのサイズ記憶用数 </summary>
     Vector2Int m_stageSize;
+    /// <summary> 現在のカーソル座標X </summary>
     int m_currentPosX;
+    /// <summary> 現在のカーソル座標Z </summary>
     int m_currentPosZ;
+    /// <summary> カーソル操作停止フラグ </summary>
     bool m_notCursor;
-    bool m_move;
-    float m_moveTimer = 0;
+    /// <summary> 描画されるカーソル </summary>
+    [SerializeField] GameObject m_cursor;
+    /// <summary> 移動処理フラグ </summary>
+    bool m_move;    
+    /// <summary> 移動入力待ち時間 </summary>
     float m_moveTime = 0.03f;
+    /// <summary> 移動待機タイマー </summary>
+    float m_moveTimer = 0;
+    /// <summary> 連続入力タイマー </summary>
     float m_timer = 0;
-    bool m_test;
+    /// <summary> 連続移動フラグ </summary>
+    bool m_second;
     void Start()
     {
         m_stageScale = MapManager.Instance.MapScale;
@@ -62,10 +74,10 @@ public class CursorControl : MonoBehaviour
                 if (m_timer > 0)
                 {
                     m_timer -= Time.deltaTime;
-                    if (m_timer < 0.15f && !m_test)
+                    if (m_timer < 0.15f && !m_second)
                     {
                         CursorMove(x, z);
-                        m_test = true;
+                        m_second = true;
                     }
                 }
                 else
@@ -76,7 +88,7 @@ public class CursorControl : MonoBehaviour
             else
             {
                 m_timer = 0f;
-                m_test = false;
+                m_second = false;
             }
         }
         if (m_move && m_moveTimer <= 0)
@@ -84,13 +96,34 @@ public class CursorControl : MonoBehaviour
             this.transform.position = new Vector3(m_currentPosX * m_stageScale, 0, m_currentPosZ * m_stageScale);
             m_move = false;
             m_moveTimer = m_moveTime;
+            Debug.Log(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             return;
         }
     }
+    /// <summary>
+    /// カーソルを非表示にし、操作不能にする
+    /// </summary>
     public void CursorStop()
     {
         m_notCursor = true;
+        m_cursor.SetActive(false);
     }
+    /// <summary>
+    /// カーソルを指定箇所に移動する
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    public void CursorWarp(int x,int z)
+    {
+        m_currentPosX = x;
+        m_currentPosZ = z;
+        this.transform.position = new Vector3(m_currentPosX * m_stageScale, 0, m_currentPosZ * m_stageScale);
+    }
+    /// <summary>
+    /// 入力が地形の範囲内であればカーソルの座標を変更し、移動処理フラグをTrueにする
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
     void CursorMove(float x,float z)
     {
         if (x == 0 && z == 0)

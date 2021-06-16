@@ -28,6 +28,8 @@ public class MapData
     public MapType MapType { get; private set; }
     /// <summary> 移動計算用データ </summary>
     public int MovePoint { get; set; }
+    /// <summary> 攻撃計算用データ </summary>
+    public int AttackPoint { get; set; }
     /// <summary> 地形のパネル </summary>
     public StagePanel StagePanel { get; private set; }
     /// <summary>
@@ -44,6 +46,8 @@ public class MapData
         PosZ = posZ;
         Level = level;
         MovePoint = 0;
+        AttackPoint = 0;
         StagePanel = stagePanel;
+        StagePanel.SetPos(posX, posZ);
     }    
 }

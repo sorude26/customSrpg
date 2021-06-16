@@ -30,6 +30,7 @@ public class Unit : MonoBehaviour
     [SerializeField] protected PartsLeg m_leg = null;
     private void Start()
     {
+        m_movelControl.SetOwner(this);
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
         m_master.SetParts(m_lArm);
@@ -37,6 +38,11 @@ public class Unit : MonoBehaviour
         m_master.SetParts(m_leg);
     }
     public UnitMaster GetUnitData() { return m_master; }
+    public void SetCurrentPos(int x, int z)
+    {
+        CurrentPosX = x;
+        CurrentPosZ = z;
+    }
     public void TargetPositionMoveStart(int x, int z)
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z);
