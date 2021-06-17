@@ -30,6 +30,8 @@ public class Unit : MonoBehaviour
     [SerializeField] protected PartsLeg m_leg = null;
     private void Start()
     {
+        CurrentPosX = m_startPos.x;
+        CurrentPosZ = m_startPos.y;
         m_movelControl.SetOwner(this);
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
@@ -38,6 +40,11 @@ public class Unit : MonoBehaviour
         m_master.SetParts(m_leg);
     }
     public UnitMaster GetUnitData() { return m_master; }
+    /// <summary>
+    /// 現在のユニット位置を設定する
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
     public void SetCurrentPos(int x, int z)
     {
         CurrentPosX = x;

@@ -44,10 +44,6 @@ public class UnitMovelControl : MonoBehaviour
     }
     [SerializeField] public UnitAngle unitAngle = UnitAngle.Down;
     protected UnitAngle currentAngle;
-    private void Start()
-    {
-        m_gameMap = MapManager.Instance;
-    }
 
     /// <summary>
     /// 所有者を設定する
@@ -55,7 +51,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="owner"></param>
     public void SetOwner(Unit owner)
     {
+        m_gameMap = MapManager.Instance;
         m_owner = owner;
+        StartWarp();
     }
     /// <summary>
     /// 位置を保存する
@@ -224,6 +222,12 @@ public class UnitMovelControl : MonoBehaviour
             Warp(posX, posZ);
             m_moveMode = false;
         }        
+    }
+    protected void StartWarp()
+    {
+        m_startPosX = m_owner.CurrentPosX;
+        m_startPosZ = m_owner.CurrentPosZ;
+        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_gameMap.MapDatas[m_startPosX + m_startPosZ * m_gameMap.MaxX].Level, m_startPosZ * m_gameMap.MapScale);
     }
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる

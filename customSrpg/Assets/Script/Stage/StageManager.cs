@@ -11,6 +11,7 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance { get; private set; }
     [SerializeField] Unit m_testUnit;
     [SerializeField] CursorControl m_cursor;
+    [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
@@ -31,6 +32,8 @@ public class StageManager : MonoBehaviour
         }
         m_cursor.CursorWarp(x, z);
         m_testUnit.TargetPositionMoveStart(x, z);
+        m_targetMark.SetActive(true);
+        m_targetMark.transform.position = m_cursor.transform.position;
     }
     /// <summary>
     /// 移動範囲を検索し表示する

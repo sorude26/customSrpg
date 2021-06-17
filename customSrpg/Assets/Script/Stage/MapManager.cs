@@ -30,9 +30,6 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-    }
-    private void Start()
-    {
         MapDatas = m_mapCreater.MapCreate(m_maxX, m_maxZ, this.transform, MapScale);
         MoveList = new List<MapData>();
         AttackList = new List<MapData>();
