@@ -220,7 +220,7 @@ public class MapManager : MonoBehaviour
             return;
         }
         attackRange--;//攻撃範囲変動
-        if (attackRange > 0)//攻撃可能箇所に足跡入力、再度検索
+        if (attackRange >= 0)//攻撃可能箇所に足跡入力、再度検索
         {
             MapDatas[position].AttackPoint = attackRange;
             AttackList.Add(MapDatas[position]);

@@ -6,9 +6,14 @@
 public class EventManager
 {
     public static event Action OnStageGuideViewEnd;
+    public static event Action OnAttackSearchEnd;
 
     public static void StageGuideViewEnd()
     {
         OnStageGuideViewEnd?.Invoke();
+    }
+    public static void AttackSearchEnd()
+    {
+        OnAttackSearchEnd?.Invoke();
     }
 }

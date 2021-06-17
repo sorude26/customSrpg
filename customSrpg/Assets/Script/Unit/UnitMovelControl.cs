@@ -61,11 +61,15 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="z"></param>
-    public void SetPos(int x, float y, int z)
+    public void SetPos(int x, int z)
     {
         m_startPosX = x;
-        m_currentPosY = y;
         m_startPosZ = z;
+    }
+    public void MoveEnd()
+    {
+        SkipMove();
+        SetPos(m_owner.CurrentPosX, m_owner.CurrentPosZ);
     }
     /// <summary>
     /// ユニットを移動させる
@@ -214,6 +218,18 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary>
     /// 移動処理中ならば処理を停止しワープさせる。
     /// </summary>
+    public void SkipMove()
+    {
+        if (m_moveMode)
+        {
+            StopAllCoroutines();
+            Warp(m_unitMoveList[0].x, m_unitMoveList[0].y);
+            m_moveMode = false;
+        }        
+    }
+    /// <summary>
+    /// 移動処理中ならば処理を停止しワープさせる。
+    /// </summary>
     protected void SkipMove(int posX, int posZ)
     {
         if (m_moveMode)
@@ -221,7 +237,7 @@ public class UnitMovelControl : MonoBehaviour
             StopAllCoroutines();
             Warp(posX, posZ);
             m_moveMode = false;
-        }        
+        }
     }
     protected void StartWarp()
     {
