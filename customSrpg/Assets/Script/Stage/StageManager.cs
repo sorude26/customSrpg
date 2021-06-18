@@ -11,6 +11,7 @@ public class StageManager : MonoBehaviour
     public static StageManager Instance { get; private set; }
     [SerializeField] Unit m_testUnit;
     [SerializeField] Unit[] m_testEnemys;
+    List<Unit> m_units;
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
@@ -19,6 +20,15 @@ public class StageManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+    }
+    private void Start()
+    {
+        m_units = new List<Unit>();
+        m_units.Add(m_testUnit);
+        foreach (var item in m_testEnemys)
+        {
+            m_units.Add(item);
+        }
     }
     public void TestAttack()
     {
@@ -76,12 +86,6 @@ public class StageManager : MonoBehaviour
     /// <returns></returns>
     public Unit GetPositionUnit(int x, int z)
     {
-        List<Unit> units = new List<Unit>();
-        units.Add(m_testUnit);
-        foreach (var item in m_testEnemys)
-        {
-            units.Add(item);
-        }
-        return units.Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault(); 
+        return m_units.Where(mu => mu.GetUnitData().GetCurrentHP() > 0).Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault(); 
     }
 }

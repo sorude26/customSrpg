@@ -28,9 +28,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary> 移動目標座標 </summary>
     Vector3 m_targetPos;
     /// <summary> 移動速度 </summary>
-    float m_moveSpeed = 10f;
+    float m_moveSpeed = 20f;
     /// <summary> 上昇速度 </summary>
-    float m_upSpeed = 5f;
+    float m_upSpeed = 15f;
 
     /// <summary>
     /// ユニット向き4方向
