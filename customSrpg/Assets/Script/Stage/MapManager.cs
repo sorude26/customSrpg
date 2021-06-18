@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 /// <summary>
 /// 地形の管理クラス
@@ -33,6 +34,26 @@ public class MapManager : MonoBehaviour
         MapDatas = m_mapCreater.MapCreate(m_maxX, m_maxZ, this.transform, MapScale);
         MoveList = new List<MapData>();
         AttackList = new List<MapData>();
+    }
+    /// <summary>
+    /// 2次元座標を1次元座標に変換する
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
+    public int GetPosition(int x,int z)
+    {
+        return x + z * MaxX;
+    }
+    /// <summary>
+    /// 指定座標の高度を返す
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    /// <returns></returns>
+    public float GetLevel(int x,int z)
+    {
+        return MapDatas[GetPosition(x, z)].Level;
     }
     /// <summary>
     /// 地形タイプごとの移動力補正を返す
@@ -77,7 +98,7 @@ public class MapManager : MonoBehaviour
         {
             MapDatas[i].MovePoint = 0;
         }
-        int p = moveUnit.CurrentPosX + (moveUnit.CurrentPosZ * MaxX);
+        int p = GetPosition(moveUnit.CurrentPosX, moveUnit.CurrentPosZ);
         MoveList.Add(MapDatas[p]);
         MapDatas[p].MovePoint = moveUnit.GetUnitData().GetMovePower();
         SearchCross(p, MapDatas[p].MovePoint, moveUnit.GetUnitData().GetLiftingForce());
@@ -88,17 +109,17 @@ public class MapManager : MonoBehaviour
     /// </summary>
     /// <param name="attackWeapon"></param>
     /// <returns></returns>
-    public MapData[] StartSearch(int x, int z,in WeaponMaster attackWeapon)
+    public MapData[] StartSearch(int x, int z, WeaponMaster attackWeapon)
     {
         AttackList.Clear();
         for (int i = 0; i < MapDatas.Length; i++)
         {
             MapDatas[i].AttackPoint = 0;
         }
-        int p = x + (z * MaxX);
+        int p = GetPosition(x, z);
         MapDatas[p].AttackPoint = attackWeapon.Range;
-        SearchCross(p, MapDatas[p].AttackPoint, MapDatas[p].Level,attackWeapon.VerticalRange);
-        return AttackList.ToArray();
+        SearchCross(p, MapDatas[p].AttackPoint, MapDatas[p].Level, attackWeapon.VerticalRange);
+        return AttackList.Where(ap => ap.AttackPoint < attackWeapon.Range - attackWeapon.MinRange).ToArray();
     }
     /// <summary>
     /// 指定箇所の十字方向を進行可能か調べる
@@ -166,27 +187,28 @@ public class MapManager : MonoBehaviour
     /// 指定箇所の十字方向を攻撃可能か調べる
     /// </summary>
     /// <param name="position"></param>
-    /// <param name="movePower"></param>
+    /// <param name="attackRange"></param>
+    /// <param name="startLevel"></param>
     /// <param name="verticalRang"></param>
-    void SearchCross(int position, int movePower, float startLevel, float verticalRang)
+    void SearchCross(int position, int attackRange, float startLevel, float verticalRang)
     {
         if (0 <= position && position < MaxX * MaxZ)
         {
             if (MapDatas[position].PosZ > 0 && MapDatas[position].PosZ < MaxZ)
             {
-                SearchAttack(position - MaxX, movePower, startLevel, verticalRang);
+                SearchAttack(position - MaxX, attackRange, startLevel, verticalRang);
             }
             if (MapDatas[position].PosZ >= 0 && MapDatas[position].PosZ < MaxZ - 1)
             {
-                SearchAttack(position + MaxX, movePower, startLevel, verticalRang);
+                SearchAttack(position + MaxX, attackRange, startLevel, verticalRang);
             }
             if (MapDatas[position].PosX > 0 && MapDatas[position].PosX < MaxX)
             {
-                SearchAttack(position - 1, movePower, startLevel, verticalRang);
+                SearchAttack(position - 1, attackRange, startLevel, verticalRang);
             }
             if (MapDatas[position].PosX >= 0 && MapDatas[position].PosX < MaxX - 1)
             {
-                SearchAttack(position + 1, movePower, startLevel, verticalRang);
+                SearchAttack(position + 1, attackRange, startLevel, verticalRang);
             }
         }
     }
@@ -211,7 +233,7 @@ public class MapManager : MonoBehaviour
         {
             return;
         }
-        if (startLevel - MapDatas[position].Level > verticalRange + verticalRange / 2)
+        if (startLevel - MapDatas[position].Level > verticalRange + verticalRange / 2)//高低差確認
         {
             return;
         }
@@ -219,7 +241,7 @@ public class MapManager : MonoBehaviour
         {
             return;
         }
-        attackRange--;//攻撃範囲変動
+        attackRange--;//攻撃範囲変動        
         if (attackRange >= 0)//攻撃可能箇所に足跡入力、再度検索
         {
             MapDatas[position].AttackPoint = attackRange;

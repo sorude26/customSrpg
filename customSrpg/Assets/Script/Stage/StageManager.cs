@@ -15,6 +15,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
+    [SerializeField] BattleManager m_battleManager;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
     private void Awake()
@@ -76,6 +77,7 @@ public class StageManager : MonoBehaviour
         {
             panel.StagePanel.ViewAttackPanel();
         }
+        m_battleManager.AttackTarget();
     }
 
     /// <summary>
@@ -88,4 +90,13 @@ public class StageManager : MonoBehaviour
     {
         return m_units.Where(mu => mu.GetUnitData().GetCurrentHP() > 0).Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault(); 
     }
+    public Unit[] GetStageUnits()
+    {
+        return m_units.Where(mu => mu.GetUnitData().GetCurrentHP() > 0).ToArray();
+    }
+    public MapData[] GetAttackTarget()
+    {
+        return m_attackDatas;
+    }
+
 }
