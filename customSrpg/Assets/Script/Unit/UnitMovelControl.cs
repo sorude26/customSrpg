@@ -28,9 +28,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary> 移動目標座標 </summary>
     Vector3 m_targetPos;
     /// <summary> 移動速度 </summary>
-    float m_moveSpeed = 10f;
+    float m_moveSpeed = 20f;
     /// <summary> 上昇速度 </summary>
-    float m_upSpeed = 5f;
+    float m_upSpeed = 15f;
 
     /// <summary>
     /// ユニット向き4方向
@@ -44,10 +44,6 @@ public class UnitMovelControl : MonoBehaviour
     }
     [SerializeField] public UnitAngle unitAngle = UnitAngle.Down;
     protected UnitAngle currentAngle;
-    private void Start()
-    {
-        m_gameMap = MapManager.Instance;
-    }
 
     /// <summary>
     /// 所有者を設定する
@@ -55,7 +51,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="owner"></param>
     public void SetOwner(Unit owner)
     {
+        m_gameMap = MapManager.Instance;
         m_owner = owner;
+        StartWarp();
     }
     /// <summary>
     /// 位置を保存する
@@ -63,11 +61,15 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="y"></param>
     /// <param name="z"></param>
-    public void SetPos(int x, float y, int z)
+    public void SetPos(int x, int z)
     {
         m_startPosX = x;
-        m_currentPosY = y;
         m_startPosZ = z;
+    }
+    public void MoveEnd()
+    {
+        SkipMove();
+        SetPos(m_owner.CurrentPosX, m_owner.CurrentPosZ);
     }
     /// <summary>
     /// ユニットを移動させる
@@ -216,6 +218,18 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary>
     /// 移動処理中ならば処理を停止しワープさせる。
     /// </summary>
+    public void SkipMove()
+    {
+        if (m_moveMode)
+        {
+            StopAllCoroutines();
+            Warp(m_unitMoveList[0].x, m_unitMoveList[0].y);
+            m_moveMode = false;
+        }        
+    }
+    /// <summary>
+    /// 移動処理中ならば処理を停止しワープさせる。
+    /// </summary>
     protected void SkipMove(int posX, int posZ)
     {
         if (m_moveMode)
@@ -223,7 +237,13 @@ public class UnitMovelControl : MonoBehaviour
             StopAllCoroutines();
             Warp(posX, posZ);
             m_moveMode = false;
-        }        
+        }
+    }
+    protected void StartWarp()
+    {
+        m_startPosX = m_owner.CurrentPosX;
+        m_startPosZ = m_owner.CurrentPosZ;
+        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_gameMap.MapDatas[m_startPosX + m_startPosZ * m_gameMap.MaxX].Level, m_startPosZ * m_gameMap.MapScale);
     }
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる

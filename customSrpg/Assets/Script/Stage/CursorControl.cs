@@ -93,10 +93,10 @@ public class CursorControl : MonoBehaviour
         }
         if (m_move && m_moveTimer <= 0)
         {
-            this.transform.position = new Vector3(m_currentPosX * m_stageScale, 0, m_currentPosZ * m_stageScale);
+            this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
             m_move = false;
             m_moveTimer = m_moveTime;
-            Debug.Log(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
+            //Debug.Log(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             return;
         }
     }
@@ -117,7 +117,7 @@ public class CursorControl : MonoBehaviour
     {
         m_currentPosX = x;
         m_currentPosZ = z;
-        this.transform.position = new Vector3(m_currentPosX * m_stageScale, 0, m_currentPosZ * m_stageScale);
+        this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
     /// 入力が地形の範囲内であればカーソルの座標を変更し、移動処理フラグをTrueにする

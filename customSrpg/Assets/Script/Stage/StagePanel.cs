@@ -32,6 +32,7 @@ public class StagePanel : MonoBehaviour
     {
         m_attackPanel.SetActive(true);
         m_attackMode = true;
+        EventManager.OnAttackSearchEnd += CloseAttackPanel;
     }
     /// <summary>
     /// 攻撃可能表示を消す
@@ -40,6 +41,7 @@ public class StagePanel : MonoBehaviour
     {
         m_attackPanel.SetActive(false);
         m_attackMode = false;
+        EventManager.OnAttackSearchEnd -= CloseAttackPanel;
     }
     /// <summary>
     /// 表示パネルを閉じる
@@ -47,16 +49,14 @@ public class StagePanel : MonoBehaviour
     public void ViewEnd()
     {
         m_movePanel.SetActive(false);
-        m_attackPanel.SetActive(false);
         m_moveMode = false;
-        m_attackMode = false;
+        if (m_attackMode)
+        {
+            CloseAttackPanel();
+        }
     }
     private void OnMouseDown()
     {
-        if (m_attackMode)
-        {
-            return;
-        }
         if (m_moveMode)
         {
             StageManager.Instance.PointMoveTest(m_posX, m_posZ);

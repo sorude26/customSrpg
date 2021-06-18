@@ -34,6 +34,10 @@ public class WeaponMaster : PartsMaster
     [SerializeField] int m_range = 4;
     /// <summary> 最大射程 </summary>
     public int Range { get => m_range; }
+    /// <summary> 最低射程 </summary>
+    [SerializeField] int m_minRange = 0;
+    /// <summary> 最低射程 </summary>
+    public int MinRange { get => m_minRange; }
     /// <summary> 最大対応高低差 </summary>
     [SerializeField] float m_verticalRange = 1f;
     /// <summary> 最大対応高低差 </summary>

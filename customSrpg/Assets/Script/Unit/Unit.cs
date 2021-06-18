@@ -28,16 +28,25 @@ public class Unit : MonoBehaviour
     [SerializeField] protected PartsArm m_rArm = null;
     /// <summary> 機体脚部 </summary>
     [SerializeField] protected PartsLeg m_leg = null;
+    [SerializeField] protected WeaponMaster m_testWeapom = null;
     private void Start()
     {
+        CurrentPosX = m_startPos.x;
+        CurrentPosZ = m_startPos.y;
         m_movelControl.SetOwner(this);
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
         m_master.SetParts(m_lArm);
         m_master.SetParts(m_rArm);
         m_master.SetParts(m_leg);
+        m_master.SetParts(m_testWeapom);
     }
     public UnitMaster GetUnitData() { return m_master; }
+    /// <summary>
+    /// 現在のユニット位置を設定する
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
     public void SetCurrentPos(int x, int z)
     {
         CurrentPosX = x;
@@ -47,5 +56,13 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z);
         m_motion.MotionTypeChange(MotionType.Walk);
+    }
+    public void MoveSkep()
+    {
+        m_movelControl.SkipMove();
+    }
+    public void MoveEnd()
+    {
+        m_movelControl.MoveEnd();
     }
 }
