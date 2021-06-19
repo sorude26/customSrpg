@@ -2,16 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitPartsMaster : PartsMaster
+public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsData
 {
     /// <summary> パーツ耐久値 </summary>
-    [SerializeField] protected int m_partsHp;
+    public int MaxPartsHp { get => m_partsData.MaxPartsHp; }
     /// <summary> パーツ装甲値 </summary>
-    [SerializeField] protected int m_defense;
-    /// <summary> パーツ耐久値 </summary>
-    public int MaxPartsHp { get => m_partsHp; }
-    /// <summary> パーツ装甲値 </summary>
-    public int Defense { get => m_defense; }
+    public int Defense { get => m_partsData.Defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
     void Start()
@@ -23,9 +19,12 @@ public class UnitPartsMaster : PartsMaster
     /// </summary>
     protected virtual void StartSet()
     {
-        CurrentPartsHp = m_partsHp;
+        CurrentPartsHp = MaxPartsHp;
     }
-    /// <summary> パーツにダメージを与える </summary>
+   
+    /// <summary>
+    /// パーツにダメージを与える
+    /// </summary>
     /// <param name="dmage"></param>
     public virtual void Damage(int dmage)
     {
@@ -42,7 +41,9 @@ public class UnitPartsMaster : PartsMaster
             PartsBreak();
         }
     }
-    /// <summary> パーツ破壊時の処理 </summary>
+    /// <summary>
+    /// パーツ破壊時の処理
+    /// </summary>
     protected virtual void PartsBreak()
     {
         Break = true;
@@ -55,5 +56,13 @@ public class UnitPartsMaster : PartsMaster
     public virtual int GetPartsSize()
     {
         return PartsSize;
+    }
+    public int GetCurrentHP()
+    {
+        return CurrentPartsHp;
+    }
+    public int GetDefense()
+    {
+        return Defense;
     }
 }

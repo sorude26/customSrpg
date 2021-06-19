@@ -2,35 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-/// <summary>
-/// 機体のタイプ
-/// </summary>
-public enum BodyType
-{
-    Human,
-    Helicopter,
-    Tank,
-}
-public class PartsBody : UnitPartsMaster
+public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
 {
     /// <summary> 機体出力 </summary>
-    [SerializeField] int m_unitOutput;
+    public int UnitOutput { get => m_partsData.UnitOutput; }
     /// <summary> 昇降力 </summary>
-    [SerializeField] float m_liftingForce;
+    public float LiftingForce { get => m_partsData.LiftingForce; }
     /// <summary> 移動力 </summary>
-    [SerializeField] int m_movePower = 0;
-    /// <summary> 回避力 </summary>
-    [SerializeField] int m_avoidance;
+    public int MovePower { get => m_partsData.MovePower; }
+    /// <summary> 命中精度 </summary>
+    public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 機体タイプ </summary>
-    [SerializeField] BodyType m_bodyType = BodyType.Human;    
-    /// <summary> 機体出力 </summary>
-    public int UnitOutput { get => m_unitOutput; }
-    /// <summary> 昇降力 </summary>
-    public float LiftingForce { get => m_liftingForce; }
-    /// <summary> 移動力 </summary>
-    public int MovePower { get => m_movePower; }
-    /// <summary> 機体タイプ </summary>
-    public BodyType BodyPartsType { get => m_bodyType; }
+    public BodyType BodyPartsType { get => m_partsData.BodyPartsType; }
     /// <summary> ヘッドパーツ接続部 </summary>
     [SerializeField] Transform m_headParts;
     /// <summary> 左手パーツ接続部 </summary>
@@ -46,16 +29,16 @@ public class PartsBody : UnitPartsMaster
     protected override void PartsBreak()
     {
         Break = true;
-    }
+    }   
     /// <summary>
     /// 機体の回避力と出力の合計値を返す
     /// </summary>
     /// <returns></returns>
     public int GetAvoidance() 
     {
-        return m_avoidance + UnitOutput;
+        return m_partsData.Avoidance + UnitOutput;
     }
-    public override int GetPartsSize()
+    public override int GetSize()
     {
         int size = PartsSize;
         if (m_weapon)

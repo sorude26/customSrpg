@@ -49,7 +49,7 @@ public class StageManager : MonoBehaviour
             return;
         }
         m_cursor.CursorWarp(x, z);
-        m_testUnit.TargetPositionMoveStart(x, z);
+        m_testUnit.TargetMoveStart(x, z);
         m_targetMark.SetActive(true);
         m_targetMark.transform.position = m_cursor.transform.position;
     }
@@ -77,7 +77,7 @@ public class StageManager : MonoBehaviour
         {
             panel.StagePanel.ViewAttackPanel();
         }
-        m_battleManager.AttackTarget();
+        m_battleManager.SetAttackTargets();
     }
 
     /// <summary>

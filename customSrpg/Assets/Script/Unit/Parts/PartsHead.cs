@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PartsHead : UnitPartsMaster
+public class PartsHead : UnitPartsMaster<HeadData>
 {
+    /// <summary> 命中精度 </summary>
+    public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 回避力 </summary>
-    [SerializeField] int m_avoidance;
-    /// <summary> 回避力 </summary>
-    public int Avoidance { get => m_avoidance; }    
+    public int Avoidance { get => m_partsData.Avoidance; }    
 }
