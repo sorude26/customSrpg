@@ -52,7 +52,12 @@ public class Unit : MonoBehaviour
         CurrentPosX = x;
         CurrentPosZ = z;
     }
-    public void TargetPositionMoveStart(int x, int z)
+    /// <summary>
+    /// 指定した地点へ移動させる
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    public void TargetMoveStart(int x, int z)
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z);
         m_motion.MotionTypeChange(MotionType.Walk);

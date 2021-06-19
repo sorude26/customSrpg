@@ -1,21 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public enum ArmType
+
+public class PartsArm : UnitPartsMaster<ArmData>
 {
-    Left,
-    Right,
-}
-public class PartsArm : UnitPartsMaster
-{
-    /// <summary> 手の種類 </summary>
-    [SerializeField] ArmType m_armType;
     /// <summary> 拳の位置 </summary>
     [SerializeField] Transform m_grip;
     /// <summary> 肩の位置 </summary>
     [SerializeField] Transform m_shoulder;
+    /// <summary> 命中精度 </summary>
+    public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 手の種類 </summary>
-    public ArmType Arm { get => m_armType; }
+    public ArmType Arm { get => m_partsData.Arm; }
     /// <summary> 拳の位置 </summary>
     public Transform Grip { get => m_grip; }
     /// <summary> 肩の位置 </summary>
@@ -27,7 +23,7 @@ public class PartsArm : UnitPartsMaster
     
     public void SetGripWeapon(WeaponMaster weapon) { GripWeapon = weapon; }
     public void SetShoulderWeapon(WeaponMaster weapon) { ShoulderWeapon = weapon; }
-    public override int GetPartsSize()
+    public override int GetSize()
     {
         int size = PartsSize;
         if (GripWeapon)

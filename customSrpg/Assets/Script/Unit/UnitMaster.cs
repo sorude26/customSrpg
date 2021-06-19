@@ -35,12 +35,12 @@ public class UnitMaster : MonoBehaviour
     public int GetCurrentHP()
     {
         int hp = 0;
-        UnitPartsMaster[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
         foreach (var parts in allParts)
         {
-            if (parts)
+            if (parts != null)
             {
-                hp += parts.CurrentPartsHp;
+                hp += parts.GetCurrentHP();
             }
         }
         return hp;
@@ -105,14 +105,14 @@ public class UnitMaster : MonoBehaviour
     public int GetWeight()
     {
         int weight = 0;
-        PartsMaster[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
+        IParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
         foreach (var parts in allParts)
         {
-            if (parts)
+            if (parts != null)
             {
-                if (!parts.Break)
+                if (!parts.GetBreak())
                 {
-                    weight += parts.Weight;
+                    weight += parts.GetWeight();
                 }
             }
         }
@@ -126,20 +126,80 @@ public class UnitMaster : MonoBehaviour
     {
         int count = 0;
         int armor = 0;
-        UnitPartsMaster[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        foreach (var parts in allParts)
+        IUnitParts[] allparts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        foreach (var parts in allparts)
         {
-            if (parts)
+            if (parts != null)
             {
-                if (parts.Break)
+                if (parts.GetCurrentHP() == 0)
                 {
                     continue;
                 }
-                armor += parts.Defense;
+                armor += parts.GetDefense();
                 count++;
             }
         }
         return armor / count;
+    }
+    /// <summary>
+    /// 指定箇所の武装使用時の命中精度を返す
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public int GetHitAccuracy(WeaponPosition position)
+    {
+        int hitAccuray = m_body.HitAccuracy;
+        if (m_head)
+        {
+            hitAccuray += m_head.HitAccuracy;
+        }
+        switch (position)
+        {
+            case WeaponPosition.Body:
+                hitAccuray += m_bodyWeapon.HitAccuracy;
+                break;
+            case WeaponPosition.LArm:
+                hitAccuray += m_lArm.HitAccuracy;
+                hitAccuray += m_lAWeapon.HitAccuracy;
+                break;
+            case WeaponPosition.RArm:
+                hitAccuray += m_rArm.HitAccuracy;
+                hitAccuray += m_rAWeapon.HitAccuracy;
+                break;
+            case WeaponPosition.LShoulder:
+                hitAccuray += m_lSWeapon.HitAccuracy;
+                break;
+            case WeaponPosition.RShoulder:
+                hitAccuray += m_rSWeapon.HitAccuracy;
+                break;
+            default:
+                break;
+        }
+        return hitAccuray;
+    }
+    /// <summary>
+    /// 指定箇所の武装を返す
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    public WeaponMaster GetWeapon(WeaponPosition position)
+    {
+        switch (position)
+        {
+            case WeaponPosition.Body:
+                return m_bodyWeapon;
+            case WeaponPosition.LArm:
+                return m_lAWeapon;
+            case WeaponPosition.RArm:
+                return m_rAWeapon;
+            case WeaponPosition.LShoulder:
+                return m_lSWeapon;
+            case WeaponPosition.RShoulder:
+                return m_rSWeapon;
+            default:    
+                break;
+        }
+        return null;
     }
     /// <summary>
     /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行わせる
@@ -148,29 +208,29 @@ public class UnitMaster : MonoBehaviour
     public void HitCheckShot(int hitDamage)
     {
         int hitPos = 0;
-        UnitPartsMaster[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
         foreach (var parts in allParts)
         {
-            if (parts)
+            if (parts != null)
             {
-                if (parts.Break)
+                if (parts.GetBreak())
                 {
                     continue;
                 }
-                hitPos += parts.GetPartsSize();
+                hitPos += parts.GetSize();
             }
         }
         int r = Random.Range(0, hitPos);
         int prb = 0;
         foreach (var parts in allParts)
         {
-            if (parts)
+            if (parts != null)
             {
-                if (parts.Break)
+                if (parts.GetBreak())
                 {
                     continue;
                 }
-                prb += parts.GetPartsSize();
+                prb += parts.GetSize();
                 if (prb > r)
                 {
                     parts.Damage(hitDamage);
