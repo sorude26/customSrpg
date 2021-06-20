@@ -22,7 +22,7 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary> 移動前座標Z </summary>
     int m_startPosZ;
     /// <summary> 現在座標Y </summary>
-    float m_currentPosY;
+    float m_startPosY;
     /// <summary> 移動中座標 </summary>
     Vector3 m_movePos;
     /// <summary> 移動目標座標 </summary>
@@ -59,12 +59,12 @@ public class UnitMovelControl : MonoBehaviour
     /// 位置を保存する
     /// </summary>
     /// <param name="x"></param>
-    /// <param name="y"></param>
     /// <param name="z"></param>
     public void SetPos(int x, int z)
     {
         m_startPosX = x;
         m_startPosZ = z;
+        m_startPosY = m_gameMap.GetLevel(x, z);
     }
     public void MoveEnd()
     {
@@ -77,7 +77,7 @@ public class UnitMovelControl : MonoBehaviour
     /// <returns></returns>
     IEnumerator UnitMove()
     {
-        m_movePos = new Vector3(m_startPosX * m_gameMap.MapScale, m_currentPosY, m_startPosZ * m_gameMap.MapScale);
+        m_movePos = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
         TargetSet();
         while (m_moveCount >= 0)
         {
@@ -106,7 +106,7 @@ public class UnitMovelControl : MonoBehaviour
         {
             return;
         }
-        float targetLevel = m_gameMap.MapDatas[m_unitMoveList[m_moveCount].x + (m_gameMap.MaxX * m_unitMoveList[m_moveCount].y)].Level;
+        float targetLevel = m_gameMap.GetLevel(m_unitMoveList[m_moveCount].x, m_unitMoveList[m_moveCount].y);
         m_targetPos = new Vector3(m_unitMoveList[m_moveCount].x * m_gameMap.MapScale, targetLevel, m_unitMoveList[m_moveCount].y * m_gameMap.MapScale);
     }
 
@@ -117,103 +117,60 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (m_movePos.x != m_targetPos.x) //移動・昇降、方向変更処理
         {
-            if (m_movePos.x < m_targetPos.x)
-            {
-                if (unitAngle != UnitAngle.Right) { unitAngle = UnitAngle.Right; }
-
-                if (m_targetPos.x - m_movePos.x <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-                {
-                    if (m_movePos.y > m_targetPos.y)
-                    {
-                        m_movePos.y -= m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                    else
-                    {
-                        m_movePos.y += m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                }
-                else
-                {
-                    m_movePos.x += m_moveSpeed * Time.deltaTime;
-                    if (m_movePos.x > m_targetPos.x) { m_movePos.x = m_targetPos.x; }
-                }
-            }
-            else
-            {
-                if (unitAngle != UnitAngle.Left) { unitAngle = UnitAngle.Left; }
-
-                if (m_movePos.x - m_targetPos.x <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-                {
-                    if (m_movePos.y > m_targetPos.y)
-                    {
-                        m_movePos.y -= m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                    else
-                    {
-                        m_movePos.y += m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                }
-                else
-                {
-                    m_movePos.x -= m_moveSpeed * Time.deltaTime;
-                    if (m_movePos.x < m_targetPos.x) { m_movePos.x = m_targetPos.x; }
-                }
-            }
+            MoveAround(ref m_movePos.x, m_targetPos.x, UnitAngle.Right, UnitAngle.Left);
         }
         else if (m_movePos.z != m_targetPos.z)
         {
-            if (m_movePos.z < m_targetPos.z)
-            {
-                if (unitAngle != UnitAngle.Up) { unitAngle = UnitAngle.Up; }
+            MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Up, UnitAngle.Down);            
+        }
+        UnitAngleControl();
+    }
+    /// <summary>
+    /// 昇降処理
+    /// </summary>
+    void MoveUpDown()
+    {
+        if (m_movePos.y > m_targetPos.y)
+        {
+            m_movePos.y -= m_upSpeed * Time.deltaTime;
+            if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
+        }
+        else
+        {
+            m_movePos.y += m_upSpeed * Time.deltaTime;
+            if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
+        }
+    }
+    void MoveAround(ref float movePos,float targetPos,UnitAngle angle1,UnitAngle angle2)
+    {
+        if (movePos < targetPos)
+        {
+            if (unitAngle != angle1) { unitAngle = angle1; }
 
-                if (m_targetPos.z - m_movePos.z <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-                {
-                    if (m_movePos.y > m_targetPos.y)
-                    {
-                        m_movePos.y -= m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                    else
-                    {
-                        m_movePos.y += m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                }
-                else
-                {
-                    m_movePos.z += m_moveSpeed * Time.deltaTime;
-                    if (m_movePos.z > m_targetPos.z) { m_movePos.z = m_targetPos.z; }
-                }
+            if (targetPos - movePos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
+            {
+                MoveUpDown();
             }
             else
             {
-                if (unitAngle != UnitAngle.Down) { unitAngle = UnitAngle.Down; }
-
-                if (m_movePos.z - m_targetPos.z <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-                {
-                    if (m_movePos.y > m_targetPos.y)
-                    {
-                        m_movePos.y -= m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                    else
-                    {
-                        m_movePos.y += m_upSpeed * Time.deltaTime;
-                        if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-                    }
-                }
-                else
-                {
-                    m_movePos.z -= m_moveSpeed * Time.deltaTime;
-                    if (m_movePos.z < m_targetPos.z) { m_movePos.z = m_targetPos.z; }
-                }
+                movePos += m_moveSpeed * Time.deltaTime;
+                if (movePos > targetPos) { movePos = targetPos; }
             }
         }
-        UnitAngleControl();
+        else
+        {
+            if (unitAngle != angle2) { unitAngle = angle2; }
+
+            if (movePos - targetPos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
+            {
+                MoveUpDown();
+            }
+            else
+            {
+                movePos -= m_moveSpeed * Time.deltaTime;
+                if (movePos < targetPos) { movePos = targetPos; }
+            }
+        }
     }
     /// <summary>
     /// 移動処理中ならば処理を停止しワープさせる。
@@ -243,7 +200,7 @@ public class UnitMovelControl : MonoBehaviour
     {
         m_startPosX = m_owner.CurrentPosX;
         m_startPosZ = m_owner.CurrentPosZ;
-        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_gameMap.MapDatas[m_startPosX + m_startPosZ * m_gameMap.MaxX].Level, m_startPosZ * m_gameMap.MapScale);
+        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
     }
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる
