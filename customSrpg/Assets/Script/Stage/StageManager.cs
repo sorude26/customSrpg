@@ -36,6 +36,12 @@ public class StageManager : MonoBehaviour
         m_testUnit.MoveSkep();
         AttackSearch(m_testUnit.CurrentPosX, m_testUnit.CurrentPosZ);
     }
+    public void TestTargetAttack()
+    {
+        m_cursor.CursorWarp(m_battleManager.SetTarget(0));
+        m_targetMark.transform.position = m_cursor.transform.position;
+        m_battleManager.AttackStart(WeaponPosition.Body);
+    }
     public void PointMoveTest(int x, int z)
     {
         EventManager.AttackSearchEnd();
@@ -65,12 +71,14 @@ public class StageManager : MonoBehaviour
         {
             panel.StagePanel.ViewMovePanel();
         }
+        //Debug.Log(BattleData.GetDamage(5, 6,BattleMode.Counter));
     }
     /// <summary>
     /// 攻撃範囲を検索し表示する
     /// </summary>
     public void AttackSearch(int x, int z)
     {
+        m_battleManager.SetAttacker(m_testUnit);
         EventManager.AttackSearchEnd();
         m_attackDatas = MapManager.Instance.StartSearch(x, z, m_testWeapon);
         foreach (var panel in m_attackDatas)

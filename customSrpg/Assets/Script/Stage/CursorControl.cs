@@ -117,7 +117,21 @@ public class CursorControl : MonoBehaviour
     {
         m_currentPosX = x;
         m_currentPosZ = z;
-        this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
+        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
+    }
+    /// <summary>
+    /// カーソルを指定ユニットの場所に移動する
+    /// </summary>
+    /// <param name="unit"></param>
+    public void CursorWarp(Unit unit)
+    {
+        if (!unit)
+        {
+            return;
+        }
+        m_currentPosX = unit.CurrentPosX;
+        m_currentPosZ = unit.CurrentPosZ;
+        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
     /// 入力が地形の範囲内であればカーソルの座標を変更し、移動処理フラグをTrueにする
