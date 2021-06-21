@@ -11,7 +11,7 @@ public class BattleManager : MonoBehaviour
     /// <summary> 攻撃者 </summary>
     Unit m_attacker;
     /// <summary> 攻撃対象リスト </summary>
-    List<Unit> m_attackTarget;
+    List<Unit> m_attackTarget = new List<Unit>();
     /// <summary> 攻撃対象 </summary>
     Unit m_target;
     public void SetAttacker(Unit attacker)
@@ -39,12 +39,26 @@ public class BattleManager : MonoBehaviour
             Debug.Log(item);
         }
     }
-    public void SetTarget(Unit target)
+    public void SetTarget(int targetNum)
     {
-        m_target = target;
+        if (targetNum >= m_attackTarget.Count)
+        {
+            Debug.Log("指定対象不在");
+            return;
+        }
+        m_target = m_attackTarget[targetNum];
     }
     public void AttackStart(WeaponPosition attackWeapon)
     {
+        if (!m_target)
+        {
+            Debug.Log("攻撃対象不在");
+            return;
+        }
+        else
+        {
+            Debug.Log(m_target);
+        }
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
         int hit = GetHit(attackWeapon);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)

@@ -49,10 +49,11 @@ public class UnitMovelControl : MonoBehaviour
     /// 所有者を設定する
     /// </summary>
     /// <param name="owner"></param>
-    public void SetOwner(Unit owner)
+    public void SetOwner(Unit owner,int x,int z)
     {
         m_gameMap = MapManager.Instance;
         m_owner = owner;
+        SetPos(x, z);
         StartWarp();
     }
     /// <summary>

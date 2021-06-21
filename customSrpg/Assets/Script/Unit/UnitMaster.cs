@@ -204,8 +204,8 @@ public class UnitMaster : MonoBehaviour
     /// <summary>
     /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行わせる
     /// </summary>
-    /// <param name="hitDamage"></param>
-    public void HitCheckShot(int hitDamage)
+    /// <param name="power"></param>
+    public void HitCheckShot(int power)
     {
         int hitPos = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
@@ -233,7 +233,7 @@ public class UnitMaster : MonoBehaviour
                 prb += parts.GetSize();
                 if (prb > r)
                 {
-                    parts.Damage(hitDamage);
+                    parts.Damage(power);
                     break;
                 }
             }

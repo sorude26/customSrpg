@@ -33,7 +33,7 @@ public class Unit : MonoBehaviour
     {
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
-        m_movelControl.SetOwner(this);
+        m_movelControl.SetOwner(this, CurrentPosX, CurrentPosZ);
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
         m_master.SetParts(m_lArm);

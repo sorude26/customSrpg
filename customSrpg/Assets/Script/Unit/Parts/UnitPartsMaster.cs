@@ -25,18 +25,19 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// <summary>
     /// パーツにダメージを与える
     /// </summary>
-    /// <param name="dmage"></param>
-    public virtual void Damage(int dmage)
+    /// <param name="power"></param>
+    public virtual void Damage(int power)
     {
         if (CurrentPartsHp <= 0)
         {
             return;
         }
-        CurrentPartsHp -= dmage;
-        Debug.Log(PartsName + "に" + dmage + "ダメージ");
+        int d = BattleData.GetDamage(power, Defense);
+        CurrentPartsHp -= d;
+        Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
         if (CurrentPartsHp <= 0)
         {
-            Debug.Log(PartsName + "が破壊");
+            Debug.Log($"{PartsName}が破壊");
             CurrentPartsHp = 0;
             PartsBreak();
         }
