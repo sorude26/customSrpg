@@ -38,7 +38,8 @@ public class StageManager : MonoBehaviour
     }
     public void TestTargetAttack()
     {
-        m_battleManager.SetTarget(0);
+        m_cursor.CursorWarp(m_battleManager.SetTarget(0));
+        m_targetMark.transform.position = m_cursor.transform.position;
         m_battleManager.AttackStart(WeaponPosition.Body);
     }
     public void PointMoveTest(int x, int z)

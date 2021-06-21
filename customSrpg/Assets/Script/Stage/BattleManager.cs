@@ -39,14 +39,16 @@ public class BattleManager : MonoBehaviour
             Debug.Log(item);
         }
     }
-    public void SetTarget(int targetNum)
+    public Unit SetTarget(int targetNum)
     {
         if (targetNum >= m_attackTarget.Count)
         {
             Debug.Log("指定対象不在");
-            return;
+            m_target = null;
+            return null;
         }
         m_target = m_attackTarget[targetNum];
+        return m_target;
     }
     public void AttackStart(WeaponPosition attackWeapon)
     {
