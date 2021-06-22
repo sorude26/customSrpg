@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,6 +14,10 @@ public class UnitMovelControl : MonoBehaviour
     MapManager m_gameMap;
     /// <summary> このスクリプトを持つユニット </summary>
     Unit m_owner;
+    /// <summary> 現在座標X </summary>
+    public int CurrentPosX { get; private set; }
+    /// <summary> 現在座標Z </summary>
+    public int CurrentPosZ { get; private set; }
     /// <summary> 移動モードフラグ </summary>
     bool m_moveMode;
     /// <summary> 移動場所データ数 </summary>
@@ -21,7 +26,7 @@ public class UnitMovelControl : MonoBehaviour
     int m_startPosX;
     /// <summary> 移動前座標Z </summary>
     int m_startPosZ;
-    /// <summary> 現在座標Y </summary>
+    /// <summary> 移動前座標Y </summary>
     float m_startPosY;
     /// <summary> 移動中座標 </summary>
     Vector3 m_movePos;
@@ -31,7 +36,8 @@ public class UnitMovelControl : MonoBehaviour
     float m_moveSpeed = 20f;
     /// <summary> 上昇速度 </summary>
     float m_upSpeed = 15f;
-
+    public float LiftingForce { get; set; }
+    public event Action<int,int> PositionSet;
     /// <summary>
     /// ユニット向き4方向
     /// </summary>
@@ -49,10 +55,12 @@ public class UnitMovelControl : MonoBehaviour
     /// 所有者を設定する
     /// </summary>
     /// <param name="owner"></param>
-    public void SetOwner(Unit owner,int x,int z)
+    public void SetOwner(Action<int,int> positionSet,int x,int z)
     {
+        PositionSet = positionSet;
         m_gameMap = MapManager.Instance;
-        m_owner = owner;
+        CurrentPosX = x;
+        CurrentPosZ = z;
         SetPos(x, z);
         StartWarp();
     }
@@ -70,7 +78,7 @@ public class UnitMovelControl : MonoBehaviour
     public void MoveEnd()
     {
         SkipMove();
-        SetPos(m_owner.CurrentPosX, m_owner.CurrentPosZ);
+        SetPos(CurrentPosX, CurrentPosZ);
     }
     /// <summary>
     /// ユニットを移動させる
@@ -94,7 +102,10 @@ public class UnitMovelControl : MonoBehaviour
             this.transform.position = m_movePos;
             yield return new WaitForEndOfFrame();
         }
-        m_owner.SetCurrentPos(m_unitMoveList[0].x, m_unitMoveList[0].y);
+        CurrentPosX = m_unitMoveList[0].x;
+        CurrentPosZ = m_unitMoveList[0].y;
+        PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
+        //m_owner.SetCurrentPos(m_unitMoveList[0].x, m_unitMoveList[0].y);
         m_moveMode = false;
     }
 
@@ -199,8 +210,8 @@ public class UnitMovelControl : MonoBehaviour
     }
     protected void StartWarp()
     {
-        m_startPosX = m_owner.CurrentPosX;
-        m_startPosZ = m_owner.CurrentPosZ;
+        m_startPosX = CurrentPosX;
+        m_startPosZ = CurrentPosZ;
         transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
     }
     /// <summary>
@@ -210,7 +221,9 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="posZ"></param>
     protected void Warp(int posX,int posZ)
     {
-        m_owner.SetCurrentPos(posX, posZ);
+        CurrentPosX = posX;
+        CurrentPosZ = posZ;
+        PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
         transform.position = new Vector3(posX * m_gameMap.MapScale, m_gameMap.MapDatas[posX + posZ * m_gameMap.MaxX].Level, posZ * m_gameMap.MapScale);
     }
     /// <summary>
@@ -247,7 +260,8 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="moveList">検索範囲</param>
     /// <param name="targetX">開始地点X軸</param>
     /// <param name="targetZ">開始地点Z軸</param>
-    public void UnitMoveSet(in MapData[] moveList, int targetX, int targetZ)
+    /// <param name="liftingForce">現在の昇降力</param>
+    public void UnitMoveSet(in MapData[] moveList, int targetX, int targetZ ,float liftingForce)
     {
         if (m_moveMode)
         {
@@ -266,6 +280,7 @@ public class UnitMovelControl : MonoBehaviour
             Warp(targetX, targetZ);
             return;
         }
+        LiftingForce = liftingForce;
         m_unitMoveList = new List<Vector2Int>();
         Vector2Int pos = new Vector2Int(targetX, targetZ);
         m_unitMoveList.Add(pos); //目標データ保存
@@ -314,7 +329,7 @@ public class UnitMovelControl : MonoBehaviour
         if (m_moveMode) { return; }//検索終了か確認
         if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return; }//マップ範囲内か確認
         if (movePower + moveCost != moveList[p].MovePoint) { return; } //一つ前の座標か確認
-        if (Mathf.Abs(moveList[p].Level - currentLevel) > m_owner.GetUnitData().GetLiftingForce()) { return; }
+        if (Mathf.Abs(moveList[p].Level - currentLevel) > LiftingForce) { return; }
         movePower = moveList[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存

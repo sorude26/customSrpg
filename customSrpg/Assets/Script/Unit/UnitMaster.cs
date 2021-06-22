@@ -238,6 +238,11 @@ public class UnitMaster : MonoBehaviour
                 }
             }
         }
+        if (GetCurrentHP() <= 0)
+        {
+            EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+            gameObject.SetActive(false);
+        }
     }
     /// <summary>
     /// 胴体を登録する
