@@ -33,7 +33,7 @@ public class Unit : MonoBehaviour
     {
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
-        m_movelControl.SetOwner(this, CurrentPosX, CurrentPosZ);
+        m_movelControl.SetOwner(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
         m_master.SetParts(m_lArm);
@@ -59,7 +59,7 @@ public class Unit : MonoBehaviour
     /// <param name="z"></param>
     public void TargetMoveStart(int x, int z)
     {
-        m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z);
+        m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
         m_motion.MotionTypeChange(MotionType.Walk);
     }
     public void MoveSkep()
