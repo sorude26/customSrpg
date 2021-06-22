@@ -10,6 +10,8 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int Defense { get => m_partsData.Defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
+    /// <summary> 攻撃命中の表示箇所 </summary>
+    [SerializeField] protected Transform[] m_hitPos;
     void Start()
     {
         StartSet();
@@ -33,10 +35,13 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             return;
         }
         int d = BattleData.GetDamage(power, Defense);
+        int r = Random.Range(0, m_hitPos.Length);
+        EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
         CurrentPartsHp -= d;
         Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
         if (CurrentPartsHp <= 0)
         {
+            EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);
             Debug.Log($"{PartsName}が破壊");
             CurrentPartsHp = 0;
             PartsBreak();
