@@ -95,12 +95,20 @@ public class StageManager : MonoBehaviour
     /// <returns></returns>
     public Unit GetPositionUnit(int x, int z)
     {
-        return m_units.Where(mu => mu.GetUnitData().GetCurrentHP() > 0).Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault(); 
+        return m_units.Where(mu => !mu.DestoryBody).Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault(); 
     }
+    /// <summary>
+    /// 現在の全ユニットを返す
+    /// </summary>
+    /// <returns></returns>
     public Unit[] GetStageUnits()
     {
-        return m_units.Where(mu => mu.GetUnitData().GetCurrentHP() > 0).ToArray();
+        return m_units.Where(mu => !mu.DestoryBody).ToArray();
     }
+    /// <summary>
+    /// 攻撃範囲を返す
+    /// </summary>
+    /// <returns></returns>
     public MapData[] GetAttackTarget()
     {
         return m_attackDatas;
