@@ -71,7 +71,6 @@ public class StageManager : MonoBehaviour
         {
             panel.StagePanel.ViewMovePanel();
         }
-        //Debug.Log(BattleData.GetDamage(5, 6,BattleMode.Counter));
     }
     /// <summary>
     /// 攻撃範囲を検索し表示する
