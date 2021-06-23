@@ -32,6 +32,7 @@ public class EffectManager : MonoBehaviour
         public int MaxCount = 1;
     }
     static EffectManager m_instance;
+    
     /// <summary> 全Effectの入れ物 </summary>
     [SerializeField] EffectData[] m_effectDatas;
     /// <summary> 全EffectのID付き入れ物 </summary>
