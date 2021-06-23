@@ -16,6 +16,8 @@ public class Unit : MonoBehaviour
     public int CurrentPosX { get; protected set; }
     /// <summary> 現在のZ座標 </summary>
     public int CurrentPosZ { get; protected set; }
+    /// <summary> 破壊フラグ </summary>
+    public bool DestoryBody { get; protected set; }
 
     //仮データ
     /// <summary> 機体胴体 </summary>
@@ -34,6 +36,7 @@ public class Unit : MonoBehaviour
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
         m_movelControl.SetOwner(SetCurrentPos, m_startPos.x, m_startPos.y);
+        m_master.BodyBreak += UnitDestroy;
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
         m_master.SetParts(m_lArm);
@@ -69,5 +72,12 @@ public class Unit : MonoBehaviour
     public void MoveEnd()
     {
         m_movelControl.MoveEnd();
+    }
+    void UnitDestroy()
+    {
+        m_master.BodyBreak -= UnitDestroy;
+        EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+        DestoryBody = true;
+        gameObject.SetActive(false);
     }
 }

@@ -10,6 +10,8 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int Defense { get => m_partsData.Defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
+    protected int m_damageCount = 0;
+    protected List<int> m_partsDamage;
     /// <summary> 攻撃命中の表示箇所 </summary>
     [SerializeField] protected Transform[] m_hitPos;
     /// <summary> 耐久値半分以下で表示する煙 </summary>
@@ -25,6 +27,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     {
         m_damageSmoke.SetActive(false);
         CurrentPartsHp = MaxPartsHp;
+        m_partsDamage = new List<int>();
     }
    
     /// <summary>
@@ -38,20 +41,34 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             return;
         }
         int d = BattleData.GetDamage(power, Defense);
-        int r = Random.Range(0, m_hitPos.Length);
-        EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
         CurrentPartsHp -= d;
         Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
+        m_partsDamage.Add(d);
         if (CurrentPartsHp < MaxPartsHp / 2)
         {
             m_damageSmoke.SetActive(true);
         }
         if (CurrentPartsHp <= 0)
         {
-            EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);
             Debug.Log($"{PartsName}が破壊");
             CurrentPartsHp = 0;
-            PartsBreak();
+            Break = true;
+        }
+    }
+    public virtual void DamageEffect()
+    {
+        int r = Random.Range(0, m_hitPos.Length);
+        EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
+        m_damageCount++;
+        if (m_damageCount >= m_partsDamage.Count)
+        {
+            if (CurrentPartsHp <= 0)
+            {
+                EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);
+                PartsBreak();
+            }
+            m_damageCount = 0;
+            m_partsDamage.Clear();
         }
     }
     /// <summary>
@@ -59,7 +76,6 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// </summary>
     protected virtual void PartsBreak()
     {
-        Break = true;
         m_partsObject.SetActive(false);
     }
     /// <summary>

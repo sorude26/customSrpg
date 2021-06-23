@@ -37,7 +37,8 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary> 上昇速度 </summary>
     float m_upSpeed = 15f;
     public float LiftingForce { get; set; }
-    public event Action<int,int> PositionSet;
+    /// <summary> 現在位置を設定する </summary>
+    public event Action<int, int> PositionSet;
     /// <summary>
     /// ユニット向き4方向
     /// </summary>
@@ -105,7 +106,6 @@ public class UnitMovelControl : MonoBehaviour
         CurrentPosX = m_unitMoveList[0].x;
         CurrentPosZ = m_unitMoveList[0].y;
         PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
-        //m_owner.SetCurrentPos(m_unitMoveList[0].x, m_unitMoveList[0].y);
         m_moveMode = false;
     }
 
@@ -282,9 +282,8 @@ public class UnitMovelControl : MonoBehaviour
         }
         LiftingForce = liftingForce;
         m_unitMoveList = new List<Vector2Int>();
-        Vector2Int pos = new Vector2Int(targetX, targetZ);
-        m_unitMoveList.Add(pos); //目標データ保存
-        int p = targetX + (targetZ * m_gameMap.MaxX);
+        m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
+        int p = m_gameMap.GetPosition(targetX, targetZ);
         SearchCross(p, moveList[p].MovePoint, moveList);
     }
 

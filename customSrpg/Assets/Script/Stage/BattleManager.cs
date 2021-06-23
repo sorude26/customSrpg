@@ -14,6 +14,7 @@ public class BattleManager : MonoBehaviour
     List<Unit> m_attackTarget = new List<Unit>();
     /// <summary> 攻撃対象 </summary>
     Unit m_target;
+    bool m_attackNow;
     public void SetAttacker(Unit attacker)
     {
         m_attacker = attacker;
@@ -52,6 +53,10 @@ public class BattleManager : MonoBehaviour
     }
     public void AttackStart(WeaponPosition attackWeapon)
     {
+        if (m_attackNow)
+        {
+            return;
+        }
         if (!m_target)
         {
             Debug.Log("攻撃対象不在");
@@ -59,14 +64,17 @@ public class BattleManager : MonoBehaviour
         }
         else
         {
-            Debug.Log(m_target);
+            m_attackNow = true;
         }
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
+        m_target.GetUnitData().SetBattleEvent(weapon);
+        m_target.GetUnitData().BattleEnd += AttackEnd;
         int hit = GetHit(attackWeapon);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)
         {
             Attack(m_target, hit, weapon.Power);
         }
+        weapon.AttackStart();
     }
     void Attack(Unit target,int hit,int power)
     {
@@ -94,5 +102,10 @@ public class BattleManager : MonoBehaviour
             hit = 0;
         }
         return hit;
+    }
+    void AttackEnd() 
+    { 
+        m_attackNow = false;
+        m_target.GetUnitData().BattleEnd -= AttackEnd;
     }
 }

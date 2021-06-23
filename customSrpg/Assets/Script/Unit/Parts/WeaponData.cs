@@ -32,6 +32,8 @@ public class WeaponData : PartsData
     [SerializeField] int m_power = 5;
     [Tooltip("総攻撃回数")]
     [SerializeField] int m_maxAttackNumber = 1;
+    [Tooltip("攻撃間隔")]
+    [SerializeField] float m_attackInterval = 0; 
     [Tooltip("命中精度")]
     [SerializeField] int m_hitAccuracy;
     [Tooltip("最大射程")]
@@ -46,6 +48,8 @@ public class WeaponData : PartsData
     public int Power { get => m_power; }
     /// <summary> 総攻撃回数 </summary>
     public int MaxAttackNumber { get => m_maxAttackNumber; }
+    /// <summary> 攻撃間隔 </summary>
+    public float AttackInterval { get => m_attackInterval; }
     /// <summary> 命中精度 </summary>
     public int HitAccuracy { get => m_hitAccuracy; }
     /// <summary> 最大射程 </summary>

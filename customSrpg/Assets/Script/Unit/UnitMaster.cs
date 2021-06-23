@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,6 +8,10 @@ using UnityEngine;
 /// </summary>
 public class UnitMaster : MonoBehaviour
 {
+    /// <summary> 戦闘終了時のイベント </summary>
+    public event Action BattleEnd;
+    /// <summary> 機体破壊時のイベント </summary>
+    public event Action BodyBreak;
     /// <summary> 機体胴体 </summary>
     protected PartsBody m_body = null;
     /// <summary> 機体頭部 </summary>
@@ -27,7 +32,9 @@ public class UnitMaster : MonoBehaviour
     protected WeaponMaster m_rSWeapon = null;
     /// <summary> 胴体武器 </summary>
     protected WeaponMaster m_bodyWeapon = null;
-    
+    protected int m_attackCount = 0;
+    protected WeaponMaster m_attackerWeapon = null;
+    protected List<IUnitParts> m_damegePartsList;
     /// <summary>
     /// 現在の総パーツ耐久値を返す
     /// </summary>
@@ -207,6 +214,10 @@ public class UnitMaster : MonoBehaviour
     /// <param name="power"></param>
     public void HitCheckShot(int power)
     {
+        if (GetCurrentHP() <= 0)
+        {
+            return;
+        }
         int hitPos = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
         foreach (var parts in allParts)
@@ -220,7 +231,7 @@ public class UnitMaster : MonoBehaviour
                 hitPos += parts.GetSize();
             }
         }
-        int r = Random.Range(0, hitPos);
+        int r = UnityEngine.Random.Range(0, hitPos);
         int prb = 0;
         foreach (var parts in allParts)
         {
@@ -234,15 +245,38 @@ public class UnitMaster : MonoBehaviour
                 if (prb > r)
                 {
                     parts.Damage(power);
+                    m_damegePartsList.Add(parts);
                     break;
                 }
             }
         }
+    }
+    void PlayPartsDamegeEffect()
+    {
+        if (m_attackCount >= m_damegePartsList.Count)
+        {
+            return;
+        }
+        m_damegePartsList[m_attackCount].DamageEffect();
+        m_attackCount++;
+    }
+    public void SetBattleEvent(WeaponMaster weapon)
+    {
+        m_attackCount = 0;
+        m_damegePartsList = new List<IUnitParts>();
+        weapon.Attack += PlayPartsDamegeEffect;
+        weapon.AttackEnd += BattleEndEvent;
+        m_attackerWeapon = weapon;
+    }
+    public void BattleEndEvent()
+    {
+        m_attackerWeapon.Attack -= PlayPartsDamegeEffect;
+        m_attackerWeapon.AttackEnd -= BattleEndEvent;
         if (GetCurrentHP() <= 0)
         {
-            EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
-            gameObject.SetActive(false);
+            BodyBreak?.Invoke();
         }
+        BattleEnd?.Invoke();
     }
     /// <summary>
     /// 胴体を登録する

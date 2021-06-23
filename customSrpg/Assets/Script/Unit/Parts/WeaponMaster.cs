@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -23,6 +24,11 @@ public class WeaponMaster : PartsMaster<WeaponData>
     public Unit Owner { get; private set; }
     /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
+    public event Action Attack { add => m_attack += value; remove => m_attack -= value; }
+    protected Action m_attack;
+    public event Action AttackEnd { add => m_attackEnd += value; remove => m_attackEnd -= value; }
+    protected Action m_attackEnd;
+    
     /// <summary>
     /// 武装部位、武器所有者を設定する
     /// </summary>
@@ -32,8 +38,5 @@ public class WeaponMaster : PartsMaster<WeaponData>
         WPosition = position;
         Owner = owner;
     }
-    public virtual void Attack()
-    {
-
-    }
+    public virtual void AttackStart() { }
 }
