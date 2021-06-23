@@ -90,6 +90,15 @@ public class StageManager : MonoBehaviour
     /// <summary>
     /// 指定箇所のユニットを返す
     /// </summary>
+    /// <param name="p"></param>
+    /// <returns></returns>
+    public Unit GetPositionUnit(int p)
+    {
+        return m_units.Where(mu => !mu.DestoryBody).Where(u => MapManager.Instance.GetPosition(u.CurrentPosX,u.CurrentPosZ) == p).FirstOrDefault();
+    }
+    /// <summary>
+    /// 指定箇所のユニットを返す
+    /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
     /// <returns></returns>

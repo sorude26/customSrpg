@@ -174,6 +174,10 @@ public class MapManager : MonoBehaviour
         {
             return;
         }
+        if (StageManager.Instance.GetPositionUnit(position))
+        {
+            return;
+        }
         //ユニットがいるか確認
         movePower -= GetMoveCost(MapDatas[position].MapType);//移動力変動
         if (movePower > 0)//移動可能箇所に足跡入力、再度検索
@@ -229,21 +233,21 @@ public class MapManager : MonoBehaviour
         {
             return;
         }
-        if (MapDatas[position].Level - startLevel > verticalRange)//高低差確認
-        {
-            return;
-        }
-        if (startLevel - MapDatas[position].Level > verticalRange + verticalRange / 2)//高低差確認
-        {
-            return;
-        }
         if (attackRange <= MapDatas[position].AttackPoint)//確認済か確認
         {
             return;
         }
-        attackRange--;//攻撃範囲変動        
-        if (attackRange >= 0)//攻撃可能箇所に足跡入力、再度検索
+        if (MapDatas[position].Level - startLevel > verticalRange)//上方高低差確認
         {
+            return;
+        }
+        if (startLevel - MapDatas[position].Level > verticalRange + verticalRange / 2)//下方高低差確認
+        {
+            return;
+        }      
+        if (attackRange > 0)//攻撃可能箇所に足跡入力、再度検索
+        {
+            attackRange--;//攻撃範囲変動
             MapDatas[position].AttackPoint = attackRange;
             AttackList.Add(MapDatas[position]);
             SearchCross(position, attackRange, startLevel, verticalRange);

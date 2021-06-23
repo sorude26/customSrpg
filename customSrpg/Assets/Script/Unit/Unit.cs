@@ -73,6 +73,10 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.MoveEnd();
     }
+    public void TargetLook(Unit target)
+    {
+        m_movelControl.TargetLook(target.transform.position);
+    }
     void UnitDestroy()
     {
         m_master.BodyBreak -= UnitDestroy;
