@@ -12,8 +12,6 @@ public class UnitMovelControl : MonoBehaviour
     List<Vector2Int> m_unitMoveList;
     /// <summary> マップデータの保存場所 </summary>
     MapManager m_gameMap;
-    /// <summary> このスクリプトを持つユニット </summary>
-    Unit m_owner;
     /// <summary> 現在座標X </summary>
     public int CurrentPosX { get; private set; }
     /// <summary> 現在座標Z </summary>
@@ -52,13 +50,16 @@ public class UnitMovelControl : MonoBehaviour
     [SerializeField] public UnitAngle m_unitAngle = UnitAngle.Back;
     protected UnitAngle m_currentAngle;
 
+    
     /// <summary>
-    /// 所有者を設定する
+    /// 位置の初期化と位置決定時のイベント登録
     /// </summary>
-    /// <param name="owner"></param>
-    public void SetOwner(Action<int,int> positionSet,int x,int z)
+    /// <param name="positionSet"></param>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    public void StartSet(Action<int,int> positionSet,int x,int z)
     {
-        PositionSet = positionSet;
+        PositionSet += positionSet;
         m_gameMap = MapManager.Instance;
         CurrentPosX = x;
         CurrentPosZ = z;
@@ -135,24 +136,15 @@ public class UnitMovelControl : MonoBehaviour
         {
             MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Front, UnitAngle.Back);            
         }
-        UnitAngleControl();
-    }
+        UnitAngleChange();
+    }    
     /// <summary>
-    /// 昇降処理
+    /// 水平方向への移動処理
     /// </summary>
-    void MoveUpDown()
-    {
-        if (m_movePos.y > m_targetPos.y)
-        {
-            m_movePos.y -= m_upSpeed * Time.deltaTime;
-            if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-        }
-        else
-        {
-            m_movePos.y += m_upSpeed * Time.deltaTime;
-            if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-        }
-    }
+    /// <param name="movePos"></param>
+    /// <param name="targetPos"></param>
+    /// <param name="angle1"></param>
+    /// <param name="angle2"></param>
     void MoveAround(ref float movePos,float targetPos,UnitAngle angle1,UnitAngle angle2)
     {
         if (movePos < targetPos)
@@ -182,6 +174,22 @@ public class UnitMovelControl : MonoBehaviour
                 movePos -= m_moveSpeed * Time.deltaTime;
                 if (movePos < targetPos) { movePos = targetPos; }
             }
+        }
+    }
+    /// <summary>
+    /// 昇降処理
+    /// </summary>
+    void MoveUpDown()
+    {
+        if (m_movePos.y > m_targetPos.y)
+        {
+            m_movePos.y -= m_upSpeed * Time.deltaTime;
+            if (m_movePos.y < m_targetPos.y) { m_movePos.y = m_targetPos.y; }
+        }
+        else
+        {
+            m_movePos.y += m_upSpeed * Time.deltaTime;
+            if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
         }
     }
     /// <summary>
@@ -229,19 +237,19 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary>
     /// 向き変更されていたならユニットをその方向へ向ける
     /// </summary>
-    protected void UnitAngleControl()
+    protected void UnitAngleChange()
     {
         if (m_currentAngle == m_unitAngle)
         {
             return;
         }
         m_currentAngle = m_unitAngle;
-        UnitAngleChange();
+        UnitAngleSet();
     }
     /// <summary>
     /// 現在の向きにユニットを向ける
     /// </summary>
-    protected void UnitAngleChange()
+    protected void UnitAngleSet()
     {
         switch (m_currentAngle)
         {
@@ -350,7 +358,7 @@ public class UnitMovelControl : MonoBehaviour
         {
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
-            UnitAngleChange();
+            UnitAngleSet();
             StartCoroutine(UnitMove());//移動開始
             return;
         }

@@ -34,10 +34,11 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
     /// 機体の回避力と出力の合計値を返す
     /// </summary>
     /// <returns></returns>
-    public int GetAvoidance() 
-    {
-        return m_partsData.Avoidance + UnitOutput;
-    }
+    public int GetAvoidance() => m_partsData.Avoidance + UnitOutput;
+    /// <summary>
+    /// 武装込みのサイズを返す
+    /// </summary>
+    /// <returns></returns>
     public override int GetSize()
     {
         int size = PartsSize;

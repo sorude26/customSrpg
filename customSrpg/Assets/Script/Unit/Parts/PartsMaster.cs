@@ -21,20 +21,8 @@ public class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     public int PartsSize { get => m_partsData.PartsSize; }
     /// <summary> 破壊フラグ </summary>
     public bool Break { get; protected set; }
-    public int GetID()
-    {
-        return PartsID;
-    }
-    public int GetWeight()
-    {
-        return Weight;
-    }
-    public virtual int GetSize()
-    {
-        return PartsSize;
-    }
-    public bool GetBreak()
-    {
-        return Break;
-    }
+    public int GetID() => PartsID;
+    public int GetWeight() => Weight;
+    public virtual int GetSize() => PartsSize;
+    public bool GetBreak() => Break;
 }
