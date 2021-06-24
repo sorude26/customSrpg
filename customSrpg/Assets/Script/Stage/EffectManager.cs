@@ -32,11 +32,13 @@ public class EffectManager : MonoBehaviour
         public int MaxCount = 1;
     }
     static EffectManager m_instance;
-    
     /// <summary> 全Effectの入れ物 </summary>
     [SerializeField] EffectData[] m_effectDatas;
     /// <summary> 全EffectのID付き入れ物 </summary>
     Dictionary<EffectType, List<EffectControl>> m_effectDic = new Dictionary<EffectType, List<EffectControl>>();
+    [SerializeField] int m_maxTextCount = 20;
+    [SerializeField] DamgeText m_damgeTextPrefab = default;
+    List<DamgeText> m_damgeTexts = new List<DamgeText>();
     private void Awake()
     {
         m_instance = this;
@@ -50,6 +52,10 @@ public class EffectManager : MonoBehaviour
                 var eControl = instance.AddComponent<EffectControl>();
                 m_effectDic[effectType].Add(eControl);
             }
+        }
+        for (int j = 0; j < m_maxTextCount; j++)
+        {
+            m_damgeTexts.Add(Instantiate(m_damgeTextPrefab, this.transform));
         }
     }
     /// <summary>
@@ -66,6 +72,18 @@ public class EffectManager : MonoBehaviour
                 continue;
             }
             effect.Play(pos);
+            return;
+        }
+    }
+    public static void PlayDamage(int damage,Vector3 pos)
+    {
+        foreach (var text in m_instance.m_damgeTexts)
+        {
+            if (text.IsActive())
+            {
+                continue;
+            }
+            text.Play(damage, pos);
             return;
         }
     }

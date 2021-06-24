@@ -22,10 +22,19 @@ public class DamgeText : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
-    public void SetDamage(int damage)
+    public void Play(int damage,Vector3 pos)
     {
         gameObject.SetActive(true);
+        transform.position = pos;
         m_text.text = damage.ToString();
-        m_viewTimer = 1f;
-    } 
+        m_viewTimer = 0.8f;
+    }
+    /// <summary>
+    /// 再生中はTrueを返す
+    /// </summary>
+    /// <returns></returns>
+    public bool IsActive()
+    {
+        return gameObject.activeInHierarchy;
+    }
 }

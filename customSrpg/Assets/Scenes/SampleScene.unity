@@ -2112,7 +2112,7 @@ MonoBehaviour:
   m_master: {fileID: 723175341}
   m_movelControl: {fileID: 723175342}
   m_motion: {fileID: 723175343}
-  m_startPos: {x: 4, y: 7}
+  m_startPos: {x: 2, y: 3}
   m_body: {fileID: 430953790}
   m_head: {fileID: 1561565202}
   m_lArm: {fileID: 1599901316}
@@ -2143,7 +2143,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3415334f9baecdf41a7ca3b7d0a70738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitAngle: 0
+  m_unitAngle: 1
 --- !u!114 &723175343 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2754166364835021894, guid: 4ca0cad81fb48f348b1570d92aed4dd1,
@@ -4230,7 +4230,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3415334f9baecdf41a7ca3b7d0a70738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitAngle: 0
+  m_unitAngle: 1
 --- !u!114 &1452367750 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2754166364835021894, guid: 4ca0cad81fb48f348b1570d92aed4dd1,
@@ -4321,6 +4321,9 @@ MonoBehaviour:
   - EffectPrefab: {fileID: 5285524602227699168, guid: 7abbf2543f1045a48a9f6678aa63caef,
       type: 3}
     MaxCount: 5
+  m_maxTextCount: 20
+  m_damgeTextPrefab: {fileID: 65856822480929531, guid: a32bf4a29c9977743a0741af0274902d,
+    type: 3}
 --- !u!4 &1522618942
 Transform:
   m_ObjectHideFlags: 0
@@ -5676,7 +5679,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3415334f9baecdf41a7ca3b7d0a70738, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  unitAngle: 0
+  m_unitAngle: 1
 --- !u!114 &2059835215
 MonoBehaviour:
   m_ObjectHideFlags: 0
