@@ -55,10 +55,14 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             Break = true;
         }
     }
+    /// <summary>
+    /// ダメージの演出を行う
+    /// </summary>
     public virtual void DamageEffect()
     {
         int r = Random.Range(0, m_hitPos.Length);
         EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
+        EffectManager.PlayDamage(m_partsDamage[m_damageCount], m_hitPos[r].position);
         m_damageCount++;
         if (m_damageCount >= m_partsDamage.Count)
         {
@@ -82,16 +86,15 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// パーツのサイズを返す
     /// </summary>
     /// <returns></returns>
-    public virtual int GetPartsSize()
-    {
-        return PartsSize;
-    }
-    public int GetCurrentHP()
-    {
-        return CurrentPartsHp;
-    }
-    public int GetDefense()
-    {
-        return Defense;
-    }
+    public virtual int GetPartsSize() => PartsSize;
+    /// <summary>
+    /// パーツの現在耐久値を返す
+    /// </summary>
+    /// <returns></returns>
+    public int GetCurrentHP() => CurrentPartsHp;
+    /// <summary>
+    /// パーツの防御力を返す
+    /// </summary>
+    /// <returns></returns>
+    public int GetDefense() => Defense;
 }

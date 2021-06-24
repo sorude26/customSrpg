@@ -16,9 +16,8 @@ public class Unit : MonoBehaviour
     public int CurrentPosX { get; protected set; }
     /// <summary> 現在のZ座標 </summary>
     public int CurrentPosZ { get; protected set; }
-    /// <summary> 破壊フラグ </summary>
-    public bool DestoryBody { get; protected set; }
-
+    /// <summary> ユニットの状態 </summary>
+    public UnitState State { get; protected set; }
     //仮データ
     /// <summary> 機体胴体 </summary>
     [SerializeField] protected PartsBody m_body = null;
@@ -33,9 +32,10 @@ public class Unit : MonoBehaviour
     [SerializeField] protected WeaponMaster m_testWeapom = null;
     private void Start()
     {
+        State = UnitState.StandBy;
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
-        m_movelControl.SetOwner(SetCurrentPos, m_startPos.x, m_startPos.y);
+        m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_master.BodyBreak += UnitDestroy;
         m_master.SetParts(m_body);
         m_master.SetParts(m_head);
@@ -44,7 +44,7 @@ public class Unit : MonoBehaviour
         m_master.SetParts(m_leg);
         m_master.SetParts(m_testWeapom);
     }
-    public UnitMaster GetUnitData() { return m_master; }
+    public UnitMaster GetUnitData() => m_master;
     /// <summary>
     /// 現在のユニット位置を設定する
     /// </summary>
@@ -73,11 +73,36 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.MoveEnd();
     }
+    public void TargetLook(Unit target)
+    {
+        m_movelControl.TargetLook(target.transform.position);
+    }
+    public void WakeUp()
+    {
+        if (State == UnitState.Rest)
+        {
+            State = UnitState.StandBy;
+        }
+    }
+    public void StartUp()
+    {
+        if (State == UnitState.StandBy)
+        {
+            State = UnitState.Action;
+        }
+    }
+    public void TurnEnd()
+    {
+        if (State == UnitState.Action)
+        {
+            State = UnitState.Rest;
+        }
+    }
     void UnitDestroy()
     {
         m_master.BodyBreak -= UnitDestroy;
         EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
-        DestoryBody = true;
+        State = UnitState.Destory;
         gameObject.SetActive(false);
     }
 }

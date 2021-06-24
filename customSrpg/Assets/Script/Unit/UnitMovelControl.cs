@@ -12,8 +12,6 @@ public class UnitMovelControl : MonoBehaviour
     List<Vector2Int> m_unitMoveList;
     /// <summary> マップデータの保存場所 </summary>
     MapManager m_gameMap;
-    /// <summary> このスクリプトを持つユニット </summary>
-    Unit m_owner;
     /// <summary> 現在座標X </summary>
     public int CurrentPosX { get; private set; }
     /// <summary> 現在座標Z </summary>
@@ -44,21 +42,24 @@ public class UnitMovelControl : MonoBehaviour
     /// </summary>
     public enum UnitAngle
     {
-        Up,
-        Down,
+        Front,
+        Back,
         Left,
         Right,
     }
-    [SerializeField] public UnitAngle unitAngle = UnitAngle.Down;
-    protected UnitAngle currentAngle;
+    [SerializeField] public UnitAngle m_unitAngle = UnitAngle.Back;
+    protected UnitAngle m_currentAngle;
 
+    
     /// <summary>
-    /// 所有者を設定する
+    /// 位置の初期化と位置決定時のイベント登録
     /// </summary>
-    /// <param name="owner"></param>
-    public void SetOwner(Action<int,int> positionSet,int x,int z)
+    /// <param name="positionSet"></param>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    public void StartSet(Action<int,int> positionSet,int x,int z)
     {
-        PositionSet = positionSet;
+        PositionSet += positionSet;
         m_gameMap = MapManager.Instance;
         CurrentPosX = x;
         CurrentPosZ = z;
@@ -133,9 +134,47 @@ public class UnitMovelControl : MonoBehaviour
         }
         else if (m_movePos.z != m_targetPos.z)
         {
-            MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Up, UnitAngle.Down);            
+            MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Front, UnitAngle.Back);            
         }
-        UnitAngleControl();
+        UnitAngleChange();
+    }    
+    /// <summary>
+    /// 水平方向への移動処理
+    /// </summary>
+    /// <param name="movePos"></param>
+    /// <param name="targetPos"></param>
+    /// <param name="angle1"></param>
+    /// <param name="angle2"></param>
+    void MoveAround(ref float movePos,float targetPos,UnitAngle angle1,UnitAngle angle2)
+    {
+        if (movePos < targetPos)
+        {
+            if (m_unitAngle != angle1) { m_unitAngle = angle1; }
+
+            if (targetPos - movePos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
+            {
+                MoveUpDown();
+            }
+            else
+            {
+                movePos += m_moveSpeed * Time.deltaTime;
+                if (movePos > targetPos) { movePos = targetPos; }
+            }
+        }
+        else
+        {
+            if (m_unitAngle != angle2) { m_unitAngle = angle2; }
+
+            if (movePos - targetPos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
+            {
+                MoveUpDown();
+            }
+            else
+            {
+                movePos -= m_moveSpeed * Time.deltaTime;
+                if (movePos < targetPos) { movePos = targetPos; }
+            }
+        }
     }
     /// <summary>
     /// 昇降処理
@@ -151,37 +190,6 @@ public class UnitMovelControl : MonoBehaviour
         {
             m_movePos.y += m_upSpeed * Time.deltaTime;
             if (m_movePos.y > m_targetPos.y) { m_movePos.y = m_targetPos.y; }
-        }
-    }
-    void MoveAround(ref float movePos,float targetPos,UnitAngle angle1,UnitAngle angle2)
-    {
-        if (movePos < targetPos)
-        {
-            if (unitAngle != angle1) { unitAngle = angle1; }
-
-            if (targetPos - movePos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-            {
-                MoveUpDown();
-            }
-            else
-            {
-                movePos += m_moveSpeed * Time.deltaTime;
-                if (movePos > targetPos) { movePos = targetPos; }
-            }
-        }
-        else
-        {
-            if (unitAngle != angle2) { unitAngle = angle2; }
-
-            if (movePos - targetPos <= m_gameMap.MapScale / 2 && m_movePos.y != m_targetPos.y)//昇降処理の確認
-            {
-                MoveUpDown();
-            }
-            else
-            {
-                movePos -= m_moveSpeed * Time.deltaTime;
-                if (movePos < targetPos) { movePos = targetPos; }
-            }
         }
     }
     /// <summary>
@@ -227,21 +235,28 @@ public class UnitMovelControl : MonoBehaviour
         transform.position = new Vector3(posX * m_gameMap.MapScale, m_gameMap.MapDatas[posX + posZ * m_gameMap.MaxX].Level, posZ * m_gameMap.MapScale);
     }
     /// <summary>
-    /// 向き変更されていたらモデルをその方向へ向ける
+    /// 向き変更されていたならユニットをその方向へ向ける
     /// </summary>
-    protected void UnitAngleControl()
+    protected void UnitAngleChange()
     {
-        if (currentAngle == unitAngle)
+        if (m_currentAngle == m_unitAngle)
         {
             return;
         }
-        currentAngle = unitAngle;
-        switch (currentAngle)
+        m_currentAngle = m_unitAngle;
+        UnitAngleSet();
+    }
+    /// <summary>
+    /// 現在の向きにユニットを向ける
+    /// </summary>
+    protected void UnitAngleSet()
+    {
+        switch (m_currentAngle)
         {
-            case UnitAngle.Up:
+            case UnitAngle.Front:
                 transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
-            case UnitAngle.Down:
+            case UnitAngle.Back:
                 transform.rotation = Quaternion.Euler(0, 180, 0);
                 break;
             case UnitAngle.Left:
@@ -253,6 +268,13 @@ public class UnitMovelControl : MonoBehaviour
             default:
                 break;
         }
+    }
+    public void TargetLook(Vector3 target)
+    {
+        Vector3 targetDir = target - transform.position;
+        targetDir.y = 0.0f;
+        Quaternion endRot = Quaternion.LookRotation(targetDir);
+        transform.rotation = endRot;
     }
     /// <summary>
     /// 検索範囲の移動経路検索し移動開始指示を出す
@@ -336,7 +358,7 @@ public class UnitMovelControl : MonoBehaviour
         {
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
-            //StartUnitAngle();
+            UnitAngleSet();
             StartCoroutine(UnitMove());//移動開始
             return;
         }

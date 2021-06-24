@@ -57,15 +57,15 @@ public class BattleManager : MonoBehaviour
         {
             return;
         }
+        EventManager.StageGuideViewEnd();
         if (!m_target)
         {
             Debug.Log("攻撃対象不在");
             return;
         }
-        else
-        {
-            m_attackNow = true;
-        }
+        m_attackNow = true;
+        m_attacker.TargetLook(m_target);
+        m_target.TargetLook(m_attacker);
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
