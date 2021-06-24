@@ -24,8 +24,10 @@ public class WeaponMaster : PartsMaster<WeaponData>
     public Unit Owner { get; private set; }
     /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
+    /// <summary> 攻撃時のイベント </summary>
     public event Action Attack { add => m_attack += value; remove => m_attack -= value; }
     protected Action m_attack;
+    /// <summary> 攻撃終了時のイベント </summary>
     public event Action AttackEnd { add => m_attackEnd += value; remove => m_attackEnd -= value; }
     protected Action m_attackEnd;
     
