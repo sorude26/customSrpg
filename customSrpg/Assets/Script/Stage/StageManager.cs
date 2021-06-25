@@ -80,6 +80,7 @@ public class StageManager : MonoBehaviour
         {
             TurnUnit = unit;
             TurnUnit.StartUp();
+            m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
         }
     }
     /// <summary>
