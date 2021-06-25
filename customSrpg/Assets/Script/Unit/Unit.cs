@@ -3,12 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
+/// ユニットの状態
+/// </summary>
+public enum UnitState
+{
+    /// <summary> 行動待機 </summary>
+    StandBy,
+    /// <summary> 行動中 </summary>
+    Action,
+    /// <summary> 休息中 </summary>
+    Rest,
+    /// <summary> 戦闘不能 </summary>
+    Destory,
+}
+/// <summary>
 /// ユニットの基底クラス
 /// </summary>
 public class Unit : MonoBehaviour
 {
+    /// <summary> ユニットのデータを持つ </summary>
     [SerializeField] protected UnitMaster m_master;
+    /// <summary> ユニットの移動を制御する </summary>
     [SerializeField] protected UnitMovelControl m_movelControl;
+    /// <summary> ユニットの行動を制御する </summary>
     [SerializeField] protected MotionController m_motion;
     /// <summary> 初期座標 </summary>
     [SerializeField] protected Vector2Int m_startPos;
@@ -31,6 +48,10 @@ public class Unit : MonoBehaviour
     [SerializeField] protected PartsLeg m_leg = null;
     [SerializeField] protected WeaponMaster m_testWeapom = null;
     private void Start()
+    {
+        StartSet();
+    }
+    protected virtual void StartSet()
     {
         State = UnitState.StandBy;
         CurrentPosX = m_startPos.x;
@@ -77,28 +98,41 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.TargetLook(target.transform.position);
     }
-    public void WakeUp()
+    /// <summary>
+    /// 休息中のユニットを待機状態にする
+    /// </summary>
+    public virtual void WakeUp()
     {
         if (State == UnitState.Rest)
         {
             State = UnitState.StandBy;
         }
     }
-    public void StartUp()
+    /// <summary>
+    /// 待機中のユニットを行動状態にする
+    /// </summary>
+    public virtual void StartUp()
     {
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
         }
     }
-    public void TurnEnd()
+    /// <summary>
+    /// 行動中のユニットを休息状態にする
+    /// </summary>
+    public virtual void ActionEnd()
     {
         if (State == UnitState.Action)
         {
             State = UnitState.Rest;
+            StageManager.Instance.NextUnit();
         }
     }
-    void UnitDestroy()
+    /// <summary>
+    /// ユニットの撃破時に呼ばれ、戦闘不能にする
+    /// </summary>
+    protected virtual void UnitDestroy()
     {
         m_master.BodyBreak -= UnitDestroy;
         EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);

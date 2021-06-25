@@ -1184,9 +1184,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_testUnit: {fileID: 2059835216}
-  m_testEnemys:
-  - {fileID: 723175340}
-  - {fileID: 1452367747}
+  m_players: []
+  m_enemys: []
   m_cursor: {fileID: 1602452091}
   m_targetMark: {fileID: 1079172203}
   m_testWeapon: {fileID: 655852904}
@@ -3586,6 +3585,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: TestRobot (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 77472966798770523, guid: 4ca0cad81fb48f348b1570d92aed4dd1,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2754166364835021894, guid: 4ca0cad81fb48f348b1570d92aed4dd1,
         type: 3}

@@ -14,7 +14,12 @@ public class BattleManager : MonoBehaviour
     List<Unit> m_attackTarget = new List<Unit>();
     /// <summary> 攻撃対象 </summary>
     Unit m_target;
+    /// <summary> 攻撃中フラグ </summary>
     bool m_attackNow;
+    /// <summary>
+    /// 攻撃者の設定
+    /// </summary>
+    /// <param name="attacker"></param>
     public void SetAttacker(Unit attacker)
     {
         m_attacker = attacker;
@@ -40,6 +45,11 @@ public class BattleManager : MonoBehaviour
             Debug.Log(item);
         }
     }
+    /// <summary>
+    /// 攻撃対象設定
+    /// </summary>
+    /// <param name="targetNum"></param>
+    /// <returns></returns>
     public Unit SetTarget(int targetNum)
     {
         if (targetNum >= m_attackTarget.Count)
@@ -51,6 +61,10 @@ public class BattleManager : MonoBehaviour
         m_target = m_attackTarget[targetNum];
         return m_target;
     }
+    /// <summary>
+    /// 指定した武器で攻撃を開始する
+    /// </summary>
+    /// <param name="attackWeapon"></param>
     public void AttackStart(WeaponPosition attackWeapon)
     {
         if (m_attackNow)
@@ -76,6 +90,12 @@ public class BattleManager : MonoBehaviour
         }
         weapon.AttackStart();
     }
+    /// <summary>
+    /// 単発攻撃処理
+    /// </summary>
+    /// <param name="target"></param>
+    /// <param name="hit"></param>
+    /// <param name="power"></param>
     void Attack(Unit target,int hit,int power)
     {
         int r = Random.Range(0, 100);
@@ -88,6 +108,11 @@ public class BattleManager : MonoBehaviour
             Debug.Log("Miss!");
         }
     }
+    /// <summary>
+    /// 武装の命中率を返す
+    /// </summary>
+    /// <param name="attackWeapon"></param>
+    /// <returns></returns>
     public int GetHit(WeaponPosition attackWeapon)
     {
         int hit = 50;
@@ -103,6 +128,9 @@ public class BattleManager : MonoBehaviour
         }
         return hit;
     }
+    /// <summary>
+    /// 攻撃終了時の処理
+    /// </summary>
     void AttackEnd() 
     { 
         m_attackNow = false;

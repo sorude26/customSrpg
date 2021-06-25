@@ -3,30 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
+/// <summary>
+/// ターンの状態
+/// </summary>
 public enum TurnState
 {
     Player,
     Enemy,
     End,
 }
-public enum UnitState
-{
-    StandBy,
-    Action,
-    Rest,
-    Destory,
-}
+
 /// <summary>
-/// 現在のステージの進行を管理するクラス
+/// 現在のステージのターン進行を管理するクラス
 /// </summary>
 public class StageManager : MonoBehaviour
 {
     public static StageManager Instance { get; private set; }
+    /// <summary> 現在のターン </summary>
     public TurnState Turn { get; private set; }
+    /// <summary> 行動中のユニット </summary>
     public Unit TurnUnit { get; private set; }
-    [SerializeField] Unit[] m_players;
     [SerializeField] Unit m_testUnit;
-    [SerializeField] Unit[] m_testEnemys;
+    /// <summary> プレイヤーの全ユニット </summary>
+    [SerializeField] Unit[] m_players;
+    /// <summary> 敵の全ユニット </summary>
+    [SerializeField] Unit[] m_enemys;
+    /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
@@ -42,7 +44,7 @@ public class StageManager : MonoBehaviour
     {
         m_units = new List<Unit>();
         m_units.Add(m_testUnit);
-        m_testEnemys.ToList().ForEach(e => m_units.Add(e));
+        m_enemys.ToList().ForEach(e => m_units.Add(e));
     }
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
@@ -57,13 +59,17 @@ public class StageManager : MonoBehaviour
                 SetNextUnit(unit);
                 break;
             case TurnState.Enemy:
-                unit = m_testEnemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                unit = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(unit);
                 break;
             default:
                 break;
         }
     }
+    /// <summary>
+    /// 次の行動ユニットを設定する、存在しない場合ターンを終了する
+    /// </summary>
+    /// <param name="unit"></param>
     void SetNextUnit(Unit unit)
     {
         if (!unit)
@@ -74,15 +80,20 @@ public class StageManager : MonoBehaviour
         {
             TurnUnit = unit;
             TurnUnit.StartUp();
+            m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
         }
     }
+    /// <summary>
+    /// ターン終了処理
+    /// </summary>
     public void TurnEnd()
     {
         switch (Turn)
         {
             case TurnState.Player:
                 Turn = TurnState.Enemy;
-                m_testEnemys.ToList().ForEach(p => p.WakeUp());
+                Debug.Log("EnemyTurn");
+                m_enemys.ToList().ForEach(p => p.WakeUp());
                 NextUnit();
                 break;
             case TurnState.Enemy:
@@ -91,6 +102,7 @@ public class StageManager : MonoBehaviour
                 break;
             case TurnState.End:
                 Turn = TurnState.Player;
+                Debug.Log("PlayerTurn");
                 m_players.ToList().ForEach(p => p.WakeUp());
                 NextUnit();
                 break;
