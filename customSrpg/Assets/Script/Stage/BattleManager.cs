@@ -8,6 +8,8 @@ using System.Linq;
 /// </summary>
 public class BattleManager : MonoBehaviour
 {
+    public static BattleManager Instance { get; private set; }
+    [SerializeField] BattleCalculator m_calculator;
     /// <summary> 攻撃者 </summary>
     Unit m_attacker;
     /// <summary> 攻撃対象リスト </summary>
@@ -16,6 +18,10 @@ public class BattleManager : MonoBehaviour
     Unit m_target;
     /// <summary> 攻撃中フラグ </summary>
     bool m_attackNow;
+    private void Awake()
+    {
+        Instance = this;
+    }
     /// <summary>
     /// 攻撃者の設定
     /// </summary>
@@ -44,6 +50,20 @@ public class BattleManager : MonoBehaviour
         {
             Debug.Log(item);
         }
+    }
+    public Unit[] GetAttackTargets(MapData[] targetPos)
+    {
+        List<Unit> units = new List<Unit>();
+        var targetUnit = StageManager.Instance.GetStageUnits();
+        foreach (var unit in targetUnit)
+        {
+            var t = targetPos.Where(px => px.PosX == unit.CurrentPosX).Where(pz => pz.PosZ == unit.CurrentPosZ).FirstOrDefault();
+            if (t != null)
+            {
+                units.Add(unit);
+            }
+        }
+        return units.ToArray();
     }
     /// <summary>
     /// 攻撃対象設定
@@ -113,21 +133,8 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="attackWeapon"></param>
     /// <returns></returns>
-    public int GetHit(WeaponPosition attackWeapon)
-    {
-        int hit = 50;
-        hit += m_attacker.GetUnitData().GetHitAccuracy(attackWeapon);
-        hit -= m_target.GetUnitData().GetAvoidance();
-        if (hit > 99)
-        {
-            hit = 99;
-        }
-        else if (hit < 0)
-        {
-            hit = 0;
-        }
-        return hit;
-    }
+    public int GetHit(WeaponPosition attackWeapon) => 
+        m_calculator.GetHit(m_attacker.GetUnitData().GetHitAccuracy(attackWeapon), m_target.GetUnitData().GetAvoidance());
     /// <summary>
     /// 攻撃終了時の処理
     /// </summary>
@@ -136,4 +143,6 @@ public class BattleManager : MonoBehaviour
         m_attackNow = false;
         m_target.GetUnitData().BattleEnd -= AttackEnd;
     }
+    public int GetPointDurable(int maxHP, int currentHP) => m_calculator.GetPointDurable(maxHP, currentHP);
+    public int GetPointDamage(int damage,int currentHP) => m_calculator.GetPointDamage(damage,currentHP);
 }

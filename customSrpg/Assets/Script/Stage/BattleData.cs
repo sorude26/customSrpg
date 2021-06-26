@@ -13,12 +13,13 @@ public enum BattleMode
 /// </summary>
 public class BattleData
 {
-    public static int GetDamage(int attack,int defense)
+    public static int GetDamage(int attack, int defense)
     {
         float r = Random.Range(0.8f, 1.2f);
         r = attack * attack / (attack / 2 + defense) * r;
         return (int)r;
     }
+    public static int EstimatedDamage(int attack,int defense,int hit) => (attack * attack / (attack / 2 + defense)) * hit / 100;
     public static int GetDamage(int attack, int defense,BattleMode mode)
     {
         float h = 0f;
