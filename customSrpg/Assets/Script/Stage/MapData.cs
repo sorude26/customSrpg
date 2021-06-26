@@ -30,6 +30,8 @@ public class MapData
     public int MovePoint { get; set; }
     /// <summary> 攻撃計算用データ </summary>
     public int AttackPoint { get; set; }
+    /// <summary> AIの計算用データ </summary>
+    public int MapScore { get; set; }
     /// <summary> 地形のパネル </summary>
     public StagePanel StagePanel { get; private set; }
     /// <summary>
@@ -47,6 +49,7 @@ public class MapData
         Level = level;
         MovePoint = 0;
         AttackPoint = 0;
+        MapScore = 0;
         StagePanel = stagePanel;
         StagePanel.SetPos(posX, posZ);
     }    

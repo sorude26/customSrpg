@@ -37,6 +37,7 @@ public class UnitMovelControl : MonoBehaviour
     public float LiftingForce { get; set; }
     /// <summary> 現在位置を設定する </summary>
     public event Action<int, int> PositionSet;
+    public event Action MoveEndEvent;
     /// <summary>
     /// ユニット向き4方向
     /// </summary>

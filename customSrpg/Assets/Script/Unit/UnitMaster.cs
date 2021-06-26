@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -35,6 +36,23 @@ public class UnitMaster : MonoBehaviour
     protected int m_attackCount = 0;
     protected WeaponMaster m_attackerWeapon = null;
     protected List<IUnitParts> m_damegePartsList;
+    /// <summary>
+    /// 機体の最大耐久値を返す
+    /// </summary>
+    /// <returns></returns>
+    public int GetMaxHP()
+    {
+        int hp = 0;
+        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        foreach (var parts in allParts)
+        {
+            if (parts != null)
+            {
+                hp += parts.GetMaxHP();
+            }
+        }
+        return hp;
+    }
     /// <summary>
     /// 現在の総パーツ耐久値を返す
     /// </summary>
@@ -207,6 +225,48 @@ public class UnitMaster : MonoBehaviour
                 break;
         }
         return null;
+    }
+    public WeaponPosition GetWeaponPosition(WeaponMaster weapon)
+    {
+        if (weapon == m_bodyWeapon)
+        {
+            return WeaponPosition.Body;
+        }
+        else if (weapon == m_lAWeapon)
+        {
+            return WeaponPosition.LArm;
+        }
+        else if (weapon == m_rAWeapon)
+        {
+            return WeaponPosition.RArm;
+        }
+        else if (weapon == m_lSWeapon)
+        {
+            return WeaponPosition.LShoulder;
+        }
+        else if (weapon == m_rSWeapon)
+        {
+            return WeaponPosition.RShoulder;
+        }
+        return WeaponPosition.None;
+    }
+    /// <summary>
+    /// 最も攻撃力の高い武器を返す
+    /// </summary>
+    /// <returns></returns>
+    public WeaponMaster GetMaxPowerWeapon()
+    {
+        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
+        return weapons.ToList().OrderByDescending(weapon => weapon.Power).FirstOrDefault();
+    }
+    /// <summary>
+    /// 最も射程範囲の広い武器を返す
+    /// </summary>
+    /// <returns></returns>
+    public WeaponMaster GetMaxRangeWeapon()
+    {
+        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
+        return weapons.ToList().OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
     }
     /// <summary>
     /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行わせる

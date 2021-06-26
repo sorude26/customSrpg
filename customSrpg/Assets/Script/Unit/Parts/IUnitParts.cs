@@ -7,6 +7,7 @@ using UnityEngine;
 /// </summary>
 public interface IUnitParts : IParts ,IBattleEffect
 {
+    int GetMaxHP();
     int GetCurrentHP();
     int GetDefense();
     void Damage(int damage);
