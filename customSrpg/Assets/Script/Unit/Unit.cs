@@ -13,6 +13,8 @@ public enum UnitState
     Action,
     /// <summary> 休息中 </summary>
     Rest,
+    /// <summary> 停止中 </summary>
+    Stop,
     /// <summary> 戦闘不能 </summary>
     Destory,
 }
@@ -99,11 +101,11 @@ public class Unit : MonoBehaviour
         m_movelControl.TargetLook(target.transform.position);
     }
     /// <summary>
-    /// 休息中のユニットを待機状態にする
+    /// 停止中のユニットを待機状態にする
     /// </summary>
     public virtual void WakeUp()
     {
-        if (State == UnitState.Rest)
+        if (State == UnitState.Stop)
         {
             State = UnitState.StandBy;
         }
@@ -130,6 +132,16 @@ public class Unit : MonoBehaviour
         }
     }
     /// <summary>
+    /// 休息中のユニットを停止状態にする
+    /// </summary>
+    public virtual void TurnEnd()
+    {
+        if (State == UnitState.Rest)
+        {
+            State = UnitState.Stop;
+        }
+    }
+    /// <summary>
     /// ユニットの撃破時に呼ばれ、戦闘不能にする
     /// </summary>
     protected virtual void UnitDestroy()
@@ -139,4 +151,13 @@ public class Unit : MonoBehaviour
         State = UnitState.Destory;
         gameObject.SetActive(false);
     }
+    /// <summary>
+    /// 攻撃力と命中率に対応した得点を返す
+    /// </summary>
+    /// <param name="power"></param>
+    /// <param name="hit"></param>
+    /// <returns></returns>
+    public virtual int GetScore(int power, int hit) =>
+        BattleManager.Instance.GetPointDurable(m_master.GetMaxHP(), m_master.GetCurrentHP())
+        + BattleManager.Instance.GetPointDamage(BattleData.EstimatedDamage(power, m_master.GetAmorPoint(), hit), m_master.GetCurrentHP());
 }

@@ -33,7 +33,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
-    [SerializeField] BattleManager m_battleManager;
+    BattleManager m_battleManager;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
     private void Awake()
@@ -42,8 +42,10 @@ public class StageManager : MonoBehaviour
     }
     private void Start()
     {
+        m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
         m_units.Add(m_testUnit);
+        m_players.ToList().ForEach(p => m_units.Add(p));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
     }
     /// <summary>
@@ -93,11 +95,13 @@ public class StageManager : MonoBehaviour
             case TurnState.Player:
                 Turn = TurnState.Enemy;
                 Debug.Log("EnemyTurn");
+                m_players.ToList().ForEach(p => p.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
                 NextUnit();
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
+                m_enemys.ToList().ForEach(p => p.TurnEnd());
                 TurnEnd();
                 break;
             case TurnState.End:

@@ -23,6 +23,7 @@ public enum WeaponPosition
     RArm,
     LShoulder,
     RShoulder,
+    None,
 }
 
 [CreateAssetMenu]

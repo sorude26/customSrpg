@@ -88,6 +88,11 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// <returns></returns>
     public virtual int GetPartsSize() => PartsSize;
     /// <summary>
+    /// パーツの最大耐久値を返す
+    /// </summary>
+    /// <returns></returns>
+    public int GetMaxHP() => MaxPartsHp;
+    /// <summary>
     /// パーツの現在耐久値を返す
     /// </summary>
     /// <returns></returns>
