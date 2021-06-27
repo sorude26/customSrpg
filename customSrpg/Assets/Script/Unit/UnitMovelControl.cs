@@ -109,6 +109,7 @@ public class UnitMovelControl : MonoBehaviour
         CurrentPosZ = m_unitMoveList[0].y;
         PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
         m_moveMode = false;
+        MoveEndEvent?.Invoke();
     }
 
     /// <summary>

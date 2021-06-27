@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -87,6 +88,14 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
         m_motion.MotionTypeChange(MotionType.Walk);
+    }
+    public void SetMoveEvent(Action action)
+    {
+        m_movelControl.MoveEndEvent += action;
+    }
+    public void RemoveMoveEvent(Action action)
+    {
+        m_movelControl.MoveEndEvent -= action;
     }
     public void MoveSkep()
     {
