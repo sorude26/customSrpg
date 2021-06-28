@@ -11,12 +11,16 @@ public class UnitAI : ScriptableObject
         map.ForEach(p => p.MapScore = 0);
         map.ForEach(p => SetMapScore(unit, p));
     }
-    public virtual void StartMove(Unit unit)
+    public virtual bool StartMove(Unit unit)
     {
         TargetPointSet(unit);
         var target = MapManager.Instance.StartSearch(unit).ToList().OrderByDescending(t => t.MapScore).FirstOrDefault();
-        Debug.Log(target.PosX + "," + target.PosZ + unit);
+        if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
+        {
+            return false;
+        }
         unit.TargetMoveStart(target.PosX, target.PosZ);
+        return true; 
     }
     public virtual WeaponMaster StartAttack(Unit unit)
     {

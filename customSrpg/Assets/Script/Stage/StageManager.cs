@@ -37,6 +37,8 @@ public class StageManager : MonoBehaviour
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
     bool attack;
+    bool m_gameEnd;
+    int maxTurn = 10;
     private void Awake()
     {
         Instance = this;
@@ -55,6 +57,11 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void NextUnit()
     {
+        CheckGameEnd();
+        if (m_gameEnd)
+        {
+            return;
+        }
         switch (Turn)
         {
             case TurnState.Player:
@@ -83,7 +90,7 @@ public class StageManager : MonoBehaviour
         {
             TurnUnit = unit;
             unit.StartUp();
-            m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
+            //m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
         }
     }
     /// <summary>
@@ -98,17 +105,23 @@ public class StageManager : MonoBehaviour
                 Debug.Log("EnemyTurn");
                 m_players.ToList().ForEach(p => p.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
+                m_targetMark.SetActive(false);
                 NextUnit();
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
                 m_enemys.ToList().ForEach(p => p.TurnEnd());
+                maxTurn--;
+                if (maxTurn < 0)
+                {
+                    return;
+                }
                 TurnEnd();
                 break;
             case TurnState.End:
                 Turn = TurnState.Player;
                 Debug.Log("PlayerTurn");
-                m_players.ToList().ForEach(p => p.WakeUp());
+                m_players.ToList().ForEach(p => p.WakeUp());                
                 NextUnit();
                 break;
             default:
@@ -157,6 +170,18 @@ public class StageManager : MonoBehaviour
         m_testUnit.TargetMoveStart(x, z);
         m_targetMark.SetActive(true);
         m_targetMark.transform.position = m_cursor.transform.position;
+    }
+    private void CheckGameEnd()
+    {
+        foreach (var unit in m_players)
+        {
+            if (unit.State != UnitState.Destory)
+            {
+                return;
+            }
+        }
+        m_gameEnd = true;
+        Debug.Log("敗北");
     }
     /// <summary>
     /// 移動範囲を検索し表示する

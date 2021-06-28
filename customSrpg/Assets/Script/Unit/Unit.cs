@@ -144,11 +144,11 @@ public class Unit : MonoBehaviour
         }
     }
     /// <summary>
-    /// 休息中のユニットを停止状態にする
+    /// ユニットを停止状態にする
     /// </summary>
     public virtual void TurnEnd()
     {
-        if (State == UnitState.Rest)
+        if (State != UnitState.Destory)
         {
             State = UnitState.Stop;
         }

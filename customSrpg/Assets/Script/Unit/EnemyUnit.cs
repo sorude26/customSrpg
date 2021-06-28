@@ -10,7 +10,7 @@ public class EnemyUnit : Unit
     WeaponMaster m_attackWeapon;
     public override void StartUp()
     {
-        Debug.Log("呼ばれた");
+        //Debug.Log("呼ばれた");
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
@@ -19,21 +19,23 @@ public class EnemyUnit : Unit
     }
     protected IEnumerator StartAI()
     {
-        Debug.Log("開始");
+        //Debug.Log("開始");
         while (State == UnitState.Action)
         {
             yield return Move();
             yield return Attack();
             yield return null;
         }
-        Debug.Log("終了");
+        //Debug.Log("終了");
     }
     protected IEnumerator Move()
     {
-        Debug.Log("移動");
-        m_moveMode = true;
-        m_unitAI.StartMove(this);
-        m_movelControl.MoveEndEvent += MoveModeEnd;
+        //Debug.Log("移動");
+        if(m_unitAI.StartMove(this))
+        {
+            m_moveMode = true;
+            m_movelControl.MoveEndEvent += MoveModeEnd;
+        }
         while (m_moveMode)
         {
             yield return null;
@@ -42,15 +44,11 @@ public class EnemyUnit : Unit
     
     protected IEnumerator Attack()
     {
-        Debug.Log("攻撃");
-        m_attackMode = true;
+        //Debug.Log("攻撃");
         m_attackWeapon = m_unitAI.StartAttack(this);
-        if (!m_attackWeapon)
+        if (m_attackWeapon)
         {
-            m_attackMode = false;
-        }
-        else
-        {
+            m_attackMode = true;
             m_attackWeapon.AttackEnd += AttackModeEnd;
         }
         while (m_attackMode)
@@ -71,7 +69,21 @@ public class EnemyUnit : Unit
     }
     public override void ActionEnd()
     {
-        base.ActionEnd();
+        if (State == UnitState.Action)
+        {
+            StartCoroutine(End());
+        }
+    }
+    IEnumerator End()
+    {
+        int count = 0;
+        while (count < 2)
+        {
+            count++;
+            yield return new WaitForSeconds(0.5f);
+        }
+        State = UnitState.Rest;
+        m_attackWeapon = null;
         StageManager.Instance.NextUnit();
     }
 }
