@@ -27,7 +27,7 @@ public class StageManager : MonoBehaviour
     /// <summary> プレイヤーの全ユニット </summary>
     [SerializeField] Unit[] m_players;
     /// <summary> 敵の全ユニット </summary>
-    [SerializeField] Unit[] m_enemys;
+    [SerializeField] EnemyUnit[] m_enemys;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
     [SerializeField] CursorControl m_cursor;
@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     BattleManager m_battleManager;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
+    bool attack;
     private void Awake()
     {
         Instance = this;
@@ -47,22 +48,22 @@ public class StageManager : MonoBehaviour
         m_units.Add(m_testUnit);
         m_players.ToList().ForEach(p => m_units.Add(p));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
+        m_players.ToList().ForEach(p => p.WakeUp());
     }
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
     /// </summary>
     public void NextUnit()
     {
-        Unit unit = null;
         switch (Turn)
         {
             case TurnState.Player:
-                unit = m_players.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                Unit unit = m_players.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(unit);
                 break;
             case TurnState.Enemy:
-                unit = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
-                SetNextUnit(unit);
+                EnemyUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                SetNextUnit(enemy);
                 break;
             default:
                 break;
@@ -81,7 +82,7 @@ public class StageManager : MonoBehaviour
         else
         {
             TurnUnit = unit;
-            TurnUnit.StartUp();
+            unit.StartUp();
             m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
         }
     }
@@ -114,8 +115,18 @@ public class StageManager : MonoBehaviour
                 break;
         }
     }
+    public void TestEnemyTurn()
+    {
+        Turn = TurnState.Enemy;
+        m_players.ToList().ForEach(p => p.StartUp());
+        m_players.ToList().ForEach(p => p.ActionEnd());
+        m_players.ToList().ForEach(p => p.TurnEnd());
+        m_enemys.ToList().ForEach(p => p.WakeUp());
+        NextUnit();
+    }
     public void TestAttack()
     {
+        attack = true;
         m_testUnit.MoveSkep();
         AttackSearch(m_testUnit.CurrentPosX, m_testUnit.CurrentPosZ);
     }
@@ -124,9 +135,14 @@ public class StageManager : MonoBehaviour
         m_cursor.CursorWarp(m_battleManager.SetTarget(0));
         m_targetMark.transform.position = m_cursor.transform.position;
         m_battleManager.AttackStart(WeaponPosition.Body);
+        attack = false;
     }
     public void PointMoveTest(int x, int z)
     {
+        if (attack)
+        {
+            return;
+        }
         EventManager.AttackSearchEnd();
         if (m_mapDatas == null)
         {
