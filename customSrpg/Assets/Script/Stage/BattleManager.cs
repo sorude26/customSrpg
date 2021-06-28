@@ -51,6 +51,11 @@ public class BattleManager : MonoBehaviour
             Debug.Log(item);
         }
     }
+    /// <summary>
+    /// 範囲内のユニットを配列で返す
+    /// </summary>
+    /// <param name="targetPos"></param>
+    /// <returns></returns>
     public Unit[] GetAttackTargets(MapData[] targetPos)
     {
         List<Unit> units = new List<Unit>();
@@ -80,6 +85,10 @@ public class BattleManager : MonoBehaviour
         }
         m_target = m_attackTarget[targetNum];
         return m_target;
+    }
+    public void SetTarget(Unit target)
+    {
+        m_target = target;
     }
     /// <summary>
     /// 指定した武器で攻撃を開始する
@@ -135,6 +144,10 @@ public class BattleManager : MonoBehaviour
     /// <returns></returns>
     public int GetHit(WeaponPosition attackWeapon) => 
         m_calculator.GetHit(m_attacker.GetUnitData().GetHitAccuracy(attackWeapon), m_target.GetUnitData().GetAvoidance());
+    public int GetHit(WeaponPosition attackWeapon, Unit attacker) =>
+        attacker.GetUnitData().GetHitAccuracy(attackWeapon);
+    public int GetHit(int hit, int accuracy) =>
+        m_calculator.GetHit(hit, accuracy);
     /// <summary>
     /// 攻撃終了時の処理
     /// </summary>
