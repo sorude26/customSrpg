@@ -44,13 +44,7 @@ public class UnitMaster : MonoBehaviour
     {
         int hp = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        foreach (var parts in allParts)
-        {
-            if (parts != null)
-            {
-                hp += parts.GetMaxHP();
-            }
-        }
+        allParts.ToList().ForEach(parts => { if (parts != null) hp += parts.GetMaxHP(); });
         return hp;
     }
     /// <summary>
@@ -61,13 +55,7 @@ public class UnitMaster : MonoBehaviour
     {
         int hp = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        foreach (var parts in allParts)
-        {
-            if (parts != null)
-            {
-                hp += parts.GetCurrentHP();
-            }
-        }
+        allParts.ToList().ForEach(parts => { if (parts != null) hp += parts.GetCurrentHP(); });
         return hp;
     }
     /// <summary>
@@ -131,16 +119,16 @@ public class UnitMaster : MonoBehaviour
     {
         int weight = 0;
         IParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
-        foreach (var parts in allParts)
+        allParts.ToList().ForEach(parts =>
         {
             if (parts != null)
             {
-                if (!parts.GetBreak())
+                if (parts.GetBreak())
                 {
                     weight += parts.GetWeight();
                 }
             }
-        }
+        });
         return weight;
     }
     /// <summary>
@@ -152,18 +140,17 @@ public class UnitMaster : MonoBehaviour
         int count = 0;
         int armor = 0;
         IUnitParts[] allparts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        foreach (var parts in allparts)
+        allparts.ToList().ForEach(parts =>
         {
             if (parts != null)
             {
-                if (parts.GetCurrentHP() == 0)
+                if (parts.GetCurrentHP() > 0)
                 {
-                    continue;
+                    armor += parts.GetDefense();
+                    count++;
                 }
-                armor += parts.GetDefense();
-                count++;
             }
-        }
+        });
         return armor / count;
     }
     /// <summary>
@@ -221,11 +208,16 @@ public class UnitMaster : MonoBehaviour
                 return m_lSWeapon;
             case WeaponPosition.RShoulder:
                 return m_rSWeapon;
-            default:    
+            default:
                 break;
         }
         return null;
     }
+    /// <summary>
+    /// 武器の装備箇所を返す
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <returns></returns>
     public WeaponPosition GetWeaponPosition(WeaponMaster weapon)
     {
         if (weapon == m_bodyWeapon)
@@ -248,7 +240,25 @@ public class UnitMaster : MonoBehaviour
         {
             return WeaponPosition.RShoulder;
         }
+        Debug.Log("非装備");
         return WeaponPosition.None;
+    }
+    /// <summary>
+    /// 装備武器の配列を返す
+    /// </summary>
+    /// <returns></returns>
+    public WeaponMaster[] GetWeapons()
+    {
+        List<WeaponMaster> weaponList = new List<WeaponMaster>();
+        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
+        weapons.ToList().ForEach(weapon =>
+        {
+            if (weapon)
+            {
+                weaponList.Add(weapon);
+            }
+        });
+        return weaponList.ToArray();
     }
     /// <summary>
     /// 最も攻撃力の高い武器を返す
@@ -257,7 +267,9 @@ public class UnitMaster : MonoBehaviour
     public WeaponMaster GetMaxPowerWeapon()
     {
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
-        return weapons.ToList().OrderByDescending(weapon => weapon.Power).FirstOrDefault();
+        List<WeaponMaster> weaponList = new List<WeaponMaster>();
+        weapons.ToList().ForEach(weapon => { if (weapon != null) weaponList.Add(weapon); });
+        return weaponList.OrderByDescending(weapon => weapon.Power).FirstOrDefault();
     }
     /// <summary>
     /// 最も射程範囲の広い武器を返す
@@ -266,7 +278,9 @@ public class UnitMaster : MonoBehaviour
     public WeaponMaster GetMaxRangeWeapon()
     {
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
-        return weapons.ToList().OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
+        List<WeaponMaster> weaponList = new List<WeaponMaster>();
+        weapons.ToList().ForEach(weapon => { if (weapon != null) weaponList.Add(weapon); });
+        return weaponList.OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
     }
     /// <summary>
     /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行わせる
@@ -280,17 +294,16 @@ public class UnitMaster : MonoBehaviour
         }
         int hitPos = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        foreach (var parts in allParts)
+        allParts.ToList().ForEach(parts =>
         {
             if (parts != null)
             {
-                if (parts.GetBreak())
+                if (parts.GetCurrentHP() > 0)
                 {
-                    continue;
+                    hitPos += parts.GetSize();
                 }
-                hitPos += parts.GetSize();
             }
-        }
+        });
         int r = UnityEngine.Random.Range(0, hitPos);
         int prb = 0;
         foreach (var parts in allParts)
