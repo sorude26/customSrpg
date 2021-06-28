@@ -50,13 +50,16 @@ public class Unit : MonoBehaviour
     /// <summary> 機体脚部 </summary>
     [SerializeField] protected PartsLeg m_leg = null;
     [SerializeField] protected WeaponMaster m_testWeapom = null;
+    private void Awake()
+    {
+        State = UnitState.Stop;
+    }
     private void Start()
     {
         StartSet();
     }
     protected virtual void StartSet()
     {
-        State = UnitState.StandBy;
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
         m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
@@ -137,7 +140,7 @@ public class Unit : MonoBehaviour
         if (State == UnitState.Action)
         {
             State = UnitState.Rest;
-            StageManager.Instance.NextUnit();
+            //StageManager.Instance.NextUnit();
         }
     }
     /// <summary>
@@ -168,5 +171,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public virtual int GetScore(int power, int hit) =>
         BattleManager.Instance.GetPointDurable(m_master.GetMaxHP(), m_master.GetCurrentHP())
-        + BattleManager.Instance.GetPointDamage(BattleData.EstimatedDamage(power, m_master.GetAmorPoint(), hit), m_master.GetCurrentHP());
+        + BattleManager.Instance.GetPointDamage(BattleData.EstimatedDamage(power, m_master.GetAmorPoint(),
+            BattleManager.Instance.GetHit( hit , m_master.GetAvoidance())), m_master.GetCurrentHP());
 }
