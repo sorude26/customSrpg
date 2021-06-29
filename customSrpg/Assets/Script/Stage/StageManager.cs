@@ -33,6 +33,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] NpcUnit[] m_enemys;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
+    [SerializeField] StageMassage m_massage;
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
@@ -121,7 +122,7 @@ public class StageManager : MonoBehaviour
                 m_players.ToList().ForEach(p => p.TurnEnd());
                 m_allies.ToList().ForEach(a => a.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
-                NextUnit();
+                StartCoroutine(TurnMassage(1));
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
@@ -137,11 +138,21 @@ public class StageManager : MonoBehaviour
                 {
                     return;
                 }
-                NextUnit();
+                StartCoroutine(TurnMassage(0));
                 break;
             default:
                 break;
         }
+    }
+    IEnumerator TurnMassage(uint massageNum)
+    {
+        bool view = true;
+        while (view)
+        {
+            yield return m_massage.View(massageNum);
+            view = false;
+        }
+        NextUnit();
     }
     public void TestEnemyTurn()
     {
