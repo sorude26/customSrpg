@@ -39,6 +39,7 @@ public class StageManager : MonoBehaviour
     bool attack;
     bool m_gameEnd;
     int maxTurn = 10;
+    bool next;
     private void Awake()
     {
         Instance = this;
@@ -130,12 +131,11 @@ public class StageManager : MonoBehaviour
     }
     public void TestEnemyTurn()
     {
-        Turn = TurnState.Enemy;
+        Turn = TurnState.Player;
         m_players.ToList().ForEach(p => p.StartUp());
         m_players.ToList().ForEach(p => p.ActionEnd());
         m_players.ToList().ForEach(p => p.TurnEnd());
-        m_enemys.ToList().ForEach(p => p.WakeUp());
-        NextUnit();
+        TurnEnd();
     }
     public void TestAttack()
     {
