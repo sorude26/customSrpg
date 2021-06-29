@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -25,11 +26,11 @@ public class StageManager : MonoBehaviour
     /// <summary> 行動中のユニット </summary>
     public Unit TurnUnit { get; private set; }
     [SerializeField] Unit m_testUnit;
-    /// <summary> プレイヤーの全ユニット </summary>
+    [Tooltip("プレイヤーの全ユニット")]
     [SerializeField] Unit[] m_players;
-    /// <summary> 友軍の全ユニット </summary>
+    [Tooltip("友軍の全ユニット")]
     [SerializeField] NpcUnit[] m_allies;
-    /// <summary> 敵の全ユニット </summary>
+    [Tooltip("敵の全ユニット")]
     [SerializeField] NpcUnit[] m_enemys;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
@@ -122,7 +123,7 @@ public class StageManager : MonoBehaviour
                 m_players.ToList().ForEach(p => p.TurnEnd());
                 m_allies.ToList().ForEach(a => a.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
-                StartCoroutine(TurnMassage(1));
+                StartCoroutine(StageMassage(1, () => NextUnit()));
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
@@ -138,13 +139,18 @@ public class StageManager : MonoBehaviour
                 {
                     return;
                 }
-                StartCoroutine(TurnMassage(0));
+                StartCoroutine(StageMassage(0, () => NextUnit()));
                 break;
             default:
                 break;
         }
     }
-    IEnumerator TurnMassage(uint massageNum)
+    /// <summary>
+    /// ステージのメッセージを再生する
+    /// </summary>
+    /// <param name="massageNum"></param>
+    /// <returns></returns>
+    IEnumerator StageMassage(uint massageNum,Action action)
     {
         bool view = true;
         while (view)
@@ -152,7 +158,7 @@ public class StageManager : MonoBehaviour
             yield return m_massage.View(massageNum);
             view = false;
         }
-        NextUnit();
+        action?.Invoke();
     }
     public void TestEnemyTurn()
     {
