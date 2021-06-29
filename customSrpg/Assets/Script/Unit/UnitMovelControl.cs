@@ -307,6 +307,7 @@ public class UnitMovelControl : MonoBehaviour
         LiftingForce = liftingForce;
         m_unitMoveList = new List<Vector2Int>();
         m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
+        Debug.Log("save");
         int p = m_gameMap.GetPosition(targetX, targetZ);
         SearchCross(p, moveList[p].MovePoint, moveList);
     }
@@ -356,8 +357,10 @@ public class UnitMovelControl : MonoBehaviour
         movePower = moveList[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存
+        //Debug.Log(pos + "," + m_startPosX + "," + m_startPosZ);
         if (m_startPosX == m_gameMap.MapDatas[p].PosX && m_startPosZ == m_gameMap.MapDatas[p].PosZ) //初期地点か確認
         {
+            Debug.Log("start");
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
             UnitAngleSet();

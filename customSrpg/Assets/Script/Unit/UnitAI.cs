@@ -7,18 +7,22 @@ public class UnitAI : ScriptableObject
 {
     public virtual void TargetPointSet(Unit unit)
     {
-        var map = MapManager.Instance.StartSearch(unit).ToList();
-        map.ForEach(p => p.MapScore = 0);
-        map.ForEach(p => SetMapScore(unit, p));
+        Debug.Log("セット");
+        var map = MapManager.Instance.StartSearch(unit);
+        map.ToList().ForEach(p => p.MapScore = 0);
+        map.ToList().ForEach(p => SetMapScore(unit, p));
+        //map.ToList().ForEach(p => Debug.Log(p.MovePoint + "," + p.PosX + "," + p.PosZ));
     }
     public virtual bool StartMove(Unit unit)
     {
         TargetPointSet(unit);
         var target = MapManager.Instance.StartSearch(unit).ToList().OrderByDescending(t => t.MapScore).FirstOrDefault();
+        //Debug.Log(target.PosX+","+ target.PosZ);
         if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
         {
             return false;
         }
+        MapManager.Instance.StartSearch(unit);
         unit.TargetMoveStart(target.PosX, target.PosZ);
         return true; 
     }

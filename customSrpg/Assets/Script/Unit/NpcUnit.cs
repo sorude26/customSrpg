@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyUnit : Unit
+public class NpcUnit : Unit
 {
     [SerializeField] protected UnitAI m_unitAI;
     protected bool m_moveMode;
     protected bool m_attackMode;
     WeaponMaster m_attackWeapon;
+    bool m_end = false;
     public override void StartUp()
     {
-        //Debug.Log("呼ばれた");
+        //Debug.Log("呼ばれた" + this.name + State);
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
@@ -19,14 +20,17 @@ public class EnemyUnit : Unit
     }
     protected IEnumerator StartAI()
     {
+        m_end = false;
         //Debug.Log("開始");
-        while (State == UnitState.Action)
+        while (!m_end)
         {
             yield return Move();
             yield return Attack();
-            yield return null;
+            yield return End();
         }
         //Debug.Log("終了");
+        ActionEnd();
+        StageManager.Instance.NextUnit();
     }
     protected IEnumerator Move()
     {
@@ -40,6 +44,8 @@ public class EnemyUnit : Unit
         {
             yield return null;
         }
+        //Debug.Log("移動" + this.name);
+        MoveEnd();
     }
     
     protected IEnumerator Attack()
@@ -56,34 +62,29 @@ public class EnemyUnit : Unit
             yield return null;
         }
         ActionEnd();
+        //Debug.Log("攻撃" + this.name);
     }
     protected void MoveModeEnd()
     {
         m_moveMode = false;
-        m_movelControl.MoveEndEvent -= MoveEnd;
+        m_movelControl.MoveEndEvent -= MoveModeEnd;
     }
     protected void AttackModeEnd()
     {
         m_attackMode = false;
         m_attackWeapon.AttackEnd -= AttackModeEnd;
+        m_attackWeapon = null;
     }
-    public override void ActionEnd()
-    {
-        if (State == UnitState.Action)
-        {
-            StartCoroutine(End());
-        }
-    }
+    
     IEnumerator End()
     {
         int count = 0;
         while (count < 2)
         {
             count++;
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
         }
-        State = UnitState.Rest;
-        m_attackWeapon = null;
-        StageManager.Instance.NextUnit();
+        //Debug.Log("終了" + this.name);
+        m_end = true;
     }
 }

@@ -23,10 +23,10 @@ public class MapCreater : MonoBehaviour
             for (int j = 0; j < maxX; j++)
             {
                 float level = 0f;
-                if (j==5)
-                {
-                    level = 3;
-                }
+                //if (j==5)
+                //{
+                //    level = 3;
+                //}
                 StagePanel mapPanel = Instantiate(m_stagePanels[0]);
                 mapPanel.transform.position = new Vector3(j * mapScale, level, i * mapScale);
                 mapPanel.transform.SetParent(parent);

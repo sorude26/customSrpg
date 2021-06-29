@@ -9,6 +9,7 @@ using System.Linq;
 public enum TurnState
 {
     Player,
+    Allies,
     Enemy,
     End,
 }
@@ -26,10 +27,13 @@ public class StageManager : MonoBehaviour
     [SerializeField] Unit m_testUnit;
     /// <summary> プレイヤーの全ユニット </summary>
     [SerializeField] Unit[] m_players;
+    /// <summary> 友軍の全ユニット </summary>
+    [SerializeField] NpcUnit[] m_allies;
     /// <summary> 敵の全ユニット </summary>
-    [SerializeField] EnemyUnit[] m_enemys;
+    [SerializeField] NpcUnit[] m_enemys;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
+    [SerializeField] StageMassage m_massage;
     [SerializeField] CursorControl m_cursor;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
@@ -39,6 +43,7 @@ public class StageManager : MonoBehaviour
     bool attack;
     bool m_gameEnd;
     int maxTurn = 10;
+    bool next;
     private void Awake()
     {
         Instance = this;
@@ -49,6 +54,7 @@ public class StageManager : MonoBehaviour
         m_units = new List<Unit>();
         m_units.Add(m_testUnit);
         m_players.ToList().ForEach(p => m_units.Add(p));
+        m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
         m_players.ToList().ForEach(p => p.WakeUp());
     }
@@ -68,8 +74,12 @@ public class StageManager : MonoBehaviour
                 Unit unit = m_players.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(unit);
                 break;
+            case TurnState.Allies:
+                NpcUnit ally = m_allies.ToList().Where(a => a.State == UnitState.StandBy).FirstOrDefault();
+                SetNextUnit(ally);
+                break;
             case TurnState.Enemy:
-                EnemyUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                NpcUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(enemy);
                 break;
             default:
@@ -101,41 +111,56 @@ public class StageManager : MonoBehaviour
         switch (Turn)
         {
             case TurnState.Player:
-                Turn = TurnState.Enemy;
+                Turn = TurnState.Allies;
                 Debug.Log("EnemyTurn");
-                m_players.ToList().ForEach(p => p.TurnEnd());
-                m_enemys.ToList().ForEach(p => p.WakeUp());
+                m_allies.ToList().ForEach(a => a.WakeUp());
                 m_targetMark.SetActive(false);
                 NextUnit();
                 break;
+            case TurnState.Allies:
+                Turn = TurnState.Enemy;
+                m_players.ToList().ForEach(p => p.TurnEnd());
+                m_allies.ToList().ForEach(a => a.TurnEnd());
+                m_enemys.ToList().ForEach(p => p.WakeUp());
+                StartCoroutine(TurnMassage(1));
+                break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
-                m_enemys.ToList().ForEach(p => p.TurnEnd());
-                maxTurn--;
-                if (maxTurn < 0)
-                {
-                    return;
-                }
+                m_enemys.ToList().ForEach(p => p.TurnEnd());                
                 TurnEnd();
                 break;
             case TurnState.End:
                 Turn = TurnState.Player;
                 Debug.Log("PlayerTurn");
-                m_players.ToList().ForEach(p => p.WakeUp());                
-                NextUnit();
+                m_players.ToList().ForEach(p => p.WakeUp());
+                maxTurn--;
+                if (maxTurn < 0)
+                {
+                    return;
+                }
+                StartCoroutine(TurnMassage(0));
                 break;
             default:
                 break;
         }
     }
+    IEnumerator TurnMassage(uint massageNum)
+    {
+        bool view = true;
+        while (view)
+        {
+            yield return m_massage.View(massageNum);
+            view = false;
+        }
+        NextUnit();
+    }
     public void TestEnemyTurn()
     {
-        Turn = TurnState.Enemy;
+        Turn = TurnState.Player;
         m_players.ToList().ForEach(p => p.StartUp());
         m_players.ToList().ForEach(p => p.ActionEnd());
-        m_players.ToList().ForEach(p => p.TurnEnd());
-        m_enemys.ToList().ForEach(p => p.WakeUp());
-        NextUnit();
+        m_allies.ToList().ForEach(a => a.StartUp());
+        TurnEnd();
     }
     public void TestAttack()
     {
