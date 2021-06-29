@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyUnit : Unit
+public class NpcUnit : Unit
 {
     [SerializeField] protected UnitAI m_unitAI;
     protected bool m_moveMode;
     protected bool m_attackMode;
     WeaponMaster m_attackWeapon;
-    bool end = false;
+    bool m_end = false;
     public override void StartUp()
     {
-        Debug.Log("呼ばれた" + this.name + State);
+        //Debug.Log("呼ばれた" + this.name + State);
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
@@ -20,9 +20,9 @@ public class EnemyUnit : Unit
     }
     protected IEnumerator StartAI()
     {
-        end = false;
+        m_end = false;
         //Debug.Log("開始");
-        while (!end)
+        while (!m_end)
         {
             yield return Move();
             yield return Attack();
@@ -44,7 +44,7 @@ public class EnemyUnit : Unit
         {
             yield return null;
         }
-        Debug.Log("移動" + this.name);
+        //Debug.Log("移動" + this.name);
         MoveEnd();
     }
     
@@ -62,7 +62,7 @@ public class EnemyUnit : Unit
             yield return null;
         }
         ActionEnd();
-        Debug.Log("攻撃" + this.name);
+        //Debug.Log("攻撃" + this.name);
     }
     protected void MoveModeEnd()
     {
@@ -90,7 +90,7 @@ public class EnemyUnit : Unit
             count++;
             yield return new WaitForSeconds(0.3f);
         }
-        Debug.Log("終了" + this.name);
-        end = true;
+        //Debug.Log("終了" + this.name);
+        m_end = true;
     }
 }

@@ -27,7 +27,7 @@ public class StageManager : MonoBehaviour
     /// <summary> プレイヤーの全ユニット </summary>
     [SerializeField] Unit[] m_players;
     /// <summary> 敵の全ユニット </summary>
-    [SerializeField] EnemyUnit[] m_enemys;
+    [SerializeField] NpcUnit[] m_enemys;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
     [SerializeField] CursorControl m_cursor;
@@ -70,7 +70,7 @@ public class StageManager : MonoBehaviour
                 SetNextUnit(unit);
                 break;
             case TurnState.Enemy:
-                EnemyUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                NpcUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(enemy);
                 break;
             default:
