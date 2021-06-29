@@ -75,13 +75,7 @@ public class NpcUnit : Unit
         m_attackWeapon.AttackEnd -= AttackModeEnd;
         m_attackWeapon = null;
     }
-    public override void ActionEnd()
-    {
-        if (State == UnitState.Action)
-        {
-            State = UnitState.Rest;
-        }
-    }
+    
     IEnumerator End()
     {
         int count = 0;

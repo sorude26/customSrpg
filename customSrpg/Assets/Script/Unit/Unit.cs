@@ -30,7 +30,7 @@ public class Unit : MonoBehaviour
     [SerializeField] protected UnitMovelControl m_movelControl;
     /// <summary> ユニットの行動を制御する </summary>
     [SerializeField] protected MotionController m_motion;
-    /// <summary> 初期座標 </summary>
+    [Tooltip("初期座標 X:X座標、Y:Z座標")]
     [SerializeField] protected Vector2Int m_startPos;
     /// <summary> 現在のX座標 </summary>
     public int CurrentPosX { get; protected set; }
