@@ -6,7 +6,7 @@ namespace Stage
 {
     public class InputManager : MonoBehaviour
     {
-        public static Stage.InputManager Instance { get; private set; }
+        public static InputManager Instance { get; private set; }
         private void Awake()
         {
             Instance = this;

@@ -17,13 +17,11 @@ public class StageMassage : MonoBehaviour
     float m_clearScale = 0;
     private void Start()
     {
-        m_text.gameObject.SetActive(false);
-        m_image.gameObject.SetActive(false);
+        gameObject.SetActive(false);        
     }
     public IEnumerator View(uint massageNum)
     {
-        m_text.gameObject.SetActive(true);
-        m_image.gameObject.SetActive(true);
+        gameObject.SetActive(true);
         m_viewTimer = 0;
         m_clearScale = 0;
         m_text.text = m_massages[massageNum];
@@ -60,7 +58,6 @@ public class StageMassage : MonoBehaviour
             m_image.color = new Color(m_colors[massageNum].x, m_colors[massageNum].y, m_colors[massageNum].z, m_clearScale);
             yield return new WaitForEndOfFrame();
         }
-        m_text.gameObject.SetActive(false);
-        m_image.gameObject.SetActive(false);
+        gameObject.SetActive(false);
     }
 }
