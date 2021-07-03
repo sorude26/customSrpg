@@ -215,6 +215,13 @@ public class StageManager : MonoBehaviour
         Debug.Log("敗北");
     }
     /// <summary>
+    /// 現在の行動中ユニットを行動終了させる
+    /// </summary>
+    public void UnitActionEnd()
+    {
+        TurnUnit.ActionEnd();
+    }
+    /// <summary>
     /// 移動範囲を検索し表示する
     /// </summary>
     public void MoveSearch()

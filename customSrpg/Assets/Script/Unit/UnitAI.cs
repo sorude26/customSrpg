@@ -2,17 +2,27 @@
 using System;
 using UnityEngine;
 
+/// <summary>
+/// NPCの基本的行動の基底クラス
+/// </summary>
 [CreateAssetMenu]
 public class UnitAI : ScriptableObject
 {
+    /// <summary>
+    /// 移動目標を設定する
+    /// </summary>
+    /// <param name="unit"></param>
     public virtual void TargetPointSet(Unit unit)
     {
-        Debug.Log("セット");
         var map = MapManager.Instance.StartSearch(unit);
         map.ToList().ForEach(p => p.MapScore = 0);
         map.ToList().ForEach(p => SetMapScore(unit, p));
-        //map.ToList().ForEach(p => Debug.Log(p.MovePoint + "," + p.PosX + "," + p.PosZ));
     }
+    /// <summary>
+    /// 開始地点以外で高得点の座標があれば移動を開始する
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
     public virtual bool StartMove(Unit unit)
     {
         TargetPointSet(unit);
@@ -26,6 +36,11 @@ public class UnitAI : ScriptableObject
         unit.TargetMoveStart(target.PosX, target.PosZ);
         return true; 
     }
+    /// <summary>
+    /// 攻撃可能な最も攻撃力の高い武器を返す
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
     public virtual WeaponMaster StartAttack(Unit unit)
     {
         WeaponMaster attackWeapon = null;

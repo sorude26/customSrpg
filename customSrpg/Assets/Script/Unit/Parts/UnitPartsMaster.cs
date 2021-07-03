@@ -40,7 +40,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         {
             return;
         }
-        int d = BattleData.GetDamage(power, Defense);
+        int d = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= d;
         Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
         m_partsDamage.Add(d);

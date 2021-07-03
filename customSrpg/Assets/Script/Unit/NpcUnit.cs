@@ -4,37 +4,43 @@ using UnityEngine;
 
 public class NpcUnit : Unit
 {
+    [Tooltip("NPCユニットの行動設定")]
     [SerializeField] protected UnitAI m_unitAI;
+    /// <summary> 移動中フラグ </summary>
     protected bool m_moveMode;
+    /// <summary> 攻撃中フラグ </summary>
     protected bool m_attackMode;
+    /// <summary> 攻撃武器 </summary>
     WeaponMaster m_attackWeapon;
-    bool m_end = false;
+    /// <summary>
+    /// 待機状態ならば行動を開始
+    /// </summary>
     public override void StartUp()
     {
-        //Debug.Log("呼ばれた" + this.name + State);
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
             StartCoroutine(StartAI());
         }
     }
+    /// <summary>
+    /// 自身に設定されたAIに基づいて行動する
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator StartAI()
     {
-        m_end = false;
-        //Debug.Log("開始");
-        while (!m_end)
-        {
-            yield return Move();
-            yield return Attack();
-            yield return End();
-        }
-        //Debug.Log("終了");
+        yield return Move();
+        yield return Attack();
+        yield return End();
         ActionEnd();
         StageManager.Instance.NextUnit();
     }
+    /// <summary>
+    /// 移動対象があれば移動する
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator Move()
     {
-        //Debug.Log("移動");
         if(m_unitAI.StartMove(this))
         {
             m_moveMode = true;
@@ -44,13 +50,14 @@ public class NpcUnit : Unit
         {
             yield return null;
         }
-        //Debug.Log("移動" + this.name);
         MoveEnd();
     }
-    
+    /// <summary>
+    /// 攻撃対象があれば攻撃する
+    /// </summary>
+    /// <returns></returns>
     protected IEnumerator Attack()
     {
-        //Debug.Log("攻撃");
         m_attackWeapon = m_unitAI.StartAttack(this);
         if (m_attackWeapon)
         {
@@ -62,20 +69,28 @@ public class NpcUnit : Unit
             yield return null;
         }
         ActionEnd();
-        //Debug.Log("攻撃" + this.name);
     }
+    /// <summary>
+    /// 移動終了時に呼ぶ
+    /// </summary>
     protected void MoveModeEnd()
     {
         m_moveMode = false;
         m_movelControl.MoveEndEvent -= MoveModeEnd;
     }
+    /// <summary>
+    /// 攻撃終了時に呼ぶ
+    /// </summary>
     protected void AttackModeEnd()
     {
         m_attackMode = false;
         m_attackWeapon.AttackEnd -= AttackModeEnd;
         m_attackWeapon = null;
     }
-    
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    /// <returns></returns>
     IEnumerator End()
     {
         int count = 0;
@@ -84,7 +99,5 @@ public class NpcUnit : Unit
             count++;
             yield return new WaitForSeconds(0.3f);
         }
-        //Debug.Log("終了" + this.name);
-        m_end = true;
     }
 }

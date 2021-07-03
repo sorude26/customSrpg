@@ -64,8 +64,8 @@ public class UnitMovelControl : MonoBehaviour
         m_gameMap = MapManager.Instance;
         CurrentPosX = x;
         CurrentPosZ = z;
-        SetPos(x, z);
-        StartWarp();
+        SetPos(x, z); 
+        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
     }
     /// <summary>
     /// 位置を保存する
@@ -78,6 +78,9 @@ public class UnitMovelControl : MonoBehaviour
         m_startPosZ = z;
         m_startPosY = m_gameMap.GetLevel(x, z);
     }
+    /// <summary>
+    /// 移動を終了し、位置を保存する
+    /// </summary>
     public void MoveEnd()
     {
         SkipMove();
@@ -218,12 +221,7 @@ public class UnitMovelControl : MonoBehaviour
             m_moveMode = false;
         }
     }
-    protected void StartWarp()
-    {
-        m_startPosX = CurrentPosX;
-        m_startPosZ = CurrentPosZ;
-        transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
-    }
+
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる
     /// </summary>

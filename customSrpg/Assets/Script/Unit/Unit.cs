@@ -100,10 +100,16 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.MoveEndEvent -= action;
     }
+    /// <summary>
+    /// 瞬時に目的地へ移動する
+    /// </summary>
     public void MoveSkep()
     {
         m_movelControl.SkipMove();
     }
+    /// <summary>
+    /// 移動を終了し、位置を保存する
+    /// </summary>
     public void MoveEnd()
     {
         m_movelControl.MoveEnd();
@@ -171,6 +177,6 @@ public class Unit : MonoBehaviour
     /// <returns></returns>
     public virtual int GetScore(int power, int hit) =>
         BattleManager.Instance.GetPointDurable(m_master.GetMaxHP(), m_master.GetCurrentHP())
-        + BattleManager.Instance.GetPointDamage(BattleData.EstimatedDamage(power, m_master.GetAmorPoint(),
+        + BattleManager.Instance.GetPointDamage(BattleCalculator.EstimatedDamage(power, m_master.GetAmorPoint(),
             BattleManager.Instance.GetHit( hit , m_master.GetAvoidance())), m_master.GetCurrentHP());
 }
