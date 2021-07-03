@@ -114,6 +114,13 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.MoveEnd();
     }
+    /// <summary>
+    /// 初期地点へ戻る
+    /// </summary>
+    public void ReturnMove()
+    {
+        m_movelControl.ReturnMove();
+    }
     public void TargetLook(Unit target)
     {
         m_movelControl.TargetLook(target.transform.position);

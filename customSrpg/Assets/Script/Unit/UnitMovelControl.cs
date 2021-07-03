@@ -198,7 +198,7 @@ public class UnitMovelControl : MonoBehaviour
         }
     }
     /// <summary>
-    /// 移動処理中ならば処理を停止しワープさせる。
+    /// 移動処理中ならば処理を停止しワープさせる
     /// </summary>
     public void SkipMove()
     {
@@ -210,7 +210,7 @@ public class UnitMovelControl : MonoBehaviour
         }        
     }
     /// <summary>
-    /// 移動処理中ならば処理を停止しワープさせる。
+    /// 移動処理中ならば処理を停止しワープさせる
     /// </summary>
     protected void SkipMove(int posX, int posZ)
     {
@@ -221,7 +221,18 @@ public class UnitMovelControl : MonoBehaviour
             m_moveMode = false;
         }
     }
-
+    /// <summary>
+    /// 初期地点へ戻る
+    /// </summary>
+    public void ReturnMove()
+    {
+        if (m_moveMode)
+        {
+            StopAllCoroutines();
+            m_moveMode = false;
+        }
+        Warp(m_startPosX, m_startPosZ);
+    }
     /// <summary>
     /// ユニットを指定箇所に瞬間移動させる
     /// </summary>
