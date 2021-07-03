@@ -242,6 +242,14 @@ public class StageManager : MonoBehaviour
         m_attackDatas.ToList().ForEach(p => p.StagePanel.ViewAttackPanel());
         m_battleManager.SetAttackTargets();
     }
+    public void AttackSearch(WeaponPosition position)
+    {
+        m_battleManager.SetAttacker(TurnUnit);
+        EventManager.AttackSearchEnd();
+        m_attackDatas = MapManager.Instance.StartSearch(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ, TurnUnit.GetUnitData().GetWeapon(position));
+        m_attackDatas.ToList().ForEach(p => p.StagePanel.ViewAttackPanel());
+        m_battleManager.SetAttackTargets();
+    }
 
     /// <summary>
     /// 指定箇所のユニットを返す
