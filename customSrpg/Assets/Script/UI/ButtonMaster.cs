@@ -34,7 +34,7 @@ public class ButtonMaster : MonoBehaviour
     /// <summary>
     /// カーネル位置を上に移動する
     /// </summary>
-    public void CursorUp()
+    public virtual void CursorUp()
     {
         if (m_buttonNum > 0)
         {
@@ -45,7 +45,7 @@ public class ButtonMaster : MonoBehaviour
     /// <summary>
     /// カーネル位置を下に移動する
     /// </summary>
-    public void CursorDown()
+    public virtual void CursorDown()
     {
         if (m_buttonNum < m_buttons.Length - 1)
         {
@@ -53,6 +53,14 @@ public class ButtonMaster : MonoBehaviour
             CursorMove();
         }
     }
+    /// <summary>
+    /// カーソルを左へ移動する
+    /// </summary>
+    public virtual void CursorLeft() { }
+    /// <summary>
+    /// カーソルを右へ移動する
+    /// </summary>
+    public virtual void CursorRight() { }
     /// <summary>
     /// カーソルを移動させる
     /// </summary>

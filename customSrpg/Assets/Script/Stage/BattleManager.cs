@@ -14,6 +14,8 @@ public class BattleManager : MonoBehaviour
     Unit m_attacker;
     /// <summary> 攻撃対象リスト </summary>
     List<Unit> m_attackTarget = new List<Unit>();
+    /// <summary> 入手用攻撃対象リスト </summary>
+    public List<Unit> AttackTarget { get => m_attackTarget; }
     /// <summary> 攻撃対象 </summary>
     Unit m_target;
     /// <summary> 攻撃中フラグ </summary>
