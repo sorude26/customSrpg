@@ -37,6 +37,6 @@ public class TargetButton : ButtonMaster
     }
     protected override void CursorMove()
     {
-        
+        StageManager.Instance.CursorWap(m_targets[m_buttonNum].CurrentPosX, m_targets[m_buttonNum].CurrentPosZ);
     }
 }

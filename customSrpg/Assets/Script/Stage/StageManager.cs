@@ -250,7 +250,10 @@ public class StageManager : MonoBehaviour
         m_attackDatas.ToList().ForEach(p => p.StagePanel.ViewAttackPanel());
         m_battleManager.SetAttackTargets();
     }
-
+    public void CursorWap(int x,int z)
+    {
+        m_cursor.CursorWarp(x, z);
+    }
     /// <summary>
     /// 指定箇所のユニットを返す
     /// </summary>

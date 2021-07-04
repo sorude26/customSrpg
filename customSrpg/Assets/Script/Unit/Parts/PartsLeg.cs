@@ -23,7 +23,7 @@ public class PartsLeg : UnitPartsMaster<LegData>
     }
     protected override void PartsBreak()
     {
-        CurrentAvoidance /= 5;
+        CurrentAvoidance = 0;
         CurrentLiftingForce /= 5;
         CurrentMovePower /= 5;
         Break = true;
