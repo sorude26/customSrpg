@@ -36,6 +36,7 @@ public class StageManager : MonoBehaviour
     List<Unit> m_units;
     [SerializeField] StageMassage m_massage;
     [SerializeField] CursorControl m_cursor;
+    [SerializeField] StageUI m_uI;
     [SerializeField] GameObject m_targetMark;
     [SerializeField] WeaponMaster m_testWeapon;
     BattleManager m_battleManager;
@@ -73,6 +74,10 @@ public class StageManager : MonoBehaviour
         {
             case TurnState.Player:
                 Unit unit = m_players.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                if (unit)
+                {
+                    m_uI.CommandOpen();
+                }
                 SetNextUnit(unit);
                 break;
             case TurnState.Allies:
@@ -101,7 +106,8 @@ public class StageManager : MonoBehaviour
         {
             TurnUnit = unit;
             unit.StartUp();
-            //m_cursor.CursorWarp(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
+            m_cursor.CursorWarp(unit);
+            m_cursor.CursorStop();
         }
     }
     /// <summary>
@@ -123,7 +129,7 @@ public class StageManager : MonoBehaviour
                 m_players.ToList().ForEach(p => p.TurnEnd());
                 m_allies.ToList().ForEach(a => a.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
-                StartCoroutine(StageMassage(1, () => NextUnit()));
+                StartCoroutine(StageMassage(1, NextUnit));
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
@@ -227,9 +233,15 @@ public class StageManager : MonoBehaviour
     public void MoveSearch()
     {
         EventManager.StageGuideViewEnd();
-        m_testUnit.MoveEnd();
-        m_mapDatas = MapManager.Instance.StartSearch(m_testUnit);
-        m_mapDatas.ToList().ForEach(p => p.StagePanel.ViewMovePanel());
+        TurnUnit.MoveEnd();
+        m_mapDatas = MapManager.Instance.StartSearch(TurnUnit);
+        foreach (var mapData in m_mapDatas)
+        {
+            mapData.StagePanel.ViewMovePanel();
+        }
+        m_cursor.CursorStart();
+        TurnUnit.SetMoveEvent(m_cursor.CursorStop);
+        TurnUnit.SetMoveEvent(m_uI.CommandMoveEnd);
     }
     /// <summary>
     /// 攻撃範囲を検索し表示する
@@ -253,6 +265,10 @@ public class StageManager : MonoBehaviour
     public void CursorWap(int x,int z)
     {
         m_cursor.CursorWarp(x, z);
+    }
+    public void CursorActive()
+    {
+        m_cursor.CursorStart();
     }
     /// <summary>
     /// 指定箇所のユニットを返す

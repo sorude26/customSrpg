@@ -15,6 +15,7 @@ public class ButtonMaster : MonoBehaviour
     [SerializeField] protected Button[] m_buttons;
     /// <summary> 選択位置番号 </summary>
     protected int m_buttonNum = 0;
+    
     /// <summary>
     /// 選択肢を開く
     /// </summary>
@@ -22,7 +23,7 @@ public class ButtonMaster : MonoBehaviour
     {
         gameObject.SetActive(true);
         m_buttonNum = 0;
-        CursorMove();
+        StartCoroutine(CursorSet());
     }
     /// <summary>
     /// 選択肢を閉じる
@@ -39,8 +40,8 @@ public class ButtonMaster : MonoBehaviour
         if (m_buttonNum > 0)
         {
             m_buttonNum--;
-            CursorMove();
         }
+        CursorMove();
     }
     /// <summary>
     /// カーネル位置を下に移動する
@@ -50,8 +51,8 @@ public class ButtonMaster : MonoBehaviour
         if (m_buttonNum < m_buttons.Length - 1)
         {
             m_buttonNum++;
-            CursorMove();
         }
+        CursorMove();
     }
     /// <summary>
     /// カーソルを左へ移動する
@@ -74,5 +75,10 @@ public class ButtonMaster : MonoBehaviour
     public virtual void Decision()
     {
         m_buttons[m_buttonNum].onClick.Invoke();
+    }
+    protected IEnumerator CursorSet()
+    {
+        yield return new WaitForEndOfFrame();
+        CursorMove();
     }
 }

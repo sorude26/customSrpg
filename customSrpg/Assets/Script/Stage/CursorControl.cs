@@ -108,6 +108,11 @@ public class CursorControl : MonoBehaviour
         m_notCursor = true;
         m_cursor.SetActive(false);
     }
+    public void CursorStart()
+    {
+        m_notCursor = false;
+        m_cursor.SetActive(true);
+    }
     /// <summary>
     /// カーソルを指定箇所に移動する
     /// </summary>

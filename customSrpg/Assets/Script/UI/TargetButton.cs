@@ -23,6 +23,7 @@ public class TargetButton : ButtonMaster
         {
             m_buttonNum = m_targets.Count - 1;
         }
+        CursorMove();
     }
     public override void CursorRight()
     {
@@ -34,9 +35,20 @@ public class TargetButton : ButtonMaster
         {
             m_buttonNum = 0;
         }
+        CursorMove();
     }
     protected override void CursorMove()
     {
-        StageManager.Instance.CursorWap(m_targets[m_buttonNum].CurrentPosX, m_targets[m_buttonNum].CurrentPosZ);
+        if (m_targets != null && m_targets.Count > 0)
+        {
+            StageManager.Instance.CursorWap(m_targets[m_buttonNum].CurrentPosX, m_targets[m_buttonNum].CurrentPosZ);
+        }
+    }
+    public override void Decision()
+    {
+        if (m_targets.Count > 0)
+        {
+            
+        }
     }
 }

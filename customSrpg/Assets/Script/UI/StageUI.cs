@@ -19,15 +19,45 @@ public class StageUI : MonoBehaviour
     [SerializeField] ButtonMaster m_moveEndB;
     [SerializeField] ButtonMaster m_attackB;
     [SerializeField] ButtonMaster m_targetB;
-    [SerializeField] ButtonMaster m_targetButton;
+    ButtonMaster m_targetButton;
     [SerializeField] float m_changeSpeed = 0.2f;
     public event Action OnDecision;
     public event Action OnCancel;
     bool m_move;
     private void Start()
     {
+        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
+        foreach (var button in buttons)
+        {
+            button.Close();
+        }
+    }
+
+    public void CommandOpen()
+    {
         Stage.InputManager.Instance.OnInputArrow += CursorMove;
+        Stage.InputManager.Instance.OnInputDecision += Decision;
+        ButtonMaster[] buttons = { m_attackB, m_moveEndB, m_targetB };
+        foreach (var button in buttons)
+        {
+            button.Close();
+        }
+        m_actionB.Open();
         m_targetButton = m_actionB;
+    }
+    public void CommandClose()
+    {
+        Stage.InputManager.Instance.OnInputArrow -= CursorMove;
+        Stage.InputManager.Instance.OnInputDecision -= Decision;
+        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
+        foreach (var button in buttons)
+        {
+            button.Close();
+        }
+    }
+    public void CommandMoveEnd()
+    {
+        OnClickButton(1);
     }
     /// <summary>
     /// メッセージを開く
@@ -52,37 +82,45 @@ public class StageUI : MonoBehaviour
         m_decisionMassage.SetActive(false);
         OnCancel?.Invoke();
     }
+    void Decision()
+    {
+        m_targetButton?.Decision();
+    }
+    /// <summary>
+    /// カーソルを移動させる
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void CursorMove(float x,float y)
     {
         if (m_move)
         {
             return;
         }
-        StartCoroutine(CursorMoveStart(y));
+        StartCoroutine(CursorMoveStart(x,y));
     }
-    IEnumerator CursorMoveStart(float y)
+    IEnumerator CursorMoveStart(float x,float y)
     {
         m_move = true;
         if (y > 0)
         {
-            CursorUp();
+            m_targetButton?.CursorUp();
         }
         else if (y < 0)
         {
-            CursorDown();
+            m_targetButton?.CursorDown();
+        }
+        else if (x > 0)
+        {
+            m_targetButton?.CursorRight();
+        }
+        else if (x < 0)
+        {
+            m_targetButton?.CursorLeft();
         }
         yield return new WaitForSeconds(m_changeSpeed);
         m_move = false;
     }
-    public void CursorUp()
-    {
-        m_targetButton.CursorUp();
-    }
-    public void CursorDown()
-    {
-        m_targetButton.CursorDown();
-    }
-
     public void OnClickButton(int type)
     {
         ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
@@ -94,7 +132,8 @@ public class StageUI : MonoBehaviour
         {
             case 0://移動選択
                 StageManager.Instance.MoveSearch();
-                m_targetButton = m_actionB;
+                m_actionB.Close();
+                m_targetButton = null;
                 break;
             case 1://移動終了
                 m_targetButton = m_moveEndB;
@@ -119,7 +158,6 @@ public class StageUI : MonoBehaviour
             case 7://待機選択
                 m_targetButton = null;
                 OpenMassage();
-
                 break;
             default:
                 m_targetButton = null;
