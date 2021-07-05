@@ -67,7 +67,7 @@ public class ButtonMaster : MonoBehaviour
     /// </summary>
     protected virtual void CursorMove()
     {
-        m_targetMark.transform.localPosition = m_buttons[m_buttonNum].transform.localPosition;
+        m_targetMark.position = m_buttons[m_buttonNum].GetComponent<RectTransform>().position;
     }
     /// <summary>
     /// ボタンを押す

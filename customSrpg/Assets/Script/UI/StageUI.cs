@@ -146,6 +146,8 @@ public class StageUI : MonoBehaviour
                 break;
             case 4://移動後キャンセル選択
                 StageManager.Instance.TurnUnit.ReturnMove();
+                StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
+                EventManager.StageGuideViewEnd();
                 m_targetButton = m_actionB;
                 break;
             case 5://攻撃選択後キャンセル選択
