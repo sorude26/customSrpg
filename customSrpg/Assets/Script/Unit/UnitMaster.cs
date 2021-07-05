@@ -44,7 +44,11 @@ public class UnitMaster : MonoBehaviour
     {
         int hp = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        allParts.ToList().ForEach(parts => { if (parts != null) hp += parts.GetMaxHP(); });
+        foreach (var parts in allParts)
+        {
+            if (parts != null)
+                hp += parts.GetMaxHP();
+        }
         return hp;
     }
     /// <summary>
@@ -55,7 +59,11 @@ public class UnitMaster : MonoBehaviour
     {
         int hp = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        allParts.ToList().ForEach(parts => { if (parts != null) hp += parts.GetCurrentHP(); });
+        foreach (var parts in allParts)
+        {
+            if (parts != null)
+                hp += parts.GetCurrentHP();
+        }
         return hp;
     }
     /// <summary>
@@ -119,7 +127,7 @@ public class UnitMaster : MonoBehaviour
     {
         int weight = 0;
         IParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
-        allParts.ToList().ForEach(parts =>
+        foreach (var parts in allParts)
         {
             if (parts != null)
             {
@@ -128,7 +136,7 @@ public class UnitMaster : MonoBehaviour
                     weight += parts.GetWeight();
                 }
             }
-        });
+        }
         return weight;
     }
     /// <summary>
@@ -140,7 +148,7 @@ public class UnitMaster : MonoBehaviour
         int count = 0;
         int armor = 0;
         IUnitParts[] allparts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        allparts.ToList().ForEach(parts =>
+        foreach (var parts in allparts)
         {
             if (parts != null)
             {
@@ -150,7 +158,7 @@ public class UnitMaster : MonoBehaviour
                     count++;
                 }
             }
-        });
+        }
         return armor / count;
     }
     /// <summary>
@@ -251,13 +259,13 @@ public class UnitMaster : MonoBehaviour
     {
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
-        weapons.ToList().ForEach(weapon =>
+        foreach (var weapon in weapons)
         {
             if (weapon)
             {
                 weaponList.Add(weapon);
             }
-        });
+        }
         return weaponList.ToArray();
     }
     /// <summary>
@@ -268,7 +276,11 @@ public class UnitMaster : MonoBehaviour
     {
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
-        weapons.ToList().ForEach(weapon => { if (weapon != null) weaponList.Add(weapon); });
+        foreach (var weapon in weapons)
+        {
+            if (weapon != null) 
+                weaponList.Add(weapon);
+        }
         return weaponList.OrderByDescending(weapon => weapon.Power).FirstOrDefault();
     }
     /// <summary>
@@ -279,7 +291,11 @@ public class UnitMaster : MonoBehaviour
     {
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
-        weapons.ToList().ForEach(weapon => { if (weapon != null) weaponList.Add(weapon); });
+        foreach (var weapon in weapons)
+        {
+            if (weapon != null)
+                weaponList.Add(weapon);
+        }
         return weaponList.OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
     }
     /// <summary>
@@ -294,7 +310,7 @@ public class UnitMaster : MonoBehaviour
         }
         int hitPos = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
-        allParts.ToList().ForEach(parts =>
+        foreach (var parts in allParts)
         {
             if (parts != null)
             {
@@ -303,7 +319,7 @@ public class UnitMaster : MonoBehaviour
                     hitPos += parts.GetSize();
                 }
             }
-        });
+        }
         int r = UnityEngine.Random.Range(0, hitPos);
         int prb = 0;
         foreach (var parts in allParts)
@@ -343,13 +359,13 @@ public class UnitMaster : MonoBehaviour
     }
     public void BattleEndEvent()
     {
-        m_attackerWeapon.Attack -= PlayPartsDamegeEffect;
-        m_attackerWeapon.AttackEnd -= BattleEndEvent;
         if (GetCurrentHP() <= 0)
         {
             BodyBreak?.Invoke();
+            BodyBreak = null;
         }
         BattleEnd?.Invoke();
+        BattleEnd = null;
     }
     /// <summary>
     /// 胴体を登録する

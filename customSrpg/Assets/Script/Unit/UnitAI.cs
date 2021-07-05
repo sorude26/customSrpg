@@ -15,8 +15,14 @@ public class UnitAI : ScriptableObject
     public virtual void TargetPointSet(Unit unit)
     {
         var map = MapManager.Instance.StartSearch(unit);
-        map.ToList().ForEach(p => p.MapScore = 0);
-        map.ToList().ForEach(p => SetMapScore(unit, p));
+        foreach (var p in map)
+        {
+            p.MapScore = 0;
+        }
+        foreach (var p in map)
+        {
+            SetMapScore(unit, p);
+        }
     }
     /// <summary>
     /// 開始地点以外で高得点の座標があれば移動を開始する
@@ -26,7 +32,7 @@ public class UnitAI : ScriptableObject
     public virtual bool StartMove(Unit unit)
     {
         TargetPointSet(unit);
-        var target = MapManager.Instance.StartSearch(unit).ToList().OrderByDescending(t => t.MapScore).FirstOrDefault();
+        var target = MapManager.Instance.StartSearch(unit).OrderByDescending(t => t.MapScore).FirstOrDefault();
         //Debug.Log(target.PosX+","+ target.PosZ);
         if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
         {
@@ -44,13 +50,13 @@ public class UnitAI : ScriptableObject
     public virtual WeaponMaster StartAttack(Unit unit)
     {
         WeaponMaster attackWeapon = null;
-        var weapons = unit.GetUnitData().GetWeapons().ToList().OrderByDescending(weapon => weapon.Power);
+        var weapons = unit.GetUnitData().GetWeapons().OrderByDescending(weapon => weapon.Power);
         Unit target = null;
         foreach (var weapon in weapons)
         {
             int hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(weapon),unit);
             target = BattleManager.Instance.GetAttackTargets(MapManager.Instance.StartSearch(unit.CurrentPosX, unit.CurrentPosZ, weapon))
-            .ToList().Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
             if (target)
             {
                 BattleManager.Instance.SetTarget(target);
@@ -105,7 +111,7 @@ public class UnitAI : ScriptableObject
     protected Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
     {
         Unit target = BattleManager.Instance.GetAttackTargets(GetAttackPositions(point, weapon))
-            .ToList().Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
         return target;
     }
     /// <summary>
