@@ -96,10 +96,7 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.MoveEndEvent += action;
     }
-    public void RemoveMoveEvent(Action action)
-    {
-        m_movelControl.MoveEndEvent -= action;
-    }
+   
     /// <summary>
     /// 瞬時に目的地へ移動する
     /// </summary>
@@ -171,7 +168,6 @@ public class Unit : MonoBehaviour
     /// </summary>
     protected virtual void UnitDestroy()
     {
-        m_master.BodyBreak -= UnitDestroy;
         EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
         State = UnitState.Destory;
         gameObject.SetActive(false);

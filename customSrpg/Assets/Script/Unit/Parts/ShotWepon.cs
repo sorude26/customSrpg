@@ -18,10 +18,12 @@ public class ShotWepon : WeaponMaster
         {
             count--;
             m_attack?.Invoke();
+            m_attack = null;
             EffectManager.PlayEffect(EffectType.Shot, m_muzzle.position);
             yield return new WaitForSeconds(m_partsData.AttackInterval);
         }
         m_muzzleFlash.SetActive(false);
         m_attackEnd?.Invoke();
+        m_attackEnd = null;
     }
 }

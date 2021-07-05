@@ -76,7 +76,7 @@ public class NpcUnit : Unit
     protected void MoveModeEnd()
     {
         m_moveMode = false;
-        m_movelControl.MoveEndEvent -= MoveModeEnd;
+        //m_movelControl.MoveEndEvent -= MoveModeEnd;
     }
     /// <summary>
     /// 攻撃終了時に呼ぶ
@@ -84,7 +84,6 @@ public class NpcUnit : Unit
     protected void AttackModeEnd()
     {
         m_attackMode = false;
-        m_attackWeapon.AttackEnd -= AttackModeEnd;
         m_attackWeapon = null;
     }
     /// <summary>

@@ -14,7 +14,7 @@ public class PlayerUnit : Unit
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
-            StartCoroutine(StartAI());
+
         }
     }
     protected IEnumerator StartAI()
@@ -60,12 +60,11 @@ public class PlayerUnit : Unit
     protected void MoveModeEnd()
     {
         m_moveMode = false;
-        m_movelControl.MoveEndEvent -= MoveModeEnd;
+        //m_movelControl.MoveEndEvent -= MoveModeEnd;
     }
     protected void AttackModeEnd()
     {
         m_attackMode = false;
-        m_attackWeapon.AttackEnd -= AttackModeEnd;
         m_attackWeapon = null;
     }
 

@@ -113,6 +113,7 @@ public class UnitMovelControl : MonoBehaviour
         PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
         m_moveMode = false;
         MoveEndEvent?.Invoke();
+        MoveEndEvent = null;
     }
 
     /// <summary>

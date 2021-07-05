@@ -156,7 +156,6 @@ public class BattleManager : MonoBehaviour
     void AttackEnd() 
     { 
         m_attackNow = false;
-        m_target.GetUnitData().BattleEnd -= AttackEnd;
     }
     public int GetPointDurable(int maxHP, int currentHP) => m_calculator.GetPointDurable(maxHP, currentHP);
     public int GetPointDamage(int damage,int currentHP) => m_calculator.GetPointDamage(damage,currentHP);
