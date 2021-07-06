@@ -26,7 +26,7 @@ public class PlayerUnit : Unit
             yield return Attack();
             yield return End();
         }
-        ActionEnd();
+        UnitRest();
         StageManager.Instance.NextUnit();
     }
     protected IEnumerator Move()
@@ -55,7 +55,7 @@ public class PlayerUnit : Unit
         {
             yield return null;
         }
-        ActionEnd();
+        UnitRest();
     }
     protected void MoveModeEnd()
     {

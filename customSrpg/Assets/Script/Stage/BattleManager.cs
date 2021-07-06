@@ -20,6 +20,7 @@ public class BattleManager : MonoBehaviour
     Unit m_target;
     /// <summary> 攻撃中フラグ </summary>
     bool m_attackNow;
+    WeaponPosition m_weaponPos;
     private void Awake()
     {
         Instance = this;
@@ -42,7 +43,7 @@ public class BattleManager : MonoBehaviour
         var targetUnit = StageManager.Instance.GetStageUnits();
         foreach (var unit in targetUnit)
         {
-            var t = targetPos.Where(px => px.PosX == unit.CurrentPosX).Where(pz => pz.PosZ == unit.CurrentPosZ).FirstOrDefault();
+            var t = targetPos.Where(px => unit.State == UnitState.Stop && px.PosX == unit.CurrentPosX && px.PosZ == unit.CurrentPosZ).FirstOrDefault();
             if(t != null)
             {
                 m_attackTarget.Add(unit);
@@ -64,7 +65,7 @@ public class BattleManager : MonoBehaviour
         var targetUnit = StageManager.Instance.GetStageUnits();
         foreach (var unit in targetUnit)
         {
-            var t = targetPos.Where(px => px.PosX == unit.CurrentPosX).Where(pz => pz.PosZ == unit.CurrentPosZ).FirstOrDefault();
+            var t = targetPos.Where(px => unit.State == UnitState.Stop && px.PosX == unit.CurrentPosX && px.PosZ == unit.CurrentPosZ).FirstOrDefault();
             if (t != null)
             {
                 units.Add(unit);
@@ -120,6 +121,35 @@ public class BattleManager : MonoBehaviour
             Attack(m_target, hit, weapon.Power);
         }
         weapon.AttackStart();
+    }
+    public void AttackStart()
+    {
+        if (m_attackNow)
+        {
+            return;
+        }
+        EventManager.StageGuideViewEnd();
+        if (!m_target)
+        {
+            Debug.Log("攻撃対象不在");
+            return;
+        }
+        m_attackNow = true;
+        m_attacker.TargetLook(m_target);
+        m_target.TargetLook(m_attacker);
+        WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(m_weaponPos);
+        m_target.GetUnitData().SetBattleEvent(weapon);
+        m_target.GetUnitData().BattleEnd += AttackEnd;
+        int hit = GetHit(m_weaponPos);
+        for (int i = 0; i < weapon.MaxAttackNumber; i++)
+        {
+            Attack(m_target, hit, weapon.Power);
+        }
+        weapon.AttackStart();
+    }
+    public void SetWeaponPos(WeaponPosition weaponPos)
+    {
+        m_weaponPos = weaponPos;
     }
     /// <summary>
     /// 単発攻撃処理

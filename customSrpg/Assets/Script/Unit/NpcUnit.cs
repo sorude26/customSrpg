@@ -32,7 +32,7 @@ public class NpcUnit : Unit
         yield return Move();
         yield return Attack();
         yield return End();
-        ActionEnd();
+        UnitRest();
         StageManager.Instance.NextUnit();
     }
     /// <summary>
@@ -68,7 +68,7 @@ public class NpcUnit : Unit
         {
             yield return null;
         }
-        ActionEnd();
+        UnitRest();
     }
     /// <summary>
     /// 移動終了時に呼ぶ

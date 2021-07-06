@@ -56,11 +56,10 @@ public class UnitAI : ScriptableObject
         {
             int hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(weapon),unit);
             target = BattleManager.Instance.GetAttackTargets(MapManager.Instance.StartSearch(unit.CurrentPosX, unit.CurrentPosZ, weapon))
-            .Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
             if (target)
             {
                 BattleManager.Instance.SetTarget(target);
-                BattleManager.Instance.SetAttacker(unit);
                 BattleManager.Instance.AttackStart(unit.GetUnitData().GetWeaponPosition(weapon));
                 attackWeapon = weapon;
                 break;
@@ -111,7 +110,7 @@ public class UnitAI : ScriptableObject
     protected Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
     {
         Unit target = BattleManager.Instance.GetAttackTargets(GetAttackPositions(point, weapon))
-            .Where(u => u.State == UnitState.Stop).OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
         return target;
     }
     /// <summary>
