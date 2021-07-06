@@ -123,11 +123,11 @@ public class Unit : MonoBehaviour
         m_movelControl.TargetLook(target.transform.position);
     }
     /// <summary>
-    /// 停止中のユニットを待機状態にする
+    /// 停止、休息中のユニットを待機状態にする
     /// </summary>
     public virtual void WakeUp()
     {
-        if (State == UnitState.Stop)
+        if (State == UnitState.Stop || State == UnitState.Rest)
         {
             State = UnitState.StandBy;
         }
@@ -143,14 +143,13 @@ public class Unit : MonoBehaviour
         }
     }
     /// <summary>
-    /// 行動中のユニットを休息状態にする
+    /// 停止、行動中のユニットを休息状態にする
     /// </summary>
-    public virtual void ActionEnd()
+    public virtual void UnitRest()
     {
-        if (State == UnitState.Action)
+        if (State == UnitState.Stop || State == UnitState.Action)
         {
-            State = UnitState.Rest;
-            //StageManager.Instance.NextUnit();
+            State = UnitState.Rest;            
         }
     }
     /// <summary>

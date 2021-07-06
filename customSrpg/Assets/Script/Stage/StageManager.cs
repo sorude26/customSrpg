@@ -108,6 +108,7 @@ public class StageManager : MonoBehaviour
             unit.StartUp();
             m_cursor.CursorWarp(unit);
             m_cursor.CursorStop();
+            BattleManager.Instance.SetAttacker(TurnUnit);
         }
     }
     /// <summary>
@@ -140,6 +141,7 @@ public class StageManager : MonoBehaviour
                 Turn = TurnState.Player;
                 Debug.Log("PlayerTurn");
                 m_players.ToList().ForEach(p => p.WakeUp());
+                m_allies.ToList().ForEach(a => a.UnitRest());
                 maxTurn--;
                 if (maxTurn < 0)
                 {
@@ -170,7 +172,7 @@ public class StageManager : MonoBehaviour
     {
         Turn = TurnState.Player;
         m_players.ToList().ForEach(p => p.StartUp());
-        m_players.ToList().ForEach(p => p.ActionEnd());
+        m_players.ToList().ForEach(p => p.UnitRest());
         m_allies.ToList().ForEach(a => a.StartUp());
         TurnEnd();
     }
@@ -198,7 +200,7 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
-        var on = m_mapDatas.ToList().Where(mx => mx.PosX == x).Where(mz => mz.PosZ == z).FirstOrDefault();
+        var on = m_mapDatas.ToList().Where(mx => mx.PosX == x && mx.PosZ == z).FirstOrDefault();
         if (on == null)
         {
             return;
@@ -225,7 +227,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void UnitActionEnd()
     {
-        TurnUnit.ActionEnd();
+        TurnUnit.UnitRest();
     }
     /// <summary>
     /// 移動範囲を検索し表示する
@@ -251,7 +253,10 @@ public class StageManager : MonoBehaviour
         m_battleManager.SetAttacker(m_testUnit);
         EventManager.AttackSearchEnd();
         m_attackDatas = MapManager.Instance.StartSearch(x, z, m_testWeapon);
-        m_attackDatas.ToList().ForEach(p => p.StagePanel.ViewAttackPanel());
+        foreach (var target in m_attackDatas)
+        {
+            target.StagePanel.ViewAttackPanel();
+        }
         m_battleManager.SetAttackTargets();
     }
     public void AttackSearch(WeaponPosition position)
@@ -259,7 +264,10 @@ public class StageManager : MonoBehaviour
         m_battleManager.SetAttacker(TurnUnit);
         EventManager.AttackSearchEnd();
         m_attackDatas = MapManager.Instance.StartSearch(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ, TurnUnit.GetUnitData().GetWeapon(position));
-        m_attackDatas.ToList().ForEach(p => p.StagePanel.ViewAttackPanel());
+        foreach (var target in m_attackDatas)
+        {
+            target.StagePanel.ViewAttackPanel();
+        }
         m_battleManager.SetAttackTargets();
     }
     public void CursorWap(int x,int z)
@@ -276,7 +284,7 @@ public class StageManager : MonoBehaviour
     /// <param name="p"></param>
     /// <returns></returns>
     public Unit GetPositionUnit(int p) =>
-        m_units.Where(mu => mu.State != UnitState.Destory).Where(u => MapManager.Instance.GetPosition(u.CurrentPosX,u.CurrentPosZ) == p).FirstOrDefault();
+        m_units.Where(mu => mu.State != UnitState.Destory && MapManager.Instance.GetPosition(mu.CurrentPosX,mu.CurrentPosZ) == p).FirstOrDefault();
     /// <summary>
     /// 指定箇所のユニットを返す
     /// </summary>
@@ -284,7 +292,7 @@ public class StageManager : MonoBehaviour
     /// <param name="z"></param>
     /// <returns></returns>
     public Unit GetPositionUnit(int x, int z) => 
-        m_units.Where(mu => mu.State != UnitState.Destory).Where(mx => mx.CurrentPosX == x).Where(mz => mz.CurrentPosZ == z).FirstOrDefault();
+        m_units.Where(mu => mu.State != UnitState.Destory && mu.CurrentPosX == x && mu.CurrentPosZ == z).FirstOrDefault();
     /// <summary>
     /// 現在の全ユニットを返す
     /// </summary>
