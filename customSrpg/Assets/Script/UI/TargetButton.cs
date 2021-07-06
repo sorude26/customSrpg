@@ -46,9 +46,10 @@ public class TargetButton : ButtonMaster
     }
     public override void Decision()
     {
-        if (m_targets.Count > 0)
+        if (m_targets != null && m_targets.Count > 0)
         {
-            
+            BattleManager.Instance.SetTarget(m_targets[m_buttonNum]);
+            BattleManager.Instance.AttackStart();
         }
     }
 }
