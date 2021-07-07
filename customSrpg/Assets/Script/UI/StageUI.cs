@@ -151,7 +151,9 @@ public class StageUI : MonoBehaviour
                 m_targetButton = m_actionB;
                 break;
             case 5://攻撃選択後キャンセル選択
-                EventManager.AttackSearchEnd();
+                StageManager.Instance.TurnUnit.ReturnMove();
+                StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
+                EventManager.StageGuideViewEnd();
                 m_targetButton = m_actionB;
                 break;
             case 6://武装選択後キャンセル選択

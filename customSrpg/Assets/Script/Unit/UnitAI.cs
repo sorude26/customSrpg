@@ -33,7 +33,6 @@ public class UnitAI : ScriptableObject
     {
         TargetPointSet(unit);
         var target = MapManager.Instance.StartSearch(unit).OrderByDescending(t => t.MapScore).FirstOrDefault();
-        //Debug.Log(target.PosX+","+ target.PosZ);
         if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
         {
             return false;
@@ -118,11 +117,8 @@ public class UnitAI : ScriptableObject
     /// </summary>
     /// <param name="point"></param>
     /// <param name="score"></param>
-    protected void SetScore(MapData point, int score)
+    protected void SetScore(MapData point, int score) 
     {
-        if (point.MapScore < score) 
-        {
-            point.MapScore = score;           
-        } 
+        if (point.MapScore < score) { point.MapScore = score; } 
     }
 }
