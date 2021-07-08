@@ -25,7 +25,6 @@ public class StageManager : MonoBehaviour
     public TurnState Turn { get; private set; }
     /// <summary> 行動中のユニット </summary>
     public Unit TurnUnit { get; private set; }
-    [SerializeField] Unit m_testUnit;
     [Tooltip("プレイヤーの全ユニット")]
     [SerializeField] Unit[] m_players;
     [Tooltip("友軍の全ユニット")]
@@ -44,8 +43,6 @@ public class StageManager : MonoBehaviour
     MapData[] m_attackDatas;
     bool attack;
     bool m_gameEnd;
-    int maxTurn = 10;
-    bool next;
     private void Awake()
     {
         Instance = this;
@@ -54,7 +51,6 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        m_units.Add(m_testUnit);
         m_players.ToList().ForEach(p => m_units.Add(p));
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
@@ -73,7 +69,7 @@ public class StageManager : MonoBehaviour
         switch (Turn)
         {
             case TurnState.Player:
-                Unit unit = m_players.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                Unit unit = m_players.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 if (unit)
                 {
                     m_uI.CommandOpen();
@@ -81,11 +77,11 @@ public class StageManager : MonoBehaviour
                 SetNextUnit(unit);
                 break;
             case TurnState.Allies:
-                NpcUnit ally = m_allies.ToList().Where(a => a.State == UnitState.StandBy).FirstOrDefault();
+                NpcUnit ally = m_allies.Where(a => a.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(ally);
                 break;
             case TurnState.Enemy:
-                NpcUnit enemy = m_enemys.ToList().Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                NpcUnit enemy = m_enemys.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(enemy);
                 break;
             default:
@@ -120,7 +116,6 @@ public class StageManager : MonoBehaviour
         {
             case TurnState.Player:
                 Turn = TurnState.Allies;
-                Debug.Log("EnemyTurn");
                 m_allies.ToList().ForEach(a => a.WakeUp());
                 m_targetMark.SetActive(false);
                 NextUnit();
@@ -139,14 +134,8 @@ public class StageManager : MonoBehaviour
                 break;
             case TurnState.End:
                 Turn = TurnState.Player;
-                Debug.Log("PlayerTurn");
                 m_players.ToList().ForEach(p => p.WakeUp());
                 m_allies.ToList().ForEach(a => a.UnitRest());
-                maxTurn--;
-                if (maxTurn < 0)
-                {
-                    return;
-                }
                 StartCoroutine(StageMassage(0, () => NextUnit()));
                 break;
             default:
@@ -179,8 +168,8 @@ public class StageManager : MonoBehaviour
     public void TestAttack()
     {
         attack = true;
-        m_testUnit.MoveSkep();
-        AttackSearch(m_testUnit.CurrentPosX, m_testUnit.CurrentPosZ);
+        TurnUnit.MoveSkep();
+        AttackSearch(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
     }
     public void TestTargetAttack()
     {
@@ -200,16 +189,19 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
-        var on = m_mapDatas.ToList().Where(mx => mx.PosX == x && mx.PosZ == z).FirstOrDefault();
+        var on = m_mapDatas.Where(mx => mx.PosX == x && mx.PosZ == z).FirstOrDefault();
         if (on == null)
         {
             return;
         }
         m_cursor.CursorWarp(x, z);
-        m_testUnit.TargetMoveStart(x, z);
+        TurnUnit.TargetMoveStart(x, z);
         m_targetMark.SetActive(true);
         m_targetMark.transform.position = m_cursor.transform.position;
     }
+    /// <summary>
+    /// 終了条件の確認
+    /// </summary>
     private void CheckGameEnd()
     {
         foreach (var unit in m_players)
@@ -250,7 +242,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     public void AttackSearch(int x, int z)
     {
-        m_battleManager.SetAttacker(m_testUnit);
+        m_battleManager.SetAttacker(TurnUnit);
         EventManager.AttackSearchEnd();
         m_attackDatas = MapManager.Instance.StartSearch(x, z, m_testWeapon);
         foreach (var target in m_attackDatas)
@@ -259,6 +251,9 @@ public class StageManager : MonoBehaviour
         }
         m_battleManager.SetAttackTargets();
     }
+    /// <summary>
+    /// 攻撃範囲を検索し表示する
+    /// </summary>
     public void AttackSearch(WeaponPosition position)
     {
         m_battleManager.SetAttacker(TurnUnit);
