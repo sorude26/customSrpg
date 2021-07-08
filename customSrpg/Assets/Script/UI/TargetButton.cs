@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -49,7 +50,7 @@ public class TargetButton : ButtonMaster
         if (m_targets != null && m_targets.Count > 0)
         {
             BattleManager.Instance.SetTarget(m_targets[m_buttonNum]);
-            BattleManager.Instance.AttackStart();
+            m_decision?.Invoke();
         }
     }
 }

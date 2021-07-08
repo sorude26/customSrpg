@@ -14,77 +14,77 @@ public enum ButtonType
 
 public class StageUI : MonoBehaviour
 {
-    [SerializeField] GameObject m_decisionMassage;
     [SerializeField] ButtonMaster m_actionB;
     [SerializeField] ButtonMaster m_moveEndB;
     [SerializeField] ButtonMaster m_attackB;
     [SerializeField] ButtonMaster m_targetB;
+    [SerializeField] ButtonMaster m_decisionB;
     ButtonMaster m_targetButton;
     [SerializeField] float m_changeSpeed = 0.2f;
-    public event Action OnDecision;
-    public event Action OnCancel;
+    bool m_cursorMove;
     bool m_move;
+    bool m_attack;
     private void Start()
     {
-        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
-        foreach (var button in buttons)
-        {
-            button.Close();
-        }
+        m_targetB.OnDecision += Attack;
+        AllButtonClose();
     }
 
     public void CommandOpen()
     {
         Stage.InputManager.Instance.OnInputArrow += CursorMove;
         Stage.InputManager.Instance.OnInputDecision += Decision;
-        ButtonMaster[] buttons = { m_attackB, m_moveEndB, m_targetB };
-        foreach (var button in buttons)
-        {
-            button.Close();
-        }
+        AllButtonClose();
         m_actionB.Open();
         m_targetButton = m_actionB;
     }
     public void CommandClose()
     {
+        m_move = false;
+        m_attack = false;
         Stage.InputManager.Instance.OnInputArrow -= CursorMove;
         Stage.InputManager.Instance.OnInputDecision -= Decision;
-        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
-        foreach (var button in buttons)
-        {
-            button.Close();
-        }
+        AllButtonClose();
     }
     public void CommandMoveEnd()
     {
         OnClickButton(1);
     }
-    /// <summary>
-    /// メッセージを開く
-    /// </summary>
-    public void OpenMassage()
-    {
-        m_decisionMassage.SetActive(true);
-    }
+
     /// <summary>
     /// 決定ボタンを押したとき呼ぶ
     /// </summary>
     public void OnClickDecision()
     {
-        m_decisionMassage.SetActive(false);
-        OnDecision?.Invoke();
+        if (m_attack)
+        {
+            BattleManager.Instance.AttackStart();
+            CommandClose();
+            m_attack = false;
+        }
+        else
+        {
+            StageManager.Instance.TurnUnit.UnitRest();
+            StageManager.Instance.NextUnit();
+            CommandClose();
+        }
     }
     /// <summary>
     /// キャンセルボタンを押した時に呼ぶ
     /// </summary>
     public void OnClickCancel()
     {
-        m_decisionMassage.SetActive(false);
-        OnCancel?.Invoke();
+        
     }
     void Decision()
     {
         m_targetButton?.Decision();
+    }
+    void Attack()
+    {
+        AllButtonClose();
+        m_decisionB.Open();
+        m_attack = true;
     }
     /// <summary>
     /// カーソルを移動させる
@@ -93,7 +93,7 @@ public class StageUI : MonoBehaviour
     /// <param name="y"></param>
     public void CursorMove(float x,float y)
     {
-        if (m_move)
+        if (m_cursorMove)
         {
             return;
         }
@@ -101,7 +101,7 @@ public class StageUI : MonoBehaviour
     }
     IEnumerator CursorMoveStart(float x,float y)
     {
-        m_move = true;
+        m_cursorMove = true;
         if (y > 0)
         {
             m_targetButton?.CursorUp();
@@ -119,21 +119,18 @@ public class StageUI : MonoBehaviour
             m_targetButton?.CursorLeft();
         }
         yield return new WaitForSeconds(m_changeSpeed);
-        m_move = false;
+        m_cursorMove = false;
     }
     public void OnClickButton(int type)
     {
-        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB };
-        foreach (var button in buttons)
-        {
-            button.Close();
-        }
+        AllButtonClose();
         switch (type)
         {
             case 0://移動選択
                 StageManager.Instance.MoveSearch();
                 m_actionB.Close();
                 m_targetButton = null;
+                m_move = true;
                 break;
             case 1://移動終了
                 m_targetButton = m_moveEndB;
@@ -149,24 +146,41 @@ public class StageUI : MonoBehaviour
                 StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
                 EventManager.StageGuideViewEnd();
                 m_targetButton = m_actionB;
+                m_move = false;
                 break;
             case 5://攻撃選択後キャンセル選択
-                StageManager.Instance.TurnUnit.ReturnMove();
-                StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
-                EventManager.StageGuideViewEnd();
-                m_targetButton = m_actionB;
+                if (!m_move)
+                {
+                    StageManager.Instance.TurnUnit.ReturnMove();
+                    StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
+                    EventManager.StageGuideViewEnd();
+                    m_targetButton = m_actionB;
+                }
+                else//移動後攻撃択後キャンセル選択
+                {
+                    EventManager.AttackSearchEnd();
+                    m_targetButton = m_moveEndB;
+                }
                 break;
-            case 6://武装選択後キャンセル選択
-                m_targetButton = m_attackB;
+            case 6:
+                EventManager.AttackSearchEnd();
+                m_targetButton = m_moveEndB;
                 break;
             case 7://待機選択
-                m_targetButton = null;
-                OpenMassage();
+                m_targetButton = m_decisionB;
                 break;
             default:
                 m_targetButton = null;
                 break;
         }
         m_targetButton?.Open();
+    }
+    void AllButtonClose()
+    {
+        ButtonMaster[] buttons = { m_actionB, m_attackB, m_moveEndB, m_targetB, m_decisionB };
+        foreach (var button in buttons)
+        {
+            button.Close();
+        }
     }
 }

@@ -48,9 +48,10 @@ public class UnitMovelControl : MonoBehaviour
         Left,
         Right,
     }
-    [SerializeField] public UnitAngle m_unitAngle = UnitAngle.Back;
+    /// <summary> ユニットの向き </summary>
+    [SerializeField] protected UnitAngle m_unitAngle = UnitAngle.Back;
+    /// <summary> 現在の向き </summary>
     protected UnitAngle m_currentAngle;
-
     
     /// <summary>
     /// 位置の初期化と位置決定時のイベント登録
@@ -130,11 +131,11 @@ public class UnitMovelControl : MonoBehaviour
     }
 
     /// <summary>
-    /// 移動処理
+    /// 移動・昇降、方向変更処理
     /// </summary>
     protected void Move()
     {
-        if (m_movePos.x != m_targetPos.x) //移動・昇降、方向変更処理
+        if (m_movePos.x != m_targetPos.x)
         {
             MoveAround(ref m_movePos.x, m_targetPos.x, UnitAngle.Right, UnitAngle.Left);
         }
@@ -281,6 +282,10 @@ public class UnitMovelControl : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// 指定座標の方向を向く
+    /// </summary>
+    /// <param name="target"></param>
     public void TargetLook(Vector3 target)
     {
         Vector3 targetDir = target - transform.position;
@@ -317,7 +322,6 @@ public class UnitMovelControl : MonoBehaviour
         LiftingForce = liftingForce;
         m_unitMoveList = new List<Vector2Int>();
         m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
-        Debug.Log("save");
         int p = m_gameMap.GetPosition(targetX, targetZ);
         SearchCross(p, moveList[p].MovePoint, moveList);
     }
@@ -362,15 +366,15 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (m_moveMode) { return; }//検索終了か確認
         if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return; }//マップ範囲内か確認
-        if (movePower + moveCost != moveList[p].MovePoint) { return; } //一つ前の座標か確認
-        if (Mathf.Abs(moveList[p].Level - currentLevel) > LiftingForce) { return; }
+        if (movePower + moveCost != moveList[p].MovePoint) { return; }//一つ前の座標か確認
+        if (Mathf.Abs(moveList[p].Level - currentLevel) > LiftingForce) { return; }//高低差の確認
+
         movePower = moveList[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存
-        //Debug.Log(pos + "," + m_startPosX + "," + m_startPosZ);
+
         if (m_startPosX == m_gameMap.MapDatas[p].PosX && m_startPosZ == m_gameMap.MapDatas[p].PosZ) //初期地点か確認
         {
-            Debug.Log("start");
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
             UnitAngleSet();

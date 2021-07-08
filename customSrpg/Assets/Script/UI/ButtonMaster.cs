@@ -15,7 +15,8 @@ public class ButtonMaster : MonoBehaviour
     [SerializeField] protected Button[] m_buttons;
     /// <summary> 選択位置番号 </summary>
     protected int m_buttonNum = 0;
-    
+    public event Action OnDecision { add => m_decision += value; remove => m_decision -= value; }
+    protected Action m_decision;
     /// <summary>
     /// 選択肢を開く
     /// </summary>
