@@ -14,7 +14,6 @@ public class PlayerUnit : Unit
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
-
         }
     }
     protected IEnumerator StartAI()

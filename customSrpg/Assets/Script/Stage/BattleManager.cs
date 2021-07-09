@@ -122,6 +122,9 @@ public class BattleManager : MonoBehaviour
         }
         weapon.AttackStart();
     }
+    /// <summary>
+    /// プレイヤーの攻撃開始
+    /// </summary>
     public void AttackStart()
     {
         if (m_attackNow)
@@ -140,6 +143,7 @@ public class BattleManager : MonoBehaviour
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(m_weaponPos);
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
+        m_target.GetUnitData().BattleEnd += StageManager.Instance.NextUnit;
         int hit = GetHit(m_weaponPos);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)
         {

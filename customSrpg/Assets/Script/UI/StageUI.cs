@@ -60,7 +60,6 @@ public class StageUI : MonoBehaviour
         {
             BattleManager.Instance.AttackStart();
             CommandClose();
-            m_attack = false;
         }
         else
         {
@@ -84,6 +83,7 @@ public class StageUI : MonoBehaviour
     {
         AllButtonClose();
         m_decisionB.Open();
+        m_targetButton = m_decisionB;
         m_attack = true;
     }
     /// <summary>
