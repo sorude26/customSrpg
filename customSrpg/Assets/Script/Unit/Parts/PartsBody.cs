@@ -20,9 +20,11 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
     [SerializeField] Transform m_lArmParts;
     /// <summary> 右手パーツ接続部 </summary>
     [SerializeField] Transform m_rArmParts;
-
     /// <summary> 内蔵武器 </summary>
     [SerializeField] WeaponMaster m_weapon;
+    public Transform HeadPos { get => m_headParts; }
+    public Transform LArmPos { get => m_lArmParts; }
+    public Transform RArmPos { get => m_rArmParts; }
     /// <summary> 内蔵武器 </summary>
     public WeaponMaster BodyWeapon { get => m_weapon; }
     

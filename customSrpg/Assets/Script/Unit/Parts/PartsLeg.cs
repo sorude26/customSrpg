@@ -12,8 +12,21 @@ public class PartsLeg : UnitPartsMaster<LegData>
     public int CurrentAvoidance { get; private set; }
     /// <summary> 脚部パーツの頂点 </summary>
     [SerializeField] Transform m_legTop;
+    [SerializeField] Transform m_lLeg1;
+    [SerializeField] Transform m_lLeg2;
+    [SerializeField] Transform m_lLeg3;
+    [SerializeField] Transform m_rLeg1;
+    [SerializeField] Transform m_rLeg2;
+    [SerializeField] Transform m_rLeg3;
+
     /// <summary> 脚部パーツの頂点 </summary>
     public Transform LegTop { get => m_legTop; }
+    public Transform LLeg1 { get => m_lLeg1; }
+    public Transform LLeg2 { get => m_lLeg2; }
+    public Transform LLeg3 { get => m_lLeg3; }
+    public Transform RLeg1 { get => m_rLeg1; }
+    public Transform RLeg2 { get => m_rLeg2; }
+    public Transform RLeg3 { get => m_rLeg3; }
     protected override void StartSet()
     {
         CurrentMovePower = m_partsData.MovePower;
