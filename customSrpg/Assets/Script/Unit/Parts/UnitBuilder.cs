@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// ユニットを生成する
+/// </summary>
 public class UnitBuilder : MonoBehaviour
 {
     [SerializeField] PartsHead m_head;
@@ -9,6 +12,7 @@ public class UnitBuilder : MonoBehaviour
     [SerializeField] PartsArm m_rArm;
     [SerializeField] PartsArm m_lArm;
     [SerializeField] PartsLeg m_leg;
+    [SerializeField] GameObject m_weapon;
     [SerializeField] Transform headP;
     [SerializeField] Transform bodybP;
     [SerializeField] Transform lArmbP;
@@ -32,6 +36,26 @@ public class UnitBuilder : MonoBehaviour
     /// ユニットを生成し、各関節と連携させる。アニメーション設定前に呼ぶ
     /// </summary>
     public void UnitBuilde()
+    {
+        switch (m_body.BodyPartsType)
+        {
+            case UnitType.Human:
+                HumanBuild();
+                break;
+            case UnitType.Walker:
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            default:
+                break;
+        }
+    }
+    /// <summary>
+    /// 人型の機体を生成する
+    /// </summary>
+    void HumanBuild()
     {
         var leg = Instantiate(m_leg);
         leg.transform.position = legbP.position;
@@ -72,5 +96,13 @@ public class UnitBuilder : MonoBehaviour
         var head = Instantiate(m_head);
         head.transform.position = headP.position;
         head.transform.SetParent(headP);
+        var weapon = Instantiate(m_weapon);
+        weapon.transform.position = rArm.Grip.position;
+        weapon.transform.rotation = Quaternion.Euler(90, 0, 0);
+        weapon.transform.SetParent(rArm.Grip);
+        var weapon2 = Instantiate(m_weapon);
+        weapon2.transform.position = lArm.Grip.position;
+        weapon2.transform.rotation = Quaternion.Euler(90, 0, 0);
+        weapon2.transform.SetParent(lArm.Grip);
     }
 }

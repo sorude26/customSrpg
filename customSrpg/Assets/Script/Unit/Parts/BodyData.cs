@@ -16,7 +16,7 @@ public class BodyData : UnitPartsData
     [Tooltip("命中精度")]
     [SerializeField] int m_hitAccuracy;
     [Tooltip("機体タイプ")]
-    [SerializeField] BodyType m_bodyType = BodyType.Human;
+    [SerializeField] UnitType m_bodyType = UnitType.Human;
     /// <summary> 機体出力 </summary>
     public int UnitOutput { get => m_unitOutput; }
     /// <summary> 昇降力 </summary>
@@ -28,5 +28,5 @@ public class BodyData : UnitPartsData
     /// <summary> 命中精度 </summary>
     public int HitAccuracy { get => m_hitAccuracy; }
     /// <summary> 機体タイプ </summary>
-    public BodyType BodyPartsType { get => m_bodyType; }
+    public UnitType BodyPartsType { get => m_bodyType; }
 }

@@ -5,9 +5,10 @@ using UnityEngine;
 /// <summary>
 /// 機体のタイプ
 /// </summary>
-public enum BodyType
+public enum UnitType
 {
     Human,
+    Walker,
     Helicopter,
     Tank,
 }

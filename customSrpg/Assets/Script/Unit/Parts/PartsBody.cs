@@ -13,7 +13,7 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
     /// <summary> 命中精度 </summary>
     public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 機体タイプ </summary>
-    public BodyType BodyPartsType { get => m_partsData.BodyPartsType; }
+    public UnitType BodyPartsType { get => m_partsData.BodyPartsType; }
     /// <summary> ヘッドパーツ接続部 </summary>
     [SerializeField] Transform m_headParts;
     /// <summary> 左手パーツ接続部 </summary>
