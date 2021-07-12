@@ -30,19 +30,20 @@ public class UnitBuilder : MonoBehaviour
     [SerializeField] Transform rLeg3P;
     private void Awake()
     {
-        UnitBuilde();
+        BuildUnit();
     }
     /// <summary>
     /// ユニットを生成し、各関節と連携させる。アニメーション設定前に呼ぶ
     /// </summary>
-    public void UnitBuilde()
+    public void BuildUnit()
     {
         switch (m_body.BodyPartsType)
         {
             case UnitType.Human:
-                HumanBuild();
+                BuildHuman();
                 break;
             case UnitType.Walker:
+                BuildWalker();
                 break;
             case UnitType.Helicopter:
                 break;
@@ -55,7 +56,7 @@ public class UnitBuilder : MonoBehaviour
     /// <summary>
     /// 人型の機体を生成する
     /// </summary>
-    void HumanBuild()
+    void BuildHuman()
     {
         var leg = Instantiate(m_leg);
         leg.transform.position = legbP.position;
@@ -104,5 +105,30 @@ public class UnitBuilder : MonoBehaviour
         weapon2.transform.position = lArm.Grip.position;
         weapon2.transform.rotation = Quaternion.Euler(90, 0, 0);
         weapon2.transform.SetParent(lArm.Grip);
+    }
+    /// <summary>
+    /// 歩行兵器を生成する
+    /// </summary>
+    void BuildWalker()
+    {
+        var leg = Instantiate(m_leg);
+        leg.transform.position = legbP.position;
+        leg.transform.SetParent(legbP);
+        lLeg1P.transform.position = leg.LLeg1.position;
+        lLeg2P.transform.position = leg.LLeg2.position;
+        lLeg3P.transform.position = leg.LLeg3.position;
+        rLeg1P.transform.position = leg.RLeg1.position;
+        rLeg2P.transform.position = leg.RLeg2.position;
+        rLeg3P.transform.position = leg.RLeg3.position;
+        leg.LLeg1.SetParent(lLeg1P);
+        leg.LLeg2.SetParent(lLeg2P);
+        leg.LLeg3.SetParent(lLeg3P);
+        leg.RLeg1.SetParent(rLeg1P);
+        leg.RLeg2.SetParent(rLeg2P);
+        leg.RLeg3.SetParent(rLeg3P);
+        bodybP.transform.position = leg.LegTop.position;
+        var body = Instantiate(m_body);
+        body.transform.position = bodybP.position;
+        body.transform.SetParent(bodybP);
     }
 }

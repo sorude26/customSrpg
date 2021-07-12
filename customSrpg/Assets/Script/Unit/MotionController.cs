@@ -16,8 +16,7 @@ public enum MotionType
 /// </summary>
 public class MotionController : MonoBehaviour
 {
-
-    protected MotionType motionType = MotionType.Wait;
+    [SerializeField] UnitType m_unitType;
     private Animator m_anime;
     private void Start()
     {
@@ -33,7 +32,21 @@ public class MotionController : MonoBehaviour
     /// </summary>
     public virtual void TargetShotRArm()
     {
-        m_anime.Play("HumanAttackRArm");
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("HumanAttackRArm");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("WalkerAttack");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            default:
+                break;
+        }
     }
     public virtual void TargetShotLArm()
     {
