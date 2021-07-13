@@ -20,8 +20,6 @@ public class WeaponMaster : PartsMaster<WeaponData>
     public float VerticalRange { get => m_partsData.VerticalRange; }
     /// <summary> 武器種 </summary>
     public WeaponType Type { get => m_partsData.Type; }
-    /// <summary> 武器所有者 </summary>
-    public Unit Owner { get; private set; }
     /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
     /// <summary> 攻撃時のイベント </summary>
@@ -32,13 +30,12 @@ public class WeaponMaster : PartsMaster<WeaponData>
     protected Action m_attackEnd;
     
     /// <summary>
-    /// 武装部位、武器所有者を設定する
+    /// 武装部位を設定する
     /// </summary>
     /// <param name="position"></param>
-    public void SetWeaponPosition(WeaponPosition position,Unit owner)
+    public void SetWeaponPosition(WeaponPosition position)
     {
         WPosition = position;
-        Owner = owner;
     }
     public virtual void AttackStart() { }
 }

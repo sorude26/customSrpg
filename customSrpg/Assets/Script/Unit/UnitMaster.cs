@@ -159,6 +159,10 @@ public class UnitMaster : MonoBehaviour
                 }
             }
         }
+        if (count == 0)
+        {
+            return 0;
+        }
         return armor / count;
     }
     /// <summary>

@@ -9,11 +9,11 @@ public class MotionController : MonoBehaviour
 {
     [SerializeField] UnitType m_unitType;
     private Animator m_anime;
-    private void Start()
+    public void StartSet()
     {
         m_anime = GetComponent<Animator>();
+        Wait();
     }
-
     public virtual void Wait()
     {
         m_anime.Play("HumanWait");

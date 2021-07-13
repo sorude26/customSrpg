@@ -41,17 +41,7 @@ public class Unit : MonoBehaviour
     /// <summary> ユニットの状態 </summary>
     public UnitState State { get; protected set; }
     //仮データ
-    /// <summary> 機体胴体 </summary>
-    [SerializeField] protected PartsBody m_body = null;
-    /// <summary> 機体頭部 </summary>
-    [SerializeField] protected PartsHead m_head = null;
-    /// <summary> 機体左手 </summary>
-    [SerializeField] protected PartsArm m_lArm = null;
-    /// <summary> 機体右手 </summary>
-    [SerializeField] protected PartsArm m_rArm = null;
-    /// <summary> 機体脚部 </summary>
-    [SerializeField] protected PartsLeg m_leg = null;
-    [SerializeField] protected WeaponMaster m_testWeapom = null;
+    [SerializeField] UnitBuildData m_data;
     private void Awake()
     {
         State = UnitState.Stop;
@@ -66,12 +56,8 @@ public class Unit : MonoBehaviour
         CurrentPosZ = m_startPos.y;
         m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_master.BodyBreak += UnitDestroy;
-        m_master.SetParts(m_body);
-        m_master.SetParts(m_head);
-        m_master.SetParts(m_lArm);
-        m_master.SetParts(m_rArm);
-        m_master.SetParts(m_leg);
-        m_master.SetParts(m_testWeapom);
+        m_builder.SetData(m_data, ref m_master);
+        m_motion.StartSet();
     }
     public UnitMaster GetUnitData() => m_master;
     /// <summary>
