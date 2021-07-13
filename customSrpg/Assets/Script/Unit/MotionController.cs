@@ -2,15 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum MotionType
-{
-    Wait,
-    Walk,
-    Jump,
-    Landing,
-    Fly,
-    Dash,
-}
 /// <summary>
 /// 機体ごとにモーションを変更可能にする
 /// </summary>
@@ -72,14 +63,5 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanWaitHeavyDamage");
     }
-    /// <summary>
-    /// 指定したモーションを再生する
-    /// </summary>
-    /// <param name="type"></param>
-    public virtual void MotionTypeChange(MotionType type)
-    {
-
-    }
-
 }
 

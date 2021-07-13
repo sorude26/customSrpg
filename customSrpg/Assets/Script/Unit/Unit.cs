@@ -30,6 +30,8 @@ public class Unit : MonoBehaviour
     [SerializeField] protected UnitMovelControl m_movelControl;
     /// <summary> ユニットの行動を制御する </summary>
     [SerializeField] protected MotionController m_motion;
+    [SerializeField] protected UnitBuilder m_builder;
+    [SerializeField] protected int m_unitNumber;
     [Tooltip("初期座標 X:X座標、Y:Z座標")]
     [SerializeField] protected Vector2Int m_startPos;
     /// <summary> 現在のX座標 </summary>
@@ -90,7 +92,6 @@ public class Unit : MonoBehaviour
     public void TargetMoveStart(int x, int z)
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
-        m_motion.MotionTypeChange(MotionType.Walk);
     }
     public void SetMoveEvent(Action action)
     {

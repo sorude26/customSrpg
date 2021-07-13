@@ -37,7 +37,7 @@ public class UnitMaster : MonoBehaviour
     protected WeaponMaster m_attackerWeapon = null;
     protected List<IUnitParts> m_damegePartsList;
     /// <summary>
-    /// 機体の最大耐久値を返す
+    /// 機体の最大耐久値
     /// </summary>
     /// <returns></returns>
     public int GetMaxHP()
@@ -52,7 +52,7 @@ public class UnitMaster : MonoBehaviour
         return hp;
     }
     /// <summary>
-    /// 現在の総パーツ耐久値を返す
+    /// 現在の総パーツ耐久値
     /// </summary>
     /// <returns></returns>
     public int GetCurrentHP()
@@ -67,7 +67,7 @@ public class UnitMaster : MonoBehaviour
         return hp;
     }
     /// <summary>
-    /// 現在の移動力を返す
+    /// 現在の移動力
     /// </summary>
     /// <returns></returns>
     public int GetMovePower()
@@ -84,7 +84,7 @@ public class UnitMaster : MonoBehaviour
         return move;
     }
     /// <summary>
-    /// 現在の昇降力を得る
+    /// 現在の昇降力
     /// </summary>
     /// <returns></returns>
     public float GetLiftingForce()
@@ -100,7 +100,7 @@ public class UnitMaster : MonoBehaviour
         return liftingForce;
     }
     /// <summary>
-    /// 現在の回避率を返す
+    /// 現在の回避率
     /// </summary>
     /// <returns></returns>
     public int GetAvoidance()
@@ -120,7 +120,7 @@ public class UnitMaster : MonoBehaviour
         return avoidance;
     }
     /// <summary>
-    /// 機体の総重量を返す
+    /// 機体の総重量
     /// </summary>
     /// <returns></returns>
     public int GetWeight()
@@ -140,7 +140,7 @@ public class UnitMaster : MonoBehaviour
         return weight;
     }
     /// <summary>
-    /// 平均装甲値を返す
+    /// 平均装甲値
     /// </summary>
     /// <returns></returns>
     public int GetAmorPoint()
@@ -162,7 +162,7 @@ public class UnitMaster : MonoBehaviour
         return armor / count;
     }
     /// <summary>
-    /// 指定箇所の武装使用時の命中精度を返す
+    /// 指定箇所の武装使用時の命中精度
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
@@ -198,7 +198,7 @@ public class UnitMaster : MonoBehaviour
         return hitAccuray;
     }
     /// <summary>
-    /// 指定箇所の武装を返す
+    /// 指定箇所の武装
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
@@ -222,7 +222,7 @@ public class UnitMaster : MonoBehaviour
         return null;
     }
     /// <summary>
-    /// 武器の装備箇所を返す
+    /// 武器の装備箇所
     /// </summary>
     /// <param name="weapon"></param>
     /// <returns></returns>
@@ -269,7 +269,7 @@ public class UnitMaster : MonoBehaviour
         return weaponList.ToArray();
     }
     /// <summary>
-    /// 最も攻撃力の高い武器を返す
+    /// 最も攻撃力の高い武器
     /// </summary>
     /// <returns></returns>
     public WeaponMaster GetMaxPowerWeapon()
@@ -284,7 +284,7 @@ public class UnitMaster : MonoBehaviour
         return weaponList.OrderByDescending(weapon => weapon.Power).FirstOrDefault();
     }
     /// <summary>
-    /// 最も射程範囲の広い武器を返す
+    /// 最も射程範囲の広い武器
     /// </summary>
     /// <returns></returns>
     public WeaponMaster GetMaxRangeWeapon()
@@ -299,7 +299,7 @@ public class UnitMaster : MonoBehaviour
         return weaponList.OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
     }
     /// <summary>
-    /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行わせる
+    /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行う
     /// </summary>
     /// <param name="power"></param>
     public void HitCheckShot(int power)
@@ -340,6 +340,9 @@ public class UnitMaster : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// パーツのダメージエフェクトを再生する
+    /// </summary>
     void PlayPartsDamegeEffect()
     {
         if (m_attackCount >= m_damegePartsList.Count)
@@ -349,6 +352,10 @@ public class UnitMaster : MonoBehaviour
         m_damegePartsList[m_attackCount].DamageEffect();
         m_attackCount++;
     }
+    /// <summary>
+    /// 武器にイベントを登録する
+    /// </summary>
+    /// <param name="weapon"></param>
     public void SetBattleEvent(WeaponMaster weapon)
     {
         m_attackCount = 0;
@@ -357,6 +364,9 @@ public class UnitMaster : MonoBehaviour
         weapon.AttackEnd += BattleEndEvent;
         m_attackerWeapon = weapon;
     }
+    /// <summary>
+    /// 戦闘終了時のイベント
+    /// </summary>
     public void BattleEndEvent()
     {
         if (GetCurrentHP() <= 0)
