@@ -6,7 +6,7 @@ public class PartsData : ScriptableObject
 {
     [Tooltip("パーツID")]
     [SerializeField] int m_partsID;
-    /// <summary> パーツ名 </summary>
+    [Tooltip("パーツ名")]
     [SerializeField] string m_partsName;
     [Tooltip("重量")]
     [SerializeField] protected int m_weight = 10;

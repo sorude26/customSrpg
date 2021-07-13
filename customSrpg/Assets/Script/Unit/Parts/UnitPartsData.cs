@@ -12,6 +12,9 @@ public enum UnitType
     Helicopter,
     Tank,
 }
+/// <summary>
+/// 手の種類
+/// </summary>
 public enum ArmType
 {
     Left,

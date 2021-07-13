@@ -8,11 +8,13 @@ using UnityEngine;
 /// <typeparam name="T"></typeparam>
 public class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
 {
+    [Tooltip("パーツの基礎ID")]
+    [SerializeField] protected int m_partsID;
     [SerializeField] protected T m_partsData;
     /// <summary> 表示されるパーツ </summary>
     [SerializeField] protected GameObject m_partsObject;
     /// <summary> パーツID </summary>
-    public int PartsID { get => m_partsData.PartsID; }
+    public int PartsID { get => m_partsID; }
     /// <summary> パーツ名 </summary>
     public string PartsName { get => m_partsData.PartsName; }
     /// <summary> 重量 </summary>
