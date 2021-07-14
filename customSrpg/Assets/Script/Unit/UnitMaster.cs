@@ -13,6 +13,7 @@ public class UnitMaster : MonoBehaviour
     public event Action BattleEnd;
     /// <summary> 機体破壊時のイベント </summary>
     public event Action BodyBreak;
+    public event Action OnDamage;
     /// <summary> 機体胴体 </summary>
     protected PartsBody m_body = null;
     /// <summary> 機体頭部 </summary>
@@ -353,6 +354,7 @@ public class UnitMaster : MonoBehaviour
         {
             return;
         }
+        OnDamage?.Invoke();
         m_damegePartsList[m_attackCount].DamageEffect();
         m_attackCount++;
     }

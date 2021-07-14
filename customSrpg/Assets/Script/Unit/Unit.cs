@@ -56,8 +56,9 @@ public class Unit : MonoBehaviour
         CurrentPosZ = m_startPos.y;
         m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_master.BodyBreak += UnitDestroy;
-        m_builder.SetData(m_data, ref m_master);
+        m_builder.SetData(m_data, m_master);
         m_motion.StartSet();
+        m_master.OnDamage += m_motion.Damage;
     }
     public UnitMaster GetUnitData() => m_master;
     /// <summary>
@@ -69,6 +70,7 @@ public class Unit : MonoBehaviour
     {
         CurrentPosX = x;
         CurrentPosZ = z;
+        m_motion.Wait();
     }
     /// <summary>
     /// 指定した地点へ移動させる
@@ -78,6 +80,7 @@ public class Unit : MonoBehaviour
     public void TargetMoveStart(int x, int z)
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
+        m_motion.Walk();
     }
     public void SetMoveEvent(Action action)
     {
@@ -108,6 +111,7 @@ public class Unit : MonoBehaviour
     public void TargetLook(Unit target)
     {
         m_movelControl.TargetLook(target.transform.position);
+        m_motion.TargetShotLArm();
     }
     /// <summary>
     /// 停止、休息中のユニットを待機状態にする
@@ -136,7 +140,8 @@ public class Unit : MonoBehaviour
     {
         if (State == UnitState.Stop || State == UnitState.Action)
         {
-            State = UnitState.Rest;            
+            State = UnitState.Rest;
+            m_motion.Wait();
         }
     }
     /// <summary>
@@ -156,7 +161,7 @@ public class Unit : MonoBehaviour
     {
         EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
         State = UnitState.Destory;
-        gameObject.SetActive(false);
+        m_motion.Destroy();
     }
     /// <summary>
     /// 攻撃力と命中率に対応した得点を返す

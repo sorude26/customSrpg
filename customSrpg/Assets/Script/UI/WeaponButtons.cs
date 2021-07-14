@@ -45,6 +45,10 @@ public class WeaponButtons : ButtonMaster
     {
         if (m_buttonNum < (int)WeaponPosition.None)
         {
+            if (m_buttonGuides[m_buttonNum].text == "None Data")
+            {
+                return;
+            }
             BattleManager.Instance.SetWeaponPos((WeaponPosition)m_buttonNum);
         }
         base.Decision();
