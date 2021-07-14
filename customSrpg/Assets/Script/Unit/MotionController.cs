@@ -63,5 +63,14 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanWaitHeavyDamage");
     }
+    public void Destroy()
+    {
+        m_anime.Play("HumanDestroy");
+    }
+    void DestroyEnd()
+    {
+        EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+        gameObject.SetActive(false);
+    }
 }
 
