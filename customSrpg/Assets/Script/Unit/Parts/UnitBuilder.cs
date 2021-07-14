@@ -7,13 +7,6 @@ using UnityEngine;
 /// </summary>
 public class UnitBuilder : MonoBehaviour
 {
-    PartsHead m_head;
-    PartsBody m_body;
-    PartsArm m_rArm;
-    PartsArm m_lArm;
-    PartsLeg m_leg;
-    WeaponMaster m_rAWeapon;
-    WeaponMaster m_lAWeapon;
     PartsHead m_shead;
     PartsBody m_sbody;
     PartsArm m_srArm;
@@ -41,16 +34,9 @@ public class UnitBuilder : MonoBehaviour
     /// 機体の構成データを受け取り設定後機体の生成を行う
     /// </summary>
     /// <param name="data"></param>
-    public void SetData(UnitBuildData data,ref UnitMaster unitMaster)
+    public void SetData(UnitBuildData data, UnitMaster unitMaster)
     {
-        m_head = GameManager.Instanse.PartsList.GetHead(data.HeadID);
-        m_body = GameManager.Instanse.PartsList.GetBody(data.BodyID);
-        m_rArm = GameManager.Instanse.PartsList.GetRArm(data.RArmID);
-        m_lArm = GameManager.Instanse.PartsList.GetLArm(data.LArmID);
-        m_leg = GameManager.Instanse.PartsList.GetLeg(data.LegID);       
-        m_rAWeapon = GameManager.Instanse.PartsList.GetWeapon(data.WeaponRArmID);       
-        m_lAWeapon = GameManager.Instanse.PartsList.GetWeapon(data.WeaponLArmID);
-        BuildUnit();
+        BuildUnit(data);
         unitMaster.SetParts(m_sbody);
         unitMaster.SetParts(m_shead);
         unitMaster.SetParts(m_srArm);
@@ -64,15 +50,15 @@ public class UnitBuilder : MonoBehaviour
     /// <summary>
     /// ユニットを生成し、各関節と連携させる
     /// </summary>
-    public void BuildUnit()
+    public void BuildUnit(UnitBuildData data)
     {
-        switch (m_body.BodyPartsType)
+        switch (GameManager.Instanse.PartsList.GetBody(data.BodyID).BodyPartsType)
         {
             case UnitType.Human:
-                BuildHuman();
+                BuildHuman(data);
                 break;
             case UnitType.Walker:
-                BuildWalker();
+                BuildWalker(data);
                 break;
             case UnitType.Helicopter:
                 break;
@@ -85,9 +71,9 @@ public class UnitBuilder : MonoBehaviour
     /// <summary>
     /// 人型の機体を生成する
     /// </summary>
-    void BuildHuman()
+    void BuildHuman(UnitBuildData data)
     {
-        m_sleg = Instantiate(m_leg);
+        m_sleg = Instantiate(GameManager.Instanse.PartsList.GetLeg(data.LegID));
         m_sleg.transform.position = legbP.position;
         m_sleg.transform.SetParent(legbP);
         lLeg1P.transform.position = m_sleg.LLeg1.position;
@@ -103,34 +89,34 @@ public class UnitBuilder : MonoBehaviour
         m_sleg.RLeg2.SetParent(rLeg2P);
         m_sleg.RLeg3.SetParent(rLeg3P);
         bodybP.transform.position = m_sleg.LegTop.position;
-        m_sbody = Instantiate(m_body);
+        m_sbody = Instantiate(GameManager.Instanse.PartsList.GetBody(data.BodyID));
         m_sbody.transform.position = bodybP.position;
         m_sbody.transform.SetParent(bodybP);
         rArmbP.transform.position = m_sbody.RArmPos.position;
         lArmbP.transform.position = m_sbody.LArmPos.position;
         headP.transform.position = m_sbody.HeadPos.position;
-        m_srArm = Instantiate(m_rArm);
+        m_srArm = Instantiate(GameManager.Instanse.PartsList.GetRArm(data.RArmID));
         m_srArm.transform.position = rArmbP.position;
         m_srArm.transform.SetParent(rArmbP);
         rArm1P.transform.position = m_srArm.ArmTop.position;
         rArm2P.transform.position = m_srArm.ArmBottom.position;
         m_srArm.ArmTop.SetParent(rArm1P);
         m_srArm.ArmBottom.SetParent(rArm2P);
-        m_slArm = Instantiate(m_lArm);
+        m_slArm = Instantiate(GameManager.Instanse.PartsList.GetLArm(data.LArmID));
         m_slArm.transform.position = lArmbP.position;
         m_slArm.transform.SetParent(lArmbP);
         lArm1P.transform.position = m_slArm.ArmTop.position;
         lArm2P.transform.position = m_slArm.ArmBottom.position;
         m_slArm.ArmTop.SetParent(lArm1P);
         m_slArm.ArmBottom.SetParent(lArm2P);
-        m_shead = Instantiate(m_head);
+        m_shead = Instantiate(GameManager.Instanse.PartsList.GetHead(data.HeadID));
         m_shead.transform.position = headP.position;
         m_shead.transform.SetParent(headP);
-        m_srAWeapon = Instantiate(m_rAWeapon);
+        m_srAWeapon = Instantiate(GameManager.Instanse.PartsList.GetWeapon(data.WeaponRArmID));
         m_srAWeapon.transform.position = m_srArm.Grip.position;
         m_srAWeapon.transform.rotation = Quaternion.Euler(90, 0, 0);
         m_srAWeapon.transform.SetParent(m_srArm.Grip);
-        m_slAWeapon = Instantiate(m_lAWeapon);
+        m_slAWeapon = Instantiate(GameManager.Instanse.PartsList.GetWeapon(data.WeaponLArmID));
         m_slAWeapon.transform.position = m_slArm.Grip.position;
         m_slAWeapon.transform.rotation = Quaternion.Euler(90, 0, 0);
         m_slAWeapon.transform.SetParent(m_slArm.Grip);
@@ -138,9 +124,9 @@ public class UnitBuilder : MonoBehaviour
     /// <summary>
     /// 歩行兵器を生成する
     /// </summary>
-    void BuildWalker()
+    void BuildWalker(UnitBuildData data)
     {
-        var leg = Instantiate(m_leg);
+        var leg = Instantiate(GameManager.Instanse.PartsList.GetLeg(data.LegID));
         leg.transform.position = legbP.position;
         leg.transform.SetParent(legbP);
         lLeg1P.transform.position = leg.LLeg1.position;
@@ -156,7 +142,7 @@ public class UnitBuilder : MonoBehaviour
         leg.RLeg2.SetParent(rLeg2P);
         leg.RLeg3.SetParent(rLeg3P);
         bodybP.transform.position = leg.LegTop.position;
-        var body = Instantiate(m_body);
+        var body = Instantiate(GameManager.Instanse.PartsList.GetBody(data.BodyID));
         body.transform.position = bodybP.position;
         body.transform.SetParent(bodybP);
     }

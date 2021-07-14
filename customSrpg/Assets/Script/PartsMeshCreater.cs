@@ -17,7 +17,12 @@ public class PartsMeshCreater : MonoBehaviour
     {
         if (m_meshName == "")
         {
-            Debug.LogError("ファイル名を入力してください");
+            Debug.Log("ファイル名を入力してください");
+            return;
+        }
+        if (!m_meshFilter)
+        {
+            Debug.Log("対象がありません");
             return;
         }
         AssetDatabase.CreateAsset(m_meshFilter.mesh, "Assets/Material/Mesh/"+ m_meshName +".asset");
