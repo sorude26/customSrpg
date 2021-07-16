@@ -9,6 +9,7 @@ using System.Linq;
 public class BattleManager : MonoBehaviour
 {
     public static BattleManager Instance { get; private set; }
+    [Tooltip("ダメージ計算機")]
     [SerializeField] BattleCalculator m_calculator;
     /// <summary> 攻撃者 </summary>
     Unit m_attacker;
@@ -20,6 +21,7 @@ public class BattleManager : MonoBehaviour
     Unit m_target;
     /// <summary> 攻撃中フラグ </summary>
     bool m_attackNow;
+    /// <summary> 攻撃者の武装位置 </summary>
     WeaponPosition m_weaponPos;
     private void Awake()
     {
@@ -151,6 +153,10 @@ public class BattleManager : MonoBehaviour
         }
         weapon.AttackStart();
     }
+    /// <summary>
+    /// 攻撃箇所登録
+    /// </summary>
+    /// <param name="weaponPos"></param>
     public void SetWeaponPos(WeaponPosition weaponPos)
     {
         m_weaponPos = weaponPos;
@@ -180,8 +186,20 @@ public class BattleManager : MonoBehaviour
     /// <returns></returns>
     public int GetHit(WeaponPosition attackWeapon) => 
         m_calculator.GetHit(m_attacker.GetUnitData().GetHitAccuracy(attackWeapon), m_target.GetUnitData().GetAvoidance());
+    /// <summary>
+    /// 武装の命中率を返す
+    /// </summary>
+    /// <param name="attackWeapon"></param>
+    /// <param name="attacker"></param>
+    /// <returns></returns>
     public int GetHit(WeaponPosition attackWeapon, Unit attacker) =>
         attacker.GetUnitData().GetHitAccuracy(attackWeapon);
+    /// <summary>
+    /// 回避を考慮した命中率
+    /// </summary>
+    /// <param name="hit"></param>
+    /// <param name="accuracy"></param>
+    /// <returns></returns>
     public int GetHit(int hit, int accuracy) =>
         m_calculator.GetHit(hit, accuracy);
     /// <summary>
@@ -191,6 +209,18 @@ public class BattleManager : MonoBehaviour
     { 
         m_attackNow = false;
     }
+    /// <summary>
+    /// 耐久得点
+    /// </summary>
+    /// <param name="maxHP"></param>
+    /// <param name="currentHP"></param>
+    /// <returns></returns>
     public int GetPointDurable(int maxHP, int currentHP) => m_calculator.GetPointDurable(maxHP, currentHP);
+    /// <summary>
+    /// ダメージ得点
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="currentHP"></param>
+    /// <returns></returns>
     public int GetPointDamage(int damage,int currentHP) => m_calculator.GetPointDamage(damage,currentHP);
 }

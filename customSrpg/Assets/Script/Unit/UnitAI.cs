@@ -25,7 +25,7 @@ public class UnitAI : ScriptableObject
         }
     }
     /// <summary>
-    /// 開始地点以外で高得点の座標があれば移動を開始する
+    /// 現在位置以外で高得点の座標があればTrue
     /// </summary>
     /// <param name="unit"></param>
     /// <returns></returns>
@@ -75,29 +75,34 @@ public class UnitAI : ScriptableObject
     protected MapData[] GetAttackPositions(MapData map, WeaponMaster weapon) =>
         MapManager.Instance.StartSearch(map.PosX, map.PosZ, weapon);
     /// <summary>
-    /// 攻撃力の最も高い武器、攻撃範囲の最も広い武器の順に攻撃可能範囲を検索し最も高い得点をマップに保存する
+    /// 攻撃力の最も高い武器、攻撃範囲の最も広い武器の順に攻撃可能範囲を検索し、得点を登録する
     /// </summary>
     /// <param name="unit"></param>
     /// <param name="point"></param>
     protected virtual void SetMapScore(Unit unit, MapData point)
     {
-        int hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxPowerWeapon()),unit);
-        int power = unit.GetUnitData().GetMaxPowerWeapon().Power;
-        Unit target = GetTarget( point, unit.GetUnitData().GetMaxPowerWeapon(), hit);
-        if (target)
-        {
-            SetScore(point, target.GetScore(power, hit));
-            return;
-        }
-        hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxRangeWeapon()), unit);
-        power = unit.GetUnitData().GetMaxRangeWeapon().Power;
-        target = GetTarget( point, unit.GetUnitData().GetMaxRangeWeapon(), hit);
-        if (target)
-        {
-            SetScore(point, target.GetScore(power, hit));
-            return;
-        }
+        if (SetMapScore(unit, point, unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxPowerWeapon()))) return;
+        if (SetMapScore(unit, point, unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxRangeWeapon()))) return;
         point.MapScore = 0;
+    }
+    /// <summary>
+    /// 指定箇所の武器での得点を登録可能ならば登録しTrueを返す
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="point"></param>
+    /// <param name="weapon"></param>
+    /// <returns></returns>
+    protected virtual bool SetMapScore(Unit unit, MapData point,WeaponPosition weapon)
+    {
+        int hit = BattleManager.Instance.GetHit(weapon, unit);
+        int power = unit.GetUnitData().GetMaxPowerWeapon().Power;
+        Unit target = GetTarget(point, unit.GetUnitData().GetMaxPowerWeapon(), hit);
+        if (target)
+        {
+            SetScore(point, target.GetScore(power, hit));
+            return true;
+        }
+        return false;
     }
     /// <summary>
     /// スコア最大の停止状態ユニットを返す
