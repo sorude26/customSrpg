@@ -54,6 +54,9 @@ public class StageManager : MonoBehaviour
         m_players.ToList().ForEach(p => m_units.Add(p));
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
+        m_units.ForEach(u => u.StartSet());
+        m_allies.ToList().ForEach(a => a.GetUnitData().UnitColorChange(Color.blue));
+        m_enemys.ToList().ForEach(e => e.GetUnitData().UnitColorChange(Color.red));
         m_players.ToList().ForEach(p => p.WakeUp());
     }
     /// <summary>

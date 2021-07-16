@@ -42,16 +42,12 @@ public class Unit : MonoBehaviour
     public UnitState State { get; protected set; }
     //仮データ
     [SerializeField] UnitBuildData m_data;
-    private void Awake()
+    /// <summary>
+    /// 初期化処理
+    /// </summary>
+    public virtual void StartSet()
     {
         State = UnitState.Stop;
-    }
-    private void Start()
-    {
-        StartSet();
-    }
-    protected virtual void StartSet()
-    {
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
         m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
@@ -60,6 +56,10 @@ public class Unit : MonoBehaviour
         m_motion.StartSet();
         m_master.OnDamage += m_motion.Damage;
     }
+    /// <summary>
+    /// 機体データ
+    /// </summary>
+    /// <returns></returns>
     public UnitMaster GetUnitData() => m_master;
     /// <summary>
     /// 現在のユニット位置を設定する
@@ -82,11 +82,14 @@ public class Unit : MonoBehaviour
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
         m_motion.Walk();
     }
+    /// <summary>
+    /// 移動終了時のイベントを登録する
+    /// </summary>
+    /// <param name="action"></param>
     public void SetMoveEvent(Action action)
     {
         m_movelControl.MoveEndEvent += action;
-    }
-   
+    }   
     /// <summary>
     /// 瞬時に目的地へ移動する
     /// </summary>
@@ -108,6 +111,10 @@ public class Unit : MonoBehaviour
     {
         m_movelControl.ReturnMove();
     }
+    /// <summary>
+    /// 標的位置へ向く
+    /// </summary>
+    /// <param name="target"></param>
     public void TargetLook(Unit target)
     {
         m_movelControl.TargetLook(target.transform.position);
