@@ -40,6 +40,7 @@ public class CursorControl : MonoBehaviour
 
     void Update()
     {
+        //UpdateはInputManagerのみで使用するように変更する
         if (m_notCursor)
         {
             return;
@@ -50,23 +51,17 @@ public class CursorControl : MonoBehaviour
             return;
         }
         if (!m_move)
-        {
-            if (Input.GetButtonDown("Jump"))
-            {
-                Debug.Log("cursor");
-                StageManager.Instance.PointMoveTest(m_currentPosX, m_currentPosZ);
-                return;
-            }
+        {            
             float x = Input.GetAxisRaw("Horizontal");
             float z = Input.GetAxisRaw("Vertical");
             if (Input.GetButtonDown("Horizontal"))
             {
-                CursorMove(x, z);
+                Move(x, z);
                 m_timer = 0.3f;
             }
             else if (Input.GetButtonDown("Vertical"))
             {
-                CursorMove(x, z);
+                Move(x, z);
                 m_timer = 0.3f;
             }
             else if (x != 0 || z != 0)
@@ -76,13 +71,13 @@ public class CursorControl : MonoBehaviour
                     m_timer -= Time.deltaTime;
                     if (m_timer < 0.15f && !m_second)
                     {
-                        CursorMove(x, z);
+                        Move(x, z);
                         m_second = true;
                     }
                 }
                 else
                 {
-                    CursorMove(x, z);
+                    Move(x, z);
                 }
             }
             else
@@ -96,9 +91,15 @@ public class CursorControl : MonoBehaviour
             this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
             m_move = false;
             m_moveTimer = m_moveTime;
-            //Debug.Log(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             return;
         }
+    }
+    /// <summary>
+    /// 現在位置で移動を決定する
+    /// </summary>
+    public void Decision()
+    {
+        StageManager.Instance.PointMoveTest(m_currentPosX, m_currentPosZ);
     }
     /// <summary>
     /// カーソルを非表示にし、操作不能にする
@@ -118,7 +119,7 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    public void CursorWarp(int x,int z)
+    public void Warp(int x,int z)
     {
         m_currentPosX = x;
         m_currentPosZ = z;
@@ -128,7 +129,7 @@ public class CursorControl : MonoBehaviour
     /// カーソルを指定ユニットの場所に移動する
     /// </summary>
     /// <param name="unit"></param>
-    public void CursorWarp(Unit unit)
+    public void Warp(Unit unit)
     {
         if (!unit)
         {
@@ -143,7 +144,7 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    void CursorMove(float x,float z)
+    void Move(float x,float z)
     {
         if (x == 0 && z == 0)
         {
