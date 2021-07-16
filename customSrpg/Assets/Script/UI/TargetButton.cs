@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 攻撃対象の選択ボタン
+/// </summary>
 public class TargetButton : ButtonMaster
 {
     List<Unit> m_targets;
@@ -10,10 +13,33 @@ public class TargetButton : ButtonMaster
     {
         gameObject.SetActive(true);
         m_buttonNum = 0;
-        m_targets = BattleManager.Instance.AttackTarget; 
+        m_targets = BattleManager.Instance.AttackTarget;
+        StartCoroutine(CursorSet());
     }
-    public override void CursorUp() { }
-    public override void CursorDown() { }
+    public override void CursorUp() 
+    {
+        if (m_buttonNum < m_targets.Count - 1)
+        {
+            m_buttonNum++;
+        }
+        else
+        {
+            m_buttonNum = 0;
+        }
+        CursorMove();
+    }
+    public override void CursorDown() 
+    {
+        if (m_buttonNum > 0)
+        {
+            m_buttonNum--;
+        }
+        else
+        {
+            m_buttonNum = m_targets.Count - 1;
+        }
+        CursorMove();
+    }
     public override void CursorLeft()
     {
         if (m_buttonNum > 0)
@@ -42,7 +68,7 @@ public class TargetButton : ButtonMaster
     {
         if (m_targets != null && m_targets.Count > 0)
         {
-            StageManager.Instance.CursorWap(m_targets[m_buttonNum].CurrentPosX, m_targets[m_buttonNum].CurrentPosZ);
+            StageManager.Instance.Cursor.Warp(m_targets[m_buttonNum].CurrentPosX, m_targets[m_buttonNum].CurrentPosZ);
         }
     }
     public override void Decision()

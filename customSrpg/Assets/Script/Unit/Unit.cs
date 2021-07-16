@@ -54,6 +54,7 @@ public class Unit : MonoBehaviour
         m_master.BodyBreak += UnitDestroy;
         m_builder.SetData(m_data, m_master);
         m_motion.StartSet();
+        m_movelControl.MoveStartEvent += m_motion.Walk;
         m_master.OnDamage += m_motion.Damage;
     }
     /// <summary>
@@ -80,7 +81,6 @@ public class Unit : MonoBehaviour
     public void TargetMoveStart(int x, int z)
     {
         m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
-        m_motion.Walk();
     }
     /// <summary>
     /// 移動終了時のイベントを登録する

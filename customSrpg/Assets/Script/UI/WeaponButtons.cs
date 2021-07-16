@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// 武装選択ボタン
+/// </summary>
 public class WeaponButtons : ButtonMaster
 {
     Text[] m_buttonGuides;

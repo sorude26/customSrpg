@@ -48,6 +48,7 @@ public class StageUI : MonoBehaviour
     }
     public void CommandMoveEnd()
     {
+        Stage.InputManager.Instance.OnInputDecision -= StageManager.Instance.Cursor.Decision;
         OnClickButton(1);
     }
 
@@ -131,6 +132,7 @@ public class StageUI : MonoBehaviour
                 m_actionB.Close();
                 m_targetButton = null;
                 m_move = true;
+                Stage.InputManager.Instance.OnInputDecision += StageManager.Instance.Cursor.Decision;
                 break;
             case 1://移動終了
                 m_targetButton = m_moveEndB;
@@ -143,16 +145,16 @@ public class StageUI : MonoBehaviour
                 break;
             case 4://移動後キャンセル選択
                 StageManager.Instance.TurnUnit.ReturnMove();
-                StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
+                StageManager.Instance.Cursor.Warp(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
                 EventManager.StageGuideViewEnd();
-                m_targetButton = m_actionB;
+                m_targetButton = m_actionB;                
                 m_move = false;
                 break;
             case 5://攻撃選択後キャンセル選択
                 if (!m_move)
                 {
                     StageManager.Instance.TurnUnit.ReturnMove();
-                    StageManager.Instance.CursorWap(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
+                    StageManager.Instance.Cursor.Warp(StageManager.Instance.TurnUnit.CurrentPosX, StageManager.Instance.TurnUnit.CurrentPosZ);
                     EventManager.StageGuideViewEnd();
                     m_targetButton = m_actionB;
                 }

@@ -37,6 +37,7 @@ public class UnitMovelControl : MonoBehaviour
     public float LiftingForce { get; set; }
     /// <summary> 現在位置を設定する </summary>
     public event Action<int, int> PositionSet;
+    public event Action MoveStartEvent;
     public event Action MoveEndEvent;
     /// <summary>
     /// ユニット向き4方向
@@ -317,6 +318,8 @@ public class UnitMovelControl : MonoBehaviour
         if (targetX == m_startPosX && targetZ == m_startPosZ)
         {
             Warp(targetX, targetZ);
+            MoveEndEvent?.Invoke();
+            MoveEndEvent = null;
             return;
         }
         LiftingForce = liftingForce;
@@ -378,6 +381,7 @@ public class UnitMovelControl : MonoBehaviour
             m_moveMode = true; //移動モード移行
             m_moveCount = m_unitMoveList.Count - 1;//移動経路数を入力
             UnitAngleSet();
+            MoveStartEvent?.Invoke();
             StartCoroutine(UnitMove());//移動開始
             return;
         }
