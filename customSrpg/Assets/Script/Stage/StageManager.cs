@@ -43,6 +43,8 @@ public class StageManager : MonoBehaviour
     MapData[] m_attackDatas;
     bool attack;
     bool m_gameEnd;
+    /// <summary> ステージに付随するカーソル </summary>
+    public CursorControl Cursor { get => m_cursor; }
     private void Awake()
     {
         Instance = this;
@@ -105,7 +107,7 @@ public class StageManager : MonoBehaviour
         {
             TurnUnit = unit;
             unit.StartUp();
-            m_cursor.CursorWarp(unit);
+            m_cursor.Warp(unit);
             m_cursor.CursorStop();
             BattleManager.Instance.SetAttacker(TurnUnit);
         }
@@ -176,7 +178,7 @@ public class StageManager : MonoBehaviour
     }
     public void TestTargetAttack()
     {
-        m_cursor.CursorWarp(m_battleManager.SetTarget(0));
+        m_cursor.Warp(m_battleManager.SetTarget(0));
         m_targetMark.transform.position = m_cursor.transform.position;
         m_battleManager.AttackStart(WeaponPosition.Body);
         attack = false;
@@ -197,7 +199,7 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
-        m_cursor.CursorWarp(x, z);
+        m_cursor.Warp(x, z);
         TurnUnit.TargetMoveStart(x, z);
         m_targetMark.SetActive(true);
         m_targetMark.transform.position = m_cursor.transform.position;
@@ -267,14 +269,6 @@ public class StageManager : MonoBehaviour
             target.StagePanel.ViewAttackPanel();
         }
         m_battleManager.SetAttackTargets();
-    }
-    public void CursorWap(int x,int z)
-    {
-        m_cursor.CursorWarp(x, z);
-    }
-    public void CursorActive()
-    {
-        m_cursor.CursorStart();
     }
     /// <summary>
     /// 指定箇所のユニットを返す
