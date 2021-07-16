@@ -16,7 +16,7 @@ public enum TurnState
 }
 
 /// <summary>
-/// 現在のステージのターン進行を管理するクラス
+/// 現在のステージの全体を管理するクラス
 /// </summary>
 public class StageManager : MonoBehaviour
 {
@@ -162,6 +162,16 @@ public class StageManager : MonoBehaviour
         }
         action?.Invoke();
     }
+    IEnumerator LastStageMassage(uint massageNum, Action action)
+    {
+        bool view = true;
+        while (view)
+        {
+            yield return m_massage.LastMessageView(massageNum);
+            view = false;
+        }
+        action?.Invoke();
+    }
     public void TestEnemyTurn()
     {
         Turn = TurnState.Player;
@@ -205,19 +215,49 @@ public class StageManager : MonoBehaviour
         m_targetMark.transform.position = m_cursor.transform.position;
     }
     /// <summary>
-    /// 終了条件の確認
+    /// 終了条件の確認、後で勝利・敗北条件で分岐するようにする
     /// </summary>
     private void CheckGameEnd()
+    {
+        if (PlayerAllDestory())
+        {
+            return;
+        }
+        EnemyAllDestory();
+    }
+    /// <summary>
+    /// 終了条件：プレイヤーの全滅
+    /// </summary>
+    /// <returns></returns>
+    private bool PlayerAllDestory()
     {
         foreach (var unit in m_players)
         {
             if (unit.State != UnitState.Destory)
             {
-                return;
+                return false;
             }
         }
         m_gameEnd = true;
-        Debug.Log("敗北");
+        StartCoroutine(LastStageMassage(2, () => Debug.Log("敗北")));
+        return true;
+    }
+    /// <summary>
+    /// 終了条件：敵の全滅
+    /// </summary>
+    /// <returns></returns>
+    private bool EnemyAllDestory()
+    {
+        foreach (var unit in m_enemys)
+        {
+            if (unit.State != UnitState.Destory)
+            {
+                return false;
+            }
+        }
+        m_gameEnd = true;
+        StartCoroutine(LastStageMassage(3, () => Debug.Log("勝利")));
+        return true;
     }
     /// <summary>
     /// 現在の行動中ユニットを行動終了させる

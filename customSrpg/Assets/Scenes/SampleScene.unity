@@ -1269,7 +1269,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2472
+  m_Name: pb_Mesh-93066
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5774,7 +5774,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0.2, a: 1}
+  m_Color: {r: 1, g: 1, b: 0, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -17457,9 +17457,13 @@ MonoBehaviour:
   m_massages:
   - PLAYER TURN
   - ENEMY TURN
+  - YOU LOSE
+  - YOU WIN
   m_colors:
   - {x: 0, y: 1, z: 0.8}
   - {x: 1, y: 0, z: 0.2}
+  - {x: 0, y: 0, z: 0}
+  - {x: 1, y: 1, z: 0}
   m_text: {fileID: 772980069}
   m_image: {fileID: 510311454}
   m_viewTime: 1
