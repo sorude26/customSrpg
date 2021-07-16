@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 5827270578410798733}
   - component: {fileID: 5827270578410798732}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -203,7 +203,7 @@ GameObject:
   - component: {fileID: 5827270578855007680}
   - component: {fileID: 5827270578855007687}
   m_Layer: 0
-  m_Name: Waist3 (3)
+  m_Name: Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 5827270578923810886}
   - component: {fileID: 5827270578923810885}
   m_Layer: 0
-  m_Name: TopArmor2
+  m_Name: TopArmor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 5827270579092179819}
   - component: {fileID: 5827270579092179818}
   m_Layer: 0
-  m_Name: TopArmor2 (3)
+  m_Name: TopArmor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +519,7 @@ GameObject:
   - component: {fileID: 5827270580277164371}
   - component: {fileID: 5827270580277164370}
   m_Layer: 0
-  m_Name: TopArmor2 (1)
+  m_Name: Armor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -598,7 +598,7 @@ GameObject:
   - component: {fileID: 5827270580304177977}
   - component: {fileID: 5827270580304177976}
   m_Layer: 0
-  m_Name: TopArmor2 (2)
+  m_Name: TopArm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -784,6 +784,11 @@ MonoBehaviour:
   - {fileID: 5827270578923810884}
   - {fileID: 1191604871976390537}
   m_damageSmoke: {fileID: 4279181016285778109}
+  m_amors:
+  - {fileID: 5827270578923810885}
+  - {fileID: 5827270579092179818}
+  - {fileID: 5827270580277164370}
+  - {fileID: 5827270578410798732}
   m_grip: {fileID: 5827270579389350570}
   m_shoulder: {fileID: 5827270579092179817}
   m_armTop: {fileID: 3229272268615901573}

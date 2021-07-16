@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 7074241107006648725}
   - component: {fileID: 7934250869781059193}
   m_Layer: 0
-  m_Name: LegParts
+  m_Name: LegArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -328,7 +328,7 @@ GameObject:
   - component: {fileID: 6144734145516598828}
   - component: {fileID: 8686322038870752438}
   m_Layer: 0
-  m_Name: LegParts
+  m_Name: LegArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -438,7 +438,7 @@ GameObject:
   - component: {fileID: 6554059133346295478}
   - component: {fileID: 343494276110451787}
   m_Layer: 0
-  m_Name: Waist2
+  m_Name: WaistArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -752,6 +752,14 @@ MonoBehaviour:
   - {fileID: 5478780725645996849}
   - {fileID: 8032864017449317707}
   m_damageSmoke: {fileID: 6069599675421058796}
+  m_amors:
+  - {fileID: 343494276110451787}
+  - {fileID: 8686322038870752438}
+  - {fileID: 3808322251863132253}
+  - {fileID: 2307706307416001244}
+  - {fileID: 7934250869781059193}
+  - {fileID: 8712074608366558545}
+  - {fileID: 8250129715563817566}
   m_legTop: {fileID: 4759285428212147885}
   m_lLeg1: {fileID: 3125266721743294608}
   m_lLeg2: {fileID: 8469489614813507877}

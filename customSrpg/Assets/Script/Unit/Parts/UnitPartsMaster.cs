@@ -12,10 +12,13 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int CurrentPartsHp { get; protected set; }
     protected int m_damageCount = 0;
     protected List<int> m_partsDamage;
-    /// <summary> 攻撃命中の表示箇所 </summary>
+    [Tooltip("攻撃命中の表示箇所")]
     [SerializeField] protected Transform[] m_hitPos;
-    /// <summary> 耐久値半分以下で表示する煙 </summary>
+    [Tooltip(" 耐久値半分以下で表示する煙 ")]
     [SerializeField] protected GameObject m_damageSmoke;
+    [Tooltip("色が変更可能な装甲")]
+    [SerializeField] protected Renderer[] m_amors;
+
     void Start()
     {
         StartSet();
@@ -29,7 +32,17 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         CurrentPartsHp = MaxPartsHp;
         m_partsDamage = new List<int>();
     }
-   
+    /// <summary>
+    /// パーツの色変更
+    /// </summary>
+    /// <param name="color"></param>
+    public virtual void ColorChange(Color color)
+    {
+        foreach (var renderer in m_amors)
+        {
+            renderer.material.color = color;
+        }
+    }
     /// <summary>
     /// パーツにダメージを与える
     /// </summary>

@@ -11,4 +11,5 @@ public interface IUnitParts : IParts ,IBattleEffect
     int GetCurrentHP();
     int GetDefense();
     void Damage(int damage);
+    void ColorChange(Color color);
 }

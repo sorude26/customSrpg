@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 512675601082854205}
   - component: {fileID: 5510275670099110518}
   m_Layer: 0
-  m_Name: Cube (4)
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 1223153454784153661}
   - component: {fileID: 7152149228693687830}
   m_Layer: 0
-  m_Name: Cube (3)
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -285,6 +285,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9ce3fe1d5910d744a76a85100c0339e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_partsID: 0
   m_partsData: {fileID: 11400000, guid: 99e5dfc744f006e49975d7cf030f6b1b, type: 2}
   m_partsObject: {fileID: 4748907861360594956}
   m_hitPos:
@@ -292,6 +293,14 @@ MonoBehaviour:
   - {fileID: 8476924899173909344}
   - {fileID: 6081823018433940864}
   m_damageSmoke: {fileID: 4952693413308483886}
+  m_amors:
+  - {fileID: 10943295803739021}
+  - {fileID: 7763750111792394347}
+  - {fileID: 5510275670099110518}
+  - {fileID: 125007850911552654}
+  - {fileID: 8299189274454134199}
+  - {fileID: 7152149228693687830}
+  - {fileID: 7152603327539282529}
   m_legTop: {fileID: 5948248185131501935}
   m_lLeg1: {fileID: 8476924899173909344}
   m_lLeg2: {fileID: 5826981752074184110}
@@ -469,7 +478,7 @@ GameObject:
   - component: {fileID: 8967048466695368150}
   - component: {fileID: 8299189274454134199}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1009,7 +1018,7 @@ GameObject:
   - component: {fileID: 4459901790401565282}
   - component: {fileID: 125007850911552654}
   m_Layer: 0
-  m_Name: LegBottom
+  m_Name: LegBottomArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1088,7 +1097,7 @@ GameObject:
   - component: {fileID: 6413144686061883869}
   - component: {fileID: 7152603327539282529}
   m_Layer: 0
-  m_Name: LegBottom
+  m_Name: LegBottomArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1200,7 +1209,7 @@ GameObject:
   - component: {fileID: 6346301186645640909}
   - component: {fileID: 7763750111792394347}
   m_Layer: 0
-  m_Name: Cube (1)
+  m_Name: Armor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

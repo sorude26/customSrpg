@@ -452,4 +452,19 @@ public class UnitMaster : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// 機体の色を変更する
+    /// </summary>
+    /// <param name="color"></param>
+    public void UnitColorChange(Color color)
+    {
+        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        foreach (var parts in allParts)
+        {
+            if (parts != null)
+            {
+                parts.ColorChange(color);
+            }
+        }
+    }
 }

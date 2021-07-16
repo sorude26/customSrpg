@@ -46,7 +46,7 @@ GameObject:
   - component: {fileID: 5144266826723772530}
   - component: {fileID: 1605576302676889580}
   m_Layer: 0
-  m_Name: Leg2
+  m_Name: LegArmor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 4673592854643668464}
   - component: {fileID: 5902117557759224703}
   m_Layer: 0
-  m_Name: leg3
+  m_Name: legArmor3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -236,7 +236,7 @@ GameObject:
   - component: {fileID: 4620551016312750934}
   - component: {fileID: 4620551016312750953}
   m_Layer: 0
-  m_Name: leg3
+  m_Name: legArmor3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -315,7 +315,7 @@ GameObject:
   - component: {fileID: 4620551016481313478}
   - component: {fileID: 4620551016481313497}
   m_Layer: 0
-  m_Name: Waist3
+  m_Name: WaistArmor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -473,7 +473,7 @@ GameObject:
   - component: {fileID: 4620551016963911490}
   - component: {fileID: 4620551016963911493}
   m_Layer: 0
-  m_Name: Leg2
+  m_Name: LegArmor2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -552,7 +552,7 @@ GameObject:
   - component: {fileID: 4620551017640151095}
   - component: {fileID: 4620551017640151094}
   m_Layer: 0
-  m_Name: Leg1
+  m_Name: LegArmor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -768,6 +768,14 @@ MonoBehaviour:
   - {fileID: 8446848744444031380}
   - {fileID: 8740704055364908998}
   m_damageSmoke: {fileID: 5676636865992899151}
+  m_amors:
+  - {fileID: 4620551016481313497}
+  - {fileID: 4620551017640151094}
+  - {fileID: 4620551016963911493}
+  - {fileID: 4620551016312750953}
+  - {fileID: 8599850766895347663}
+  - {fileID: 1605576302676889580}
+  - {fileID: 5902117557759224703}
   m_legTop: {fileID: 6697005061469860578}
   m_lLeg1: {fileID: 8446848744444031380}
   m_lLeg2: {fileID: 8446848746257504712}
@@ -787,7 +795,7 @@ GameObject:
   - component: {fileID: 826243607349442125}
   - component: {fileID: 8599850766895347663}
   m_Layer: 0
-  m_Name: Leg1
+  m_Name: LegArmor1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
