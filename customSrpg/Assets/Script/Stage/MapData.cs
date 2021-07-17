@@ -10,6 +10,7 @@ public enum MapType
     Normal,//通常
     NonAggressive,//侵入不可
     Asphalt,//舗装
+    Road,//道路
     Wasteland,//荒地
     Forest,//森
 }
@@ -37,13 +38,13 @@ public class MapData
     /// <summary>
     /// 初期設定
     /// </summary>
-    /// <param name="mapType"></param>
+    /// <param name="type"></param>
     /// <param name="posX"></param>
     /// <param name="posZ"></param>
     /// <param name="level"></param>
-    public MapData(MapType mapType, int posX, int posZ, float level,StagePanel stagePanel)
+    public MapData(MapType type, int posX, int posZ, float level,StagePanel stagePanel)
     {
-        MapType = mapType;
+        MapType = type;
         PosX = posX;
         PosZ = posZ;
         Level = level;
@@ -53,4 +54,8 @@ public class MapData
         StagePanel = stagePanel;
         StagePanel.SetPos(posX, posZ);
     }    
+    public void SetMapType(MapType type)
+    {
+        MapType = type;
+    }
 }

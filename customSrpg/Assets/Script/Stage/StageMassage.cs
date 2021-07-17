@@ -19,6 +19,11 @@ public class StageMassage : MonoBehaviour
     {
         gameObject.SetActive(false);
     }
+    /// <summary>
+    /// ターンを表示
+    /// </summary>
+    /// <param name="massageNum"></param>
+    /// <returns></returns>
     public IEnumerator View(uint massageNum)
     {
         gameObject.SetActive(true);
@@ -60,6 +65,11 @@ public class StageMassage : MonoBehaviour
         }
         gameObject.SetActive(false);
     }
+    /// <summary>
+    /// 勝敗を表示
+    /// </summary>
+    /// <param name="massageNum"></param>
+    /// <returns></returns>
     public IEnumerator LastMessageView(uint massageNum)
     {
         gameObject.SetActive(true);
