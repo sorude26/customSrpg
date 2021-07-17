@@ -74,6 +74,9 @@ public class MapManager : MonoBehaviour
             case MapType.Asphalt:
                 point = 2;
                 break;
+            case MapType.Road:
+                point = 2;
+                break;
             case MapType.Wasteland:
                 point = 3;
                 break;

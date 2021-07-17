@@ -30,6 +30,7 @@ public class NpcUnit : Unit
     protected IEnumerator StartAI()
     {
         yield return Move();
+        StageManager.Instance.Cursor.Warp(this);
         yield return Attack();
         yield return End();
         UnitRest();

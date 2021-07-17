@@ -7,12 +7,18 @@ using UnityEngine;
 /// </summary>
 public enum MapType
 {
-    Normal,//通常
-    NonAggressive,//侵入不可
-    Asphalt,//舗装
-    Road,//道路
-    Wasteland,//荒地
-    Forest,//森
+    /// <summary> 設定なし </summary>
+    Normal,
+    /// <summary> 侵入不可 </summary>
+    NonAggressive,
+    /// <summary> 舗装 </summary>
+    Asphalt,
+    /// <summary> 道路 </summary>
+    Road,
+    /// <summary> 荒地 </summary>
+    Wasteland,
+    /// <summary> 森 </summary>
+    Forest,
 }
 /// <summary>
 /// 地形データ
