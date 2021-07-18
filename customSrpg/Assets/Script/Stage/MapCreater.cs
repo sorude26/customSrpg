@@ -46,7 +46,9 @@ public class MapCreater : MonoBehaviour
         CreateBuilding(maxX, maxZ, mapDates, mapScale);
         return mapDates;
     }
-
+    /// <summary>
+    /// 道のパターンをシャッフルする
+    /// </summary>
     void ShuffleRoadPattern()
     {
         for (int i = 0; i < m_vRoadPattern.Length; i++)
@@ -64,6 +66,13 @@ public class MapCreater : MonoBehaviour
             m_hRoadPattern[r] = p;
         }
     }
+    /// <summary>
+    /// 道を生成する
+    /// </summary>
+    /// <param name="maxX"></param>
+    /// <param name="maxZ"></param>
+    /// <param name="datas"></param>
+    /// <param name="mapScale"></param>
     void CreateRoad(int maxX, int maxZ, MapData[] datas, int mapScale)
     {
         int roadCount = 0;
@@ -112,21 +121,41 @@ public class MapCreater : MonoBehaviour
             roadCount++;
         }
     }
+    /// <summary>
+    /// 空地に場所に建造物を建てる
+    /// </summary>
+    /// <param name="maxX"></param>
+    /// <param name="maxZ"></param>
+    /// <param name="datas"></param>
+    /// <param name="mapScale"></param>
     void CreateBuilding(int maxX, int maxZ,MapData[] datas, int mapScale)
     {
         for (int i = 0; i < datas.Length; i++)
         {
-            if(BuildCheck(maxX, maxZ, datas, i, mapScale))
+            if(BuildCheck(maxX, maxZ, datas, i, mapScale,2))
             {
-                i++;
+                continue;
+            }
+            if (BuildCheck(maxX, maxZ, datas, i, mapScale, 1))
+            {
+                continue;
             }
         }
     }
-    bool BuildCheck(int maxX, int maxZ, MapData[] datas,int point,int mapScale)
+    /// <summary>
+    /// 空地に対応する建造物を生成する
+    /// </summary>
+    /// <param name="maxX"></param>
+    /// <param name="maxZ"></param>
+    /// <param name="datas"></param>
+    /// <param name="point"></param>
+    /// <param name="mapScale"></param>
+    /// <returns></returns>
+    bool BuildCheck(int maxX, int maxZ, MapData[] datas,int point,int mapScale,int size)
     {
-        for (int h = 0; h < 2; h++)
+        for (int h = 0; h < size; h++)
         {
-            for (int v = 0; v < 2; v++)
+            for (int v = 0; v < size; v++)
             {
                 if (point + h + maxZ * v < maxX * maxZ)
                 {
@@ -137,10 +166,17 @@ public class MapCreater : MonoBehaviour
                 }
             }
         }
-        Instantiate(m_building[0]).transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);       
-        for (int h = 0; h < 2; h++)
+        if (size == 2)
         {
-            for (int v = 0; v < 2; v++)
+            Instantiate(m_building[0]).transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
+        }
+        if (size == 1)
+        {
+            Instantiate(m_building[1]).transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
+        }     
+        for (int h = 0; h < size; h++)
+        {
+            for (int v = 0; v < size; v++)
             {
                 if (point + h + maxZ * v < maxX * maxZ)
                 {
