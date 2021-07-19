@@ -48,7 +48,7 @@ public class PlayerUnit : Unit
         if (m_attackWeapon)
         {
             m_attackMode = true;
-            m_attackWeapon.AttackEnd += AttackModeEnd;
+            m_attackWeapon.OnAttackEnd += AttackModeEnd;
         }
         while (m_attackMode)
         {

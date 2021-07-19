@@ -13,6 +13,7 @@ public class UnitMaster : MonoBehaviour
     public event Action BattleEnd;
     /// <summary> 機体破壊時のイベント </summary>
     public event Action BodyBreak;
+    /// <summary> 被ダメージ時のイベント </summary>
     public event Action OnDamage;
     /// <summary> 機体胴体 </summary>
     protected PartsBody m_body = null;
@@ -307,11 +308,12 @@ public class UnitMaster : MonoBehaviour
     /// 命中弾をランダムなパーツに割り振り、ダメージ計算を行う
     /// </summary>
     /// <param name="power"></param>
-    public void HitCheckShot(int power)
+    public int HitCheckShot(int power)
     {
+        int damage = 0;
         if (GetCurrentHP() <= 0)
         {
-            return;
+            return damage;
         }
         int hitPos = 0;
         IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
@@ -338,12 +340,13 @@ public class UnitMaster : MonoBehaviour
                 prb += parts.GetSize();
                 if (prb > r)
                 {
-                    parts.Damage(power);
+                    damage = parts.Damage(power);
                     m_damegePartsList.Add(parts);
                     break;
                 }
             }
         }
+        return damage;
     }
     /// <summary>
     /// パーツのダメージエフェクトを再生する
@@ -366,8 +369,8 @@ public class UnitMaster : MonoBehaviour
     {
         m_attackCount = 0;
         m_damegePartsList = new List<IUnitParts>();
-        weapon.Attack += PlayPartsDamegeEffect;
-        weapon.AttackEnd += BattleEndEvent;
+        weapon.OnAttack += PlayPartsDamegeEffect;
+        weapon.OnAttackEnd += BattleEndEvent;
         m_attackerWeapon = weapon;
     }
     /// <summary>

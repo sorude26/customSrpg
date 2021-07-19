@@ -47,11 +47,11 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// パーツにダメージを与える
     /// </summary>
     /// <param name="power"></param>
-    public virtual void Damage(int power)
+    public virtual int Damage(int power)
     {
         if (CurrentPartsHp <= 0)
         {
-            return;
+            return power;
         }
         int d = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= d;
@@ -67,6 +67,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             CurrentPartsHp = 0;
             Break = true;
         }
+        return power;
     }
     /// <summary>
     /// ダメージの演出を行う

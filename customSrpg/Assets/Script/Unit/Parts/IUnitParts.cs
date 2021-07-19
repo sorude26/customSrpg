@@ -10,6 +10,6 @@ public interface IUnitParts : IParts ,IBattleEffect
     int GetMaxHP();
     int GetCurrentHP();
     int GetDefense();
-    void Damage(int damage);
+    int Damage(int damage);
     void ColorChange(Color color);
 }

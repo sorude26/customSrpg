@@ -23,6 +23,7 @@ public class BattleManager : MonoBehaviour
     bool m_attackNow;
     /// <summary> 攻撃者の武装位置 </summary>
     WeaponPosition m_weaponPos;
+    int m_totalDamage;
     private void Awake()
     {
         Instance = this;
@@ -112,6 +113,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
         m_attackNow = true;
+        m_totalDamage = 0;
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
@@ -140,6 +142,7 @@ public class BattleManager : MonoBehaviour
             return;
         }
         m_attackNow = true;
+        m_totalDamage = 0;
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(m_weaponPos);
@@ -172,7 +175,7 @@ public class BattleManager : MonoBehaviour
         int r = Random.Range(0, 100);
         if (r <= hit)
         {
-            target.GetUnitData().HitCheckShot(power);
+            m_totalDamage += target.GetUnitData().HitCheckShot(power);
         }
         else
         {
@@ -208,6 +211,12 @@ public class BattleManager : MonoBehaviour
     void AttackEnd() 
     { 
         m_attackNow = false;
+        ViewTotalDamage();
+    }
+    IEnumerator ViewTotalDamage()
+    {
+        EffectManager.PlayDamage(m_totalDamage, m_target.transform.position);
+        yield return new WaitForSeconds(0.5f);
     }
     /// <summary>
     /// 耐久得点
