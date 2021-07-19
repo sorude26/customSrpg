@@ -55,7 +55,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         }
         int d = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= d;
-        Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
+        //Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
         m_partsDamage.Add(d);
         if (CurrentPartsHp < MaxPartsHp / 2)
         {
@@ -63,7 +63,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         }
         if (CurrentPartsHp <= 0)
         {
-            Debug.Log($"{PartsName}が破壊");
+            //Debug.Log($"{PartsName}が破壊");
             CurrentPartsHp = 0;
             Break = true;
         }

@@ -49,13 +49,13 @@ public class UnitAI : ScriptableObject
     public virtual WeaponMaster StartAttack(Unit unit)
     {
         WeaponMaster attackWeapon = null;
-        var weapons = unit.GetUnitData().GetWeapons().OrderByDescending(weapon => weapon.Power);
+        var weapons = unit.GetUnitData().GetWeapons().OrderByDescending(weapon => weapon.MaxPower);
         Unit target = null;
         foreach (var weapon in weapons)
         {
             int hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(weapon),unit);
             target = BattleManager.Instance.GetAttackTargets(MapManager.Instance.StartSearch(unit.CurrentPosX, unit.CurrentPosZ, weapon))
-            .OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.MaxPower, hit)).FirstOrDefault();
             if (target)
             {
                 BattleManager.Instance.SetTarget(target);
@@ -83,7 +83,6 @@ public class UnitAI : ScriptableObject
     {
         if (SetMapScore(unit, point, unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxPowerWeapon()))) return;
         if (SetMapScore(unit, point, unit.GetUnitData().GetWeaponPosition(unit.GetUnitData().GetMaxRangeWeapon()))) return;
-        point.MapScore = 0;
     }
     /// <summary>
     /// 指定箇所の武器での得点を登録可能ならば登録しTrueを返す
@@ -95,8 +94,8 @@ public class UnitAI : ScriptableObject
     protected virtual bool SetMapScore(Unit unit, MapData point,WeaponPosition weapon)
     {
         int hit = BattleManager.Instance.GetHit(weapon, unit);
-        int power = unit.GetUnitData().GetMaxPowerWeapon().Power;
-        Unit target = GetTarget(point, unit.GetUnitData().GetMaxPowerWeapon(), hit);
+        int power = unit.GetUnitData().GetWeapon(weapon).MaxPower;
+        Unit target = GetTarget(point, unit.GetUnitData().GetWeapon(weapon), hit);
         if (target)
         {
             SetScore(point, target.GetScore(power, hit));
@@ -114,7 +113,7 @@ public class UnitAI : ScriptableObject
     protected Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
     {
         Unit target = BattleManager.Instance.GetAttackTargets(GetAttackPositions(point, weapon))
-            .OrderByDescending(s => s.GetScore(weapon.Power, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.MaxPower, hit)).FirstOrDefault();
         return target;
     }
     /// <summary>
@@ -124,6 +123,6 @@ public class UnitAI : ScriptableObject
     /// <param name="score"></param>
     protected void SetScore(MapData point, int score) 
     {
-        if (point.MapScore < score) { point.MapScore = score; } 
+        if (point.MapScore < score) { point.MapScore = score; }
     }
 }

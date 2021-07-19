@@ -286,7 +286,7 @@ public class UnitMaster : MonoBehaviour
             if (weapon != null) 
                 weaponList.Add(weapon);
         }
-        return weaponList.OrderByDescending(weapon => weapon.Power).FirstOrDefault();
+        return weaponList.OrderByDescending(weapon => weapon.MaxPower).FirstOrDefault();
     }
     /// <summary>
     /// 最も射程範囲の広い武器
