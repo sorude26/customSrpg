@@ -24,11 +24,14 @@ public class WeaponMaster : PartsMaster<WeaponData>
     public WeaponType Type { get => m_partsData.Type; }
     /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
-    /// <summary> 攻撃時のイベント </summary>
-    public event Action Attack { add => m_attack += value; remove => m_attack -= value; }
+    /// <summary> 攻撃開始時のイベント </summary>
+    public event Action OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
+    protected Action m_attackStart;
+    /// <summary> 攻撃のイベント </summary>
+    public event Action OnAttack { add => m_attack += value; remove => m_attack -= value; }
     protected Action m_attack;
     /// <summary> 攻撃終了時のイベント </summary>
-    public event Action AttackEnd { add => m_attackEnd += value; remove => m_attackEnd -= value; }
+    public event Action OnAttackEnd { add => m_attackEnd += value; remove => m_attackEnd -= value; }
     protected Action m_attackEnd;
     
     /// <summary>
