@@ -5,13 +5,18 @@ using UnityEngine;
 /// <summary>
 /// 地形の生成を行う
 /// </summary>
-public class MapCreater : MonoBehaviour
+[CreateAssetMenu]
+public class MapCreater : ScriptableObject
 {
-    /// <summary> 地形に合わせたオブジェクトのPrefab </summary>
+    [Tooltip("地形に合わせたオブジェクトのPrefab")]
     [SerializeField] StagePanel[] m_stagePanels;
+    [Tooltip("道路のPrefab")]
     [SerializeField] GameObject[] m_roads;
+    [Tooltip("縦側の生成する道のパターン")]
     [SerializeField] int[] m_vRoadPattern = { 1, 2, 0, 2, 1, 0, 0, 0, 1 };
+    [Tooltip("横側の生成する道のパターン")]
     [SerializeField] int[] m_hRoadPattern = { 1, 1, 0, 0, 2, 2, 2, 0, 0 };
+    [Tooltip("ビルのPrefab")]
     [SerializeField] GameObject[] m_building;
     /// <summary>
     /// 平らな地形を生成しデータを返す
@@ -35,7 +40,7 @@ public class MapCreater : MonoBehaviour
                 mapDates[j + i * maxX] = map;
             }
         }
-        CreateRoad(maxX, maxZ, mapDates, mapScale);
+        CreateRoad(maxX, maxZ, mapDates, mapScale,parent);
         foreach (var item in mapDates)
         {
             if (item.MapType != MapType.Road)
@@ -43,7 +48,7 @@ public class MapCreater : MonoBehaviour
                 item.SetMapType(MapType.Normal);
             }
         }
-        CreateBuilding(maxX, maxZ, mapDates, mapScale);
+        CreateBuilding(maxX, maxZ, mapDates, mapScale,parent);
         return mapDates;
     }
     /// <summary>
@@ -73,10 +78,10 @@ public class MapCreater : MonoBehaviour
     /// <param name="maxZ"></param>
     /// <param name="datas"></param>
     /// <param name="mapScale"></param>
-    void CreateRoad(int maxX, int maxZ, MapData[] datas, int mapScale)
+    void CreateRoad(int maxX, int maxZ, MapData[] datas, int mapScale, Transform parent)
     {
         int roadCount = 0;
-        for (int i = Random.Range(0, 3); i < maxZ - 1; i++)
+        for (int i = 2; i < maxZ - 1; i++)
         {
             if (roadCount >= m_hRoadPattern.Length - 1)
             {
@@ -87,6 +92,7 @@ public class MapCreater : MonoBehaviour
                 var road = Instantiate(m_roads[m_hRoadPattern[roadCount]]);
                 road.transform.position = new Vector3(v * mapScale, 0, i * mapScale);
                 road.transform.rotation = Quaternion.Euler(0, 270, 0);
+                road.transform.SetParent(parent);
                 for (int c = 0; c < m_hRoadPattern[roadCount] + 2; c++)
                 {
                     if (i + c < maxZ)
@@ -109,6 +115,7 @@ public class MapCreater : MonoBehaviour
             {
                 var road = Instantiate(m_roads[m_vRoadPattern[roadCount]]);
                 road.transform.position = new Vector3(i * mapScale, 0, h * mapScale);
+                road.transform.SetParent(parent);
                 for (int c = 0; c < m_vRoadPattern[roadCount] + 2; c++)
                 {
                     if (i + c < maxZ)
@@ -128,15 +135,11 @@ public class MapCreater : MonoBehaviour
     /// <param name="maxZ"></param>
     /// <param name="datas"></param>
     /// <param name="mapScale"></param>
-    void CreateBuilding(int maxX, int maxZ,MapData[] datas, int mapScale)
+    void CreateBuilding(int maxX, int maxZ,MapData[] datas, int mapScale, Transform parent)
     {
         for (int i = 0; i < datas.Length; i++)
         {
-            if(BuildCheck(maxX, maxZ, datas, i, mapScale,2))
-            {
-                continue;
-            }
-            if (BuildCheck(maxX, maxZ, datas, i, mapScale, 1))
+            if (BuildCheck(maxX, maxZ, datas, i, mapScale, 2,parent))
             {
                 continue;
             }
@@ -151,7 +154,7 @@ public class MapCreater : MonoBehaviour
     /// <param name="point"></param>
     /// <param name="mapScale"></param>
     /// <returns></returns>
-    bool BuildCheck(int maxX, int maxZ, MapData[] datas,int point,int mapScale,int size)
+    bool BuildCheck(int maxX, int maxZ, MapData[] datas,int point,int mapScale,int size, Transform parent)
     {
         for (int h = 0; h < size; h++)
         {
@@ -166,14 +169,10 @@ public class MapCreater : MonoBehaviour
                 }
             }
         }
-        if (size == 2)
-        {
-            Instantiate(m_building[0]).transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
-        }
-        if (size == 1)
-        {
-            Instantiate(m_building[1]).transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
-        }     
+        int r = Random.Range(0, m_building.Length);
+        var building = Instantiate(m_building[r]);
+        building.transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
+        building.transform.SetParent(parent);
         for (int h = 0; h < size; h++)
         {
             for (int v = 0; v < size; v++)
