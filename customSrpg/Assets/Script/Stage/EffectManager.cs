@@ -75,6 +75,11 @@ public class EffectManager : MonoBehaviour
             return;
         }
     }
+    /// <summary>
+    /// 通常のダメージを表示する
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="pos"></param>
     public static void PlayDamage(int damage,Vector3 pos)
     {
         foreach (var text in m_instance.m_damgeTexts)
@@ -84,6 +89,26 @@ public class EffectManager : MonoBehaviour
                 continue;
             }
             text.Play(damage, pos);
+            return;
+        }
+    }
+
+    /// <summary>
+    /// 任意の時間、ダメージを表示する
+    /// </summary>
+    /// <param name="damage"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
+    /// <param name="time"></param>
+    public static void PlayDamage(int damage,Vector3 pos, int size,float time)
+    {
+        foreach (var text in m_instance.m_damgeTexts)
+        {
+            if (text.IsActive())
+            {
+                continue;
+            }
+            text.Play(damage, pos, size, time);
             return;
         }
     }

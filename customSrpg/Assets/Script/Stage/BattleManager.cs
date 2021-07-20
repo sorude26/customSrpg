@@ -211,7 +211,8 @@ public class BattleManager : MonoBehaviour
     void AttackEnd() 
     { 
         m_attackNow = false;
-        ViewTotalDamage();
+        EffectManager.PlayDamage(m_totalDamage, m_target.transform.position, 300, 1f);
+        //StartCoroutine(ViewTotalDamage());
     }
     IEnumerator ViewTotalDamage()
     {

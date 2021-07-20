@@ -51,7 +51,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     {
         if (CurrentPartsHp <= 0)
         {
-            return power;
+            return 0;
         }
         int d = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= d;
@@ -67,7 +67,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             CurrentPartsHp = 0;
             Break = true;
         }
-        return power;
+        return d;
     }
     /// <summary>
     /// ダメージの演出を行う
