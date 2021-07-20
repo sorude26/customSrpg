@@ -25,8 +25,8 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// <summary> 武装部位 </summary>
     public WeaponPosition WPosition { get; private set; }
     /// <summary> 攻撃開始時のイベント </summary>
-    public event Action OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
-    protected Action m_attackStart;
+    public event Action<WeaponType> OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
+    protected Action<WeaponType> m_attackStart;
     /// <summary> 攻撃のイベント </summary>
     public event Action OnAttack { add => m_attack += value; remove => m_attack -= value; }
     protected Action m_attack;

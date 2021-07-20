@@ -8,7 +8,7 @@ public class ShotWepon : WeaponMaster
     [SerializeField] GameObject m_muzzleFlash;
     public override void AttackStart()
     {
-        m_attackStart?.Invoke();
+        m_attackStart?.Invoke(Type);
         StartCoroutine(Shot());
     }
     IEnumerator Shot()
