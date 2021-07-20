@@ -11,7 +11,8 @@ public enum WeaponType
     MachineGun,
     Shotgun,
     MShotGun,
-    Melee,
+    Knuckle,
+    Blade,
 }
 /// <summary>
 /// 武器装備部位
