@@ -18,30 +18,72 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanWait");
     }
-    /// <summary>
-    /// 右手武器で攻撃する
-    /// </summary>
-    public virtual void TargetShotRArm()
+    public virtual void RArmAttack(WeaponType weapon)
     {
-        switch (m_unitType)
+        switch (weapon)
         {
-            case UnitType.Human:
-                m_anime.Play("HumanAttackRArm");
+            case WeaponType.Rifle:
+            case WeaponType.MachineGun:
+            case WeaponType.Shotgun:
+            case WeaponType.MShotGun:
+                TargetShotRArm();
                 break;
-            case UnitType.Walker:
-                m_anime.Play("WalkerAttack");
+            case WeaponType.Knuckle:
+                AttackPunchRArm();
                 break;
-            case UnitType.Helicopter:
-                break;
-            case UnitType.Tank:
+            case WeaponType.Blade:
+                AttackSlashRArm();
                 break;
             default:
                 break;
         }
     }
+    public virtual void LArmAttack(WeaponType weapon)
+    {
+        switch (weapon)
+        {
+            case WeaponType.Rifle:
+            case WeaponType.MachineGun:
+            case WeaponType.Shotgun:
+            case WeaponType.MShotGun:
+                TargetShotLArm();
+                break;
+            case WeaponType.Knuckle:
+                AttackPunchLArm();
+                break;
+            case WeaponType.Blade:
+                AttackSlashLArm();
+                break;
+            default:
+                break;
+        }
+    }
+    /// <summary>
+    /// 右手武器で攻撃する
+    /// </summary>
+    public virtual void TargetShotRArm()
+    {
+        m_anime.Play("HumanAttackRArm");
+    }
+    public virtual void AttackPunchRArm()
+    {
+        m_anime.Play("HumanAttackPunchRArm");
+    }
+    public virtual void AttackSlashRArm()
+    {
+        m_anime.Play("HumanAttackSlashRArm");
+    }
     public virtual void TargetShotLArm()
     {
         m_anime.Play("HumanAttackLArm");
+    }
+    public virtual void AttackPunchLArm()
+    {
+        m_anime.Play("HumanAttackPunchLArm");
+    }
+    public virtual void AttackSlashLArm()
+    {
+        m_anime.Play("HumanAttackSlashLArm");
     }
     /// <summary>
     /// 歩行
