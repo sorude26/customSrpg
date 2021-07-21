@@ -9,7 +9,9 @@ public class MeleeWeapon : WeaponMaster
     [SerializeField] Transform m_blade;
     public override void AttackStart()
     {
-        m_attackStart?.Invoke(Type);
+        m_attackStart?.Invoke();
+        m_attackStart = null;
+        m_attackMode?.Invoke(Type);
         StartCoroutine(Attack());
     }
     IEnumerator Attack()

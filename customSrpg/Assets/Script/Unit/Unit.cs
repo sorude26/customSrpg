@@ -56,8 +56,8 @@ public class Unit : MonoBehaviour
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
         m_master.OnDamage += m_motion.Damage;
-        m_master.GetWeapon(WeaponPosition.LArm).OnAttackStart += m_motion.LArmAttack;
-        m_master.GetWeapon(WeaponPosition.RArm).OnAttackStart += m_motion.RArmAttack;
+        m_master.GetWeapon(WeaponPosition.LArm).OnAttackMode += m_motion.LArmAttack;
+        m_master.GetWeapon(WeaponPosition.RArm).OnAttackMode += m_motion.RArmAttack;
     }
     /// <summary>
     /// 機体データ
@@ -120,6 +120,14 @@ public class Unit : MonoBehaviour
     public void TargetLook(Unit target)
     {
         m_movelControl.TargetLook(target.transform.position);
+    }
+    public void AttackMoveStart()
+    {
+        m_movelControl.AttackMoveStart();
+    }
+    public void AttackMoveReturn()
+    {
+        m_movelControl.AttackMoveReturn();
     }
     /// <summary>
     /// 停止、休息中のユニットを待機状態にする

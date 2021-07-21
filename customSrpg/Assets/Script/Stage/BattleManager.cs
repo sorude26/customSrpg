@@ -118,6 +118,11 @@ public class BattleManager : MonoBehaviour
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
+        if (weapon.Type == WeaponType.Blade || weapon.Type == WeaponType.Knuckle)
+        {
+            weapon.OnAttackStart += m_attacker.AttackMoveStart;
+            weapon.OnAttackEnd += m_attacker.AttackMoveReturn;
+        }
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
         int hit = GetHit(attackWeapon);
@@ -147,6 +152,11 @@ public class BattleManager : MonoBehaviour
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(m_weaponPos);
+        if (weapon.Type == WeaponType.Blade || weapon.Type == WeaponType.Knuckle)
+        {
+            weapon.OnAttackStart += m_attacker.AttackMoveStart;
+            weapon.OnAttackEnd += m_attacker.AttackMoveReturn;
+        }
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
         m_target.GetUnitData().BattleEnd += StageManager.Instance.NextUnit;

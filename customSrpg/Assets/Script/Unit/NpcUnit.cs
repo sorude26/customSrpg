@@ -10,6 +10,8 @@ public class NpcUnit : Unit
     [SerializeField] protected UnitAI m_unitAI;
     [Tooltip("行動終了時の待ち時間")]
     [SerializeField] protected float m_actionEndWaitTime = 1f;
+    /// <summary> 待機時間 </summary>
+    protected float m_waitTime;
     /// <summary> 移動中フラグ </summary>
     protected bool m_moveMode;
     /// <summary> 攻撃中フラグ </summary>
@@ -38,7 +40,7 @@ public class NpcUnit : Unit
         yield return End();
     }
     /// <summary>
-    /// 移動対象があれば移動する
+    /// 移動処理
     /// </summary>
     /// <returns></returns>
     protected IEnumerator Move()
@@ -56,7 +58,7 @@ public class NpcUnit : Unit
         StageManager.Instance.Cursor.Warp(this);
     }
     /// <summary>
-    /// 攻撃対象があれば攻撃する
+    /// 攻撃処理
     /// </summary>
     /// <returns></returns>
     protected IEnumerator Attack()
@@ -66,11 +68,23 @@ public class NpcUnit : Unit
         {
             m_attackMode = true;
             m_attackWeapon.OnAttackEnd += AttackModeEnd;
+            m_waitTime = m_actionEndWaitTime;
         }
         while (m_attackMode)
         {
             yield return null;
         }
+    }
+    /// <summary>
+    /// 終了処理
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator End()
+    {
+        yield return new WaitForSeconds(m_waitTime);
+        m_waitTime = 0;
+        UnitRest();
+        StageManager.Instance.NextUnit();
     }
     /// <summary>
     /// 移動終了時に呼ぶ
@@ -86,15 +100,5 @@ public class NpcUnit : Unit
     {
         m_attackMode = false;
         m_attackWeapon = null;
-    }
-    /// <summary>
-    /// 終了処理
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator End()
-    {
-        yield return new WaitForSeconds(1f);
-        UnitRest();
-        StageManager.Instance.NextUnit();
     }
 }

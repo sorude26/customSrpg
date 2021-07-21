@@ -390,4 +390,22 @@ public class UnitMovelControl : MonoBehaviour
             SearchCross(p, movePower, moveList);
         }
     }
+    public void AttackMoveStart()
+    {
+        StartCoroutine(AttackMove(this.transform.forward.normalized));
+    }
+    public void AttackMoveReturn()
+    {
+        StartCoroutine(AttackMove(-this.transform.forward.normalized));
+    }
+    IEnumerator AttackMove(Vector3 dir)
+    {
+        float timer = 0;
+        while (timer < 0.3f)
+        {
+            timer += Time.deltaTime;
+            transform.position = transform.position + dir * Time.deltaTime * 20;
+            yield return new WaitForEndOfFrame();
+        }
+    }
 }

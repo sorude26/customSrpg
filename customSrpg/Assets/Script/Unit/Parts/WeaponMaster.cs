@@ -26,10 +26,14 @@ public class WeaponMaster : PartsMaster<WeaponData>
     public WeaponType Type { get => m_partsData.Type; }
     /// <summary> 武装部位 </summary>
     public WeaponPosition WeaponPos { get; private set; }
+    /// <summary> 攻撃種類のイベント </summary>
+    protected Action<WeaponType> m_attackMode;
+    /// <summary> 攻撃種類のイベント </summary>
+    public event Action<WeaponType> OnAttackMode { add => m_attackMode += value; remove => m_attackMode -= value; }
     /// <summary> 攻撃開始時のイベント </summary>
-    protected Action<WeaponType> m_attackStart;
+    protected Action m_attackStart;
     /// <summary> 攻撃開始時のイベント </summary>
-    public event Action<WeaponType> OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
+    public event Action OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
     /// <summary> 攻撃のイベント </summary>
     protected Action m_attack;
     /// <summary> 攻撃のイベント </summary>
