@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// テストシーンでのユニットの組み立てを行う
+/// </summary>
 public class TestBuilder : MonoBehaviour
 {
     [SerializeField] UnitBuildData m_buildData;

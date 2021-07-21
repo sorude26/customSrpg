@@ -14,10 +14,18 @@ public class MotionController : MonoBehaviour
         m_anime = GetComponent<Animator>();
         Wait();
     }
+    /// <summary>
+    /// 待機状態
+    /// </summary>
     public virtual void Wait()
     {
         m_anime.Play("HumanWait");
     }
+    /// <summary>
+    /// 右手の攻撃
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <param name="number"></param>
     public virtual void RArmAttack(WeaponType weapon,int number)
     {
         switch (weapon)
@@ -38,6 +46,11 @@ public class MotionController : MonoBehaviour
                 break;
         }
     }
+    /// <summary>
+    /// 左手の攻撃
+    /// </summary>
+    /// <param name="weapon"></param>
+    /// <param name="number"></param>
     public virtual void LArmAttack(WeaponType weapon,int number)
     {
         switch (weapon)
@@ -59,16 +72,23 @@ public class MotionController : MonoBehaviour
         }
     }
     /// <summary>
-    /// 右手武器で攻撃する
+    /// 右手射撃武器で攻撃する
     /// </summary>
     public virtual void TargetShotRArm()
     {
         m_anime.Play("HumanAttackRArm");
     }
+    /// <summary>
+    /// 右手で殴る
+    /// </summary>
     public virtual void AttackPunchRArm()
     {
         m_anime.Play("HumanAttackPunchRArm");
     }
+    /// <summary>
+    /// 攻撃の回数に応じた切り裂き系の格闘攻撃をする
+    /// </summary>
+    /// <param name="number"></param>
     public virtual void AttackSlashRArm(int number)
     {
         if (number == 0)
@@ -84,14 +104,24 @@ public class MotionController : MonoBehaviour
             m_anime.Play("HumanAttackSlashRArm");
         }
     }
+    /// <summary>
+    /// 左手射撃武器で攻撃する
+    /// </summary>
     public virtual void TargetShotLArm()
     {
         m_anime.Play("HumanAttackLArm");
     }
+    /// <summary>
+    /// 左手で殴る
+    /// </summary>
     public virtual void AttackPunchLArm()
     {
         m_anime.Play("HumanAttackPunchLArm");
     }
+    /// <summary>
+    /// 攻撃の回数に応じた切り裂き系の格闘攻撃をする
+    /// </summary>
+    /// <param name="number"></param>
     public virtual void AttackSlashLArm(int number)
     {
         if (number == 0)
