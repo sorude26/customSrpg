@@ -401,7 +401,7 @@ public class UnitMovelControl : MonoBehaviour
     IEnumerator AttackMove(Vector3 dir)
     {
         float timer = 0;
-        while (timer < 0.3f)
+        while (timer < 0.15f)
         {
             timer += Time.deltaTime;
             transform.position = transform.position + dir * Time.deltaTime * 20;

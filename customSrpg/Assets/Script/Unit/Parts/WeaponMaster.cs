@@ -27,9 +27,9 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// <summary> 武装部位 </summary>
     public WeaponPosition WeaponPos { get; private set; }
     /// <summary> 攻撃種類のイベント </summary>
-    protected Action<WeaponType> m_attackMode;
+    protected Action<WeaponType,int> m_attackMode;
     /// <summary> 攻撃種類のイベント </summary>
-    public event Action<WeaponType> OnAttackMode { add => m_attackMode += value; remove => m_attackMode -= value; }
+    public event Action<WeaponType,int> OnAttackMode { add => m_attackMode += value; remove => m_attackMode -= value; }
     /// <summary> 攻撃開始時のイベント </summary>
     protected Action m_attackStart;
     /// <summary> 攻撃開始時のイベント </summary>

@@ -18,7 +18,7 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanWait");
     }
-    public virtual void RArmAttack(WeaponType weapon)
+    public virtual void RArmAttack(WeaponType weapon,int number)
     {
         switch (weapon)
         {
@@ -32,13 +32,13 @@ public class MotionController : MonoBehaviour
                 AttackPunchRArm();
                 break;
             case WeaponType.Blade:
-                AttackSlashRArm();
+                AttackSlashRArm(number);
                 break;
             default:
                 break;
         }
     }
-    public virtual void LArmAttack(WeaponType weapon)
+    public virtual void LArmAttack(WeaponType weapon,int number)
     {
         switch (weapon)
         {
@@ -52,7 +52,7 @@ public class MotionController : MonoBehaviour
                 AttackPunchLArm();
                 break;
             case WeaponType.Blade:
-                AttackSlashLArm();
+                AttackSlashLArm(number);
                 break;
             default:
                 break;
@@ -69,9 +69,20 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanAttackPunchRArm");
     }
-    public virtual void AttackSlashRArm()
+    public virtual void AttackSlashRArm(int number)
     {
-        m_anime.Play("HumanAttackSlashRArm");
+        if (number == 0)
+        {
+            m_anime.Play("HumanWalk");
+        }
+        else if (number % 2 == 0)
+        {
+            m_anime.Play("HumanAttackSlashRArm2");
+        }
+        else
+        {
+            m_anime.Play("HumanAttackSlashRArm");
+        }
     }
     public virtual void TargetShotLArm()
     {
@@ -81,9 +92,20 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanAttackPunchLArm");
     }
-    public virtual void AttackSlashLArm()
+    public virtual void AttackSlashLArm(int number)
     {
-        m_anime.Play("HumanAttackSlashLArm");
+        if (number == 0)
+        {
+            m_anime.Play("HumanWalk");
+        }
+        else if (number % 2 == 0)
+        {
+            m_anime.Play("HumanAttackSlashLArm2");
+        }
+        else
+        {
+            m_anime.Play("HumanAttackSlashLArm");
+        }
     }
     /// <summary>
     /// 歩行

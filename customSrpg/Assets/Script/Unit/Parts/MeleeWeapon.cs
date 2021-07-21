@@ -7,21 +7,24 @@ using UnityEngine;
 public class MeleeWeapon : WeaponMaster
 {
     [SerializeField] Transform m_blade;
+    [SerializeField] float m_attackHitTime = 0.3f;
     public override void AttackStart()
     {
         m_attackStart?.Invoke();
         m_attackStart = null;
-        m_attackMode?.Invoke(Type);
+        m_attackMode?.Invoke(Type,0);
         StartCoroutine(Attack());
     }
     IEnumerator Attack()
     {
         int count = m_partsData.MaxAttackNumber;
         while (count > 0)
-        {
-            count--;
+        {           
+            m_attackMode?.Invoke(Type, count);
+            yield return new WaitForSeconds(m_attackHitTime);
             m_attack?.Invoke();
             EffectManager.PlayEffect(EffectType.ShotHit, m_blade.position);
+            count--;
             yield return new WaitForSeconds(m_partsData.AttackInterval);
         }
         m_attackEnd?.Invoke();

@@ -14,7 +14,7 @@ public class ShotWeapon : WeaponMaster
     {
         m_attackStart?.Invoke();
         m_attackStart = null;
-        m_attackMode?.Invoke(Type);
+        m_attackMode?.Invoke(Type,0);
         StartCoroutine(Shot());
     }
     IEnumerator Shot()
