@@ -26,7 +26,9 @@ public enum WeaponPosition
     RShoulder,
     None,
 }
-
+/// <summary>
+/// 武器のデータ
+/// </summary>
 [CreateAssetMenu]
 public class WeaponData : PartsData
 {

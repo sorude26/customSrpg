@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 胴体のデータ、全種類のユニットに必ず設定される
+/// </summary>
 [CreateAssetMenu]
 public class BodyData : UnitPartsData
 {

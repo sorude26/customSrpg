@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 全パーツデータの基底クラス
+/// </summary>
 public class PartsData : ScriptableObject
 {
     [Tooltip("パーツID")]

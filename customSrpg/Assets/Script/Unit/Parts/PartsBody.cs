@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 胴体パーツ
+/// </summary>
 public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
 {
     /// <summary> 機体出力 </summary>
@@ -14,16 +16,19 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
     public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 機体タイプ </summary>
     public UnitType BodyPartsType { get => m_partsData.BodyPartsType; }
-    /// <summary> ヘッドパーツ接続部 </summary>
+    [Tooltip("頭部パーツ接続部")]
     [SerializeField] Transform m_headParts;
-    /// <summary> 左手パーツ接続部 </summary>
+    [Tooltip("左手パーツ接続部")]
     [SerializeField] Transform m_lArmParts;
-    /// <summary> 右手パーツ接続部 </summary>
+    [Tooltip("右手パーツ接続部")]
     [SerializeField] Transform m_rArmParts;
-    /// <summary> 内蔵武器 </summary>
+    [Tooltip("内蔵武器")]
     [SerializeField] WeaponMaster m_weapon;
+    /// <summary> 頭部パーツ接続部 </summary>
     public Transform HeadPos { get => m_headParts; }
+    /// <summary> 左手パーツ接続部 </summary>
     public Transform LArmPos { get => m_lArmParts; }
+    /// <summary> 右手パーツ接続部 </summary>
     public Transform RArmPos { get => m_rArmParts; }
     /// <summary> 内蔵武器 </summary>
     public WeaponMaster BodyWeapon { get => m_weapon; }

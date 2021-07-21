@@ -81,7 +81,7 @@ public class MapCreater : ScriptableObject
     void CreateRoad(int maxX, int maxZ, MapData[] datas, int mapScale, Transform parent)
     {
         int roadCount = 0;
-        for (int i = 2; i < maxZ - 1; i++)
+        for (int i = Random.Range(0, 3); i < maxZ - 1; i++)
         {
             if (roadCount >= m_hRoadPattern.Length - 1)
             {

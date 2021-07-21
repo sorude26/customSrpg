@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 機体パーツの基底クラス
+/// </summary>
+/// <typeparam name="T">対応するパーツのデータ</typeparam>
 public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsData
 {
     /// <summary> パーツ耐久値 </summary>
@@ -10,7 +14,9 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int Defense { get => m_partsData.Defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
+    /// <summary> ダメージを受けた回数 </summary>
     protected int m_damageCount = 0;
+    /// <summary> 受けたダメージ </summary>
     protected List<int> m_partsDamage;
     [Tooltip("攻撃命中の表示箇所")]
     [SerializeField] protected Transform[] m_hitPos;
@@ -32,10 +38,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         CurrentPartsHp = MaxPartsHp;
         m_partsDamage = new List<int>();
     }
-    /// <summary>
-    /// パーツの色変更
-    /// </summary>
-    /// <param name="color"></param>
+
     public virtual void ColorChange(Color color)
     {
         foreach (var renderer in m_amors)
@@ -43,31 +46,26 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             renderer.material.color = color;
         }
     }
-    /// <summary>
-    /// パーツにダメージを与える
-    /// </summary>
-    /// <param name="power"></param>
+
     public virtual int Damage(int power)
     {
         if (CurrentPartsHp <= 0)
         {
             return 0;
         }
-        int d = BattleCalculator.GetDamage(power, Defense);
-        CurrentPartsHp -= d;
-        //Debug.Log($"{PartsName}に{d}ダメージ、残:{ CurrentPartsHp}");
-        m_partsDamage.Add(d);
+        int damage = BattleCalculator.GetDamage(power, Defense);
+        CurrentPartsHp -= damage;
+        m_partsDamage.Add(damage);
         if (CurrentPartsHp < MaxPartsHp / 2)
         {
             m_damageSmoke.SetActive(true);
         }
         if (CurrentPartsHp <= 0)
         {
-            //Debug.Log($"{PartsName}が破壊");
             CurrentPartsHp = 0;
             Break = true;
         }
-        return d;
+        return damage;
     }
     /// <summary>
     /// ダメージの演出を行う
@@ -96,24 +94,8 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     {
         m_partsObject.SetActive(false);
     }
-    /// <summary>
-    /// パーツのサイズを返す
-    /// </summary>
-    /// <returns></returns>
-    public virtual int GetPartsSize() => PartsSize;
-    /// <summary>
-    /// パーツの最大耐久値を返す
-    /// </summary>
-    /// <returns></returns>
+
     public int GetMaxHP() => MaxPartsHp;
-    /// <summary>
-    /// パーツの現在耐久値を返す
-    /// </summary>
-    /// <returns></returns>
     public int GetCurrentHP() => CurrentPartsHp;
-    /// <summary>
-    /// パーツの防御力を返す
-    /// </summary>
-    /// <returns></returns>
     public int GetDefense() => Defense;
 }

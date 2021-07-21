@@ -1,15 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 腕パーツ
+/// </summary>
 public class PartsArm : UnitPartsMaster<ArmData>
 {
-    /// <summary> 拳の位置 </summary>
+    [Tooltip("拳の位置")]
     [SerializeField] Transform m_grip;
-    /// <summary> 肩の位置 </summary>
+    [Tooltip("肩の位置")]
     [SerializeField] Transform m_shoulder;
-    
+    [Tooltip("腕上部")]
     [SerializeField] Transform m_armTop;
+    [Tooltip("腕下部")]
     [SerializeField] Transform m_armBottom;
     /// <summary> 命中精度 </summary>
     public int HitAccuracy { get => m_partsData.HitAccuracy; }
@@ -19,7 +22,9 @@ public class PartsArm : UnitPartsMaster<ArmData>
     public Transform Grip { get => m_grip; }
     /// <summary> 肩の位置 </summary>
     public Transform Shoulder { get => m_shoulder; }
+    /// <summary> 腕上部 </summary>
     public Transform ArmTop { get => m_armTop; }
+    /// <summary> 腕下部 </summary>
     public Transform ArmBottom { get => m_armBottom; }
     /// <summary> 手持ち武器 </summary>
     public WeaponMaster GripWeapon { get; private set; }

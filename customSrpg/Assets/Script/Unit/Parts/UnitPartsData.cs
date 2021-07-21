@@ -20,11 +20,14 @@ public enum ArmType
     Left,
     Right,
 }
+/// <summary>
+/// 機体パーツデータの基底クラス
+/// </summary>
 public class UnitPartsData : PartsData
 {
-    /// <summary> パーツ耐久値 </summary>
+    [Tooltip("パーツ耐久値")]
     [SerializeField] protected int m_partsHp;
-    /// <summary> パーツ装甲値 </summary>
+    [Tooltip("パーツ装甲値")]
     [SerializeField] protected int m_defense;
     /// <summary> パーツ耐久値 </summary>
     public int MaxPartsHp { get => m_partsHp; }

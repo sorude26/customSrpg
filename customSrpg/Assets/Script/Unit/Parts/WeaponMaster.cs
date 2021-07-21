@@ -3,7 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
+/// <summary>
+/// 武器の基底クラス
+/// </summary>
 public class WeaponMaster : PartsMaster<WeaponData>
 {
     /// <summary> 武器攻撃力 </summary>
@@ -23,16 +25,19 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// <summary> 武器種 </summary>
     public WeaponType Type { get => m_partsData.Type; }
     /// <summary> 武装部位 </summary>
-    public WeaponPosition WPosition { get; private set; }
+    public WeaponPosition WeaponPos { get; private set; }
+    /// <summary> 攻撃開始時のイベント </summary>
+    protected Action<WeaponType> m_attackStart;
     /// <summary> 攻撃開始時のイベント </summary>
     public event Action<WeaponType> OnAttackStart { add => m_attackStart += value; remove => m_attackStart -= value; }
-    protected Action<WeaponType> m_attackStart;
+    /// <summary> 攻撃のイベント </summary>
+    protected Action m_attack;
     /// <summary> 攻撃のイベント </summary>
     public event Action OnAttack { add => m_attack += value; remove => m_attack -= value; }
-    protected Action m_attack;
+    /// <summary> 攻撃終了時のイベント </summary>
+    protected Action m_attackEnd;
     /// <summary> 攻撃終了時のイベント </summary>
     public event Action OnAttackEnd { add => m_attackEnd += value; remove => m_attackEnd -= value; }
-    protected Action m_attackEnd;
     
     /// <summary>
     /// 武装部位を設定する
@@ -40,7 +45,10 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// <param name="position"></param>
     public void SetWeaponPosition(WeaponPosition position)
     {
-        WPosition = position;
+        WeaponPos = position;
     }
+    /// <summary>
+    /// 攻撃開始
+    /// </summary>
     public virtual void AttackStart() { }
 }

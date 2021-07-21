@@ -434,7 +434,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="weapon"></param>
     public void SetParts(WeaponMaster weapon)
     {
-        switch (weapon.WPosition)
+        switch (weapon.WeaponPos)
         {
             case WeaponPosition.LArm:
                 m_lAWeapon = weapon;

@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 頭部データ
+/// </summary>
 [CreateAssetMenu]
 public class HeadData : UnitPartsData
 {

@@ -18,6 +18,9 @@ public struct UnitBuildData
     public int WeaponRArmID;
     public int WeaponLArmID;    
 }
+/// <summary>
+/// 全パーツを保有するオブジェクト
+/// </summary>
 [CreateAssetMenu]
 public class UnitPartsList : ScriptableObject
 {

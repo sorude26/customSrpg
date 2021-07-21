@@ -1,10 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ShotWepon : WeaponMaster
+/// <summary>
+/// 射撃武器
+/// </summary>
+public class ShotWeapon : WeaponMaster
 {
+    [Tooltip("銃口")]
     [SerializeField] Transform m_muzzle;
+    [Tooltip("マズルフラッシュのエフェクト")]
     [SerializeField] GameObject m_muzzleFlash;
     public override void AttackStart()
     {

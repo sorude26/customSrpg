@@ -26,9 +26,9 @@ public enum MapType
 public class MapData
 {
     /// <summary> X座標 </summary>
-    public int PosX { get; private set; }
+    public int PosX { get; }
     /// <summary> Z座標 </summary>
-    public int PosZ { get; private set; }
+    public int PosZ { get; }
     /// <summary> 高さ </summary>
     public float Level { get; private set; }
     /// <summary> 地形種 </summary>

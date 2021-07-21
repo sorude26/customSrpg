@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 腕のデータ、左右があるため注意
+/// </summary>
 [CreateAssetMenu]
 public class ArmData : UnitPartsData
 {

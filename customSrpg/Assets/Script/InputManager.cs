@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace Stage
 {
+    /// <summary>
+    /// 全入力を管理する
+    /// </summary>
     public class InputManager : MonoBehaviour
     {
         public static InputManager Instance { get; private set; }

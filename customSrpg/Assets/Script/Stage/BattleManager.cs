@@ -23,6 +23,7 @@ public class BattleManager : MonoBehaviour
     bool m_attackNow;
     /// <summary> 攻撃者の武装位置 </summary>
     WeaponPosition m_weaponPos;
+    /// <summary> 攻撃時の合計ダメージ </summary>
     int m_totalDamage;
     private void Awake()
     {
@@ -212,12 +213,6 @@ public class BattleManager : MonoBehaviour
     { 
         m_attackNow = false;
         EffectManager.PlayDamage(m_totalDamage, m_target.transform.position, 300, 1f);
-        //StartCoroutine(ViewTotalDamage());
-    }
-    IEnumerator ViewTotalDamage()
-    {
-        EffectManager.PlayDamage(m_totalDamage, m_target.transform.position);
-        yield return new WaitForSeconds(0.5f);
     }
     /// <summary>
     /// 耐久得点

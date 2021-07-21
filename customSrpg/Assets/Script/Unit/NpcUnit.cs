@@ -1,11 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+/// <summary>
+/// 自立行動を行うユニット
+/// </summary>
 public class NpcUnit : Unit
 {
     [Tooltip("NPCユニットの行動設定")]
     [SerializeField] protected UnitAI m_unitAI;
+    [Tooltip("行動終了時の待ち時間")]
+    [SerializeField] protected float m_actionEndWaitTime = 1f;
     /// <summary> 移動中フラグ </summary>
     protected bool m_moveMode;
     /// <summary> 攻撃中フラグ </summary>
@@ -24,17 +28,14 @@ public class NpcUnit : Unit
         }
     }
     /// <summary>
-    /// 自身に設定されたAIに基づいて行動する
+    /// 自身に設定されたAIに基づいて各フェイズに行動する
     /// </summary>
     /// <returns></returns>
     protected IEnumerator StartAI()
     {
         yield return Move();
-        StageManager.Instance.Cursor.Warp(this);
         yield return Attack();
         yield return End();
-        UnitRest();
-        StageManager.Instance.NextUnit();
     }
     /// <summary>
     /// 移動対象があれば移動する
@@ -52,6 +53,7 @@ public class NpcUnit : Unit
             yield return null;
         }
         MoveEnd();
+        StageManager.Instance.Cursor.Warp(this);
     }
     /// <summary>
     /// 攻撃対象があれば攻撃する
@@ -69,7 +71,6 @@ public class NpcUnit : Unit
         {
             yield return null;
         }
-        UnitRest();
     }
     /// <summary>
     /// 移動終了時に呼ぶ
@@ -77,7 +78,6 @@ public class NpcUnit : Unit
     protected void MoveModeEnd()
     {
         m_moveMode = false;
-        //m_movelControl.MoveEndEvent -= MoveModeEnd;
     }
     /// <summary>
     /// 攻撃終了時に呼ぶ
@@ -93,11 +93,8 @@ public class NpcUnit : Unit
     /// <returns></returns>
     IEnumerator End()
     {
-        int count = 0;
-        while (count < 2)
-        {
-            count++;
-            yield return new WaitForSeconds(0.3f);
-        }
+        yield return new WaitForSeconds(1f);
+        UnitRest();
+        StageManager.Instance.NextUnit();
     }
 }
