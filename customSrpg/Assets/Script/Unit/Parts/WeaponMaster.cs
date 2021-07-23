@@ -51,6 +51,7 @@ public class WeaponMaster : PartsMaster<WeaponData>
     {
         WeaponPos = position;
     }
+    public void SetBreak() => Break = true;
     /// <summary>
     /// 攻撃開始
     /// </summary>

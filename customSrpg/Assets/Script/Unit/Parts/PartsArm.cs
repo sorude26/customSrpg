@@ -46,4 +46,25 @@ public class PartsArm : UnitPartsMaster<ArmData>
         }
         return size;
     }
+    public override int Damage(int power)
+    {
+        if (CurrentPartsHp <= 0)
+        {
+            return 0;
+        }
+        int damage = BattleCalculator.GetDamage(power, Defense);
+        CurrentPartsHp -= damage;
+        m_partsDamage.Add(damage);
+        if (CurrentPartsHp < MaxPartsHp / 2)
+        {
+            m_damageSmoke.SetActive(true);
+        }
+        if (CurrentPartsHp <= 0)
+        {
+            CurrentPartsHp = 0;
+            Break = true;
+            GripWeapon.SetBreak();
+        }
+        return damage;
+    }
 }

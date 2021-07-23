@@ -350,13 +350,13 @@ public class UnitMaster : MonoBehaviour
     /// パーツのダメージエフェクトを再生する
     /// </summary>
     void PlayPartsDamegeEffect()
-    {
+    {       
         if (m_attackCount >= m_damegePartsList.Count)
         {
             return;
         }
-        OnDamage?.Invoke();
         m_damegePartsList[m_attackCount].DamageEffect();
+        OnDamage?.Invoke();
         m_attackCount++;
     }
     /// <summary>
@@ -376,7 +376,7 @@ public class UnitMaster : MonoBehaviour
     /// </summary>
     public void BattleEndEvent()
     {
-        if (GetCurrentHP() <= 0)
+        if (Body.CurrentPartsHp <= 0)
         {
             BodyBreak?.Invoke();
             BodyBreak = null;
@@ -436,9 +436,11 @@ public class UnitMaster : MonoBehaviour
         {
             case WeaponPosition.LArm:
                 m_lAWeapon = weapon;
+                LArm.SetGripWeapon(m_lAWeapon);
                 break;
             case WeaponPosition.RArm:
                 m_rAWeapon = weapon;
+                RArm.SetGripWeapon(m_rAWeapon);
                 break;
             case WeaponPosition.LShoulder:
                 m_lSWeapon = weapon;
