@@ -96,7 +96,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// </summary>
     protected virtual void PartsBreak()
     {
-        m_partsObject.SetActive(false);
+        foreach (var item in m_partsObject)
+        {
+            item.SetActive(false);
+        }
     }
 
     public int GetMaxHP() => MaxPartsHp;

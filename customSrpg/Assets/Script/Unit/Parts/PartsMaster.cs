@@ -12,7 +12,7 @@ public class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     [SerializeField] protected int m_partsID;
     [SerializeField] protected T m_partsData;
     /// <summary> 表示されるパーツ </summary>
-    [SerializeField] protected GameObject m_partsObject;
+    [SerializeField] protected GameObject[] m_partsObject;
     /// <summary> パーツID </summary>
     public int PartsID { get => m_partsID; }
     /// <summary> パーツ名 </summary>
