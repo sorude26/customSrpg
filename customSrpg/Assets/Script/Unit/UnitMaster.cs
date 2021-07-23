@@ -182,20 +182,25 @@ public class UnitMaster : MonoBehaviour
         switch (position)
         {
             case WeaponPosition.Body:
+                if (m_bodyWeapon)
                 hitAccuray += m_bodyWeapon.HitAccuracy;
                 break;
             case WeaponPosition.LArm:
                 hitAccuray += LArm.HitAccuracy;
+                if(m_lAWeapon)
                 hitAccuray += m_lAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.RArm:
                 hitAccuray += RArm.HitAccuracy;
+                if (m_rAWeapon)
                 hitAccuray += m_rAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.LShoulder:
+                if(m_lSWeapon)
                 hitAccuray += m_lSWeapon.HitAccuracy;
                 break;
             case WeaponPosition.RShoulder:
+                if(m_rSWeapon)
                 hitAccuray += m_rSWeapon.HitAccuracy;
                 break;
             default:

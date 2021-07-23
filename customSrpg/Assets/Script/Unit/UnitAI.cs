@@ -94,8 +94,10 @@ public class UnitAI : ScriptableObject
     protected virtual bool SetMapScore(Unit unit, MapData point,WeaponPosition weapon)
     {
         int hit = BattleManager.Instance.GetHit(weapon, unit);
-        int power = unit.GetUnitData().GetWeapon(weapon).MaxPower;
-        Unit target = GetTarget(point, unit.GetUnitData().GetWeapon(weapon), hit);
+        WeaponMaster attackWeapon = unit.GetUnitData().GetWeapon(weapon);
+        if (attackWeapon == null) { return false; }
+        int power = attackWeapon.MaxPower;
+        Unit target = GetTarget(point, attackWeapon, hit);
         if (target)
         {
             SetScore(point, target.GetScore(power, hit));
