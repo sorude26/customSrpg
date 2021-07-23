@@ -267,10 +267,8 @@ public class UnitMaster : MonoBehaviour
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
         foreach (var weapon in weapons)
         {
-            if (weapon)
-            {
+            if (weapon != null || !weapon.Break)
                 weaponList.Add(weapon);
-            }
         }
         return weaponList.ToArray();
     }
@@ -284,7 +282,7 @@ public class UnitMaster : MonoBehaviour
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
-            if (weapon != null) 
+            if (weapon != null || !weapon.Break) 
                 weaponList.Add(weapon);
         }
         return weaponList.OrderByDescending(weapon => weapon.MaxPower).FirstOrDefault();
@@ -299,7 +297,7 @@ public class UnitMaster : MonoBehaviour
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
-            if (weapon != null)
+            if (weapon != null || !weapon.Break)
                 weaponList.Add(weapon);
         }
         return weaponList.OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
