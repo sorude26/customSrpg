@@ -31,11 +31,14 @@ public class CursorControl : MonoBehaviour
     float m_timer = 0;
     /// <summary> 連続移動フラグ </summary>
     bool m_second;
+    [SerializeField] UnitDataGuideView m_dataGuideView1;
+    [SerializeField] UnitDataGuideView m_dataGuideView2;
     void Start()
     {
         m_stageScale = MapManager.Instance.MapScale;
         m_stageSize.x = MapManager.Instance.MaxX;
         m_stageSize.y = MapManager.Instance.MaxZ;
+        UnitGuideViewEnd();
     }
 
     void Update()
@@ -91,6 +94,8 @@ public class CursorControl : MonoBehaviour
             this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
             m_move = false;
             m_moveTimer = m_moveTime;
+            UnitGuideViewEnd();
+            m_dataGuideView2.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             return;
         }
     }
@@ -123,6 +128,8 @@ public class CursorControl : MonoBehaviour
     {
         m_currentPosX = x;
         m_currentPosZ = z;
+        UnitGuideViewEnd();
+        m_dataGuideView2.ViewData(StageManager.Instance.GetPositionUnit(x, z));
         transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
@@ -137,6 +144,8 @@ public class CursorControl : MonoBehaviour
         }
         m_currentPosX = unit.CurrentPosX;
         m_currentPosZ = unit.CurrentPosZ;
+        UnitGuideViewEnd();
+        m_dataGuideView2.ViewData(unit);
         transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
@@ -180,5 +189,16 @@ public class CursorControl : MonoBehaviour
                 m_moveTimer = m_moveTime;
             }
         }
+    }
+    public void BattleUnitView(Unit attacker,Unit target)
+    {
+        m_dataGuideView2.ViewData(attacker);
+        m_dataGuideView1.ViewData(target);
+    }
+
+    public void UnitGuideViewEnd()
+    {
+        m_dataGuideView1.ViewEnd();
+        m_dataGuideView2.ViewEnd();
     }
 }

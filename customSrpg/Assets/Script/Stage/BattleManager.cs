@@ -125,6 +125,7 @@ public class BattleManager : MonoBehaviour
         }
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
+        BattleTargetDataView();
         int hit = GetHit(attackWeapon);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)
         {
@@ -160,6 +161,7 @@ public class BattleManager : MonoBehaviour
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
         m_target.GetUnitData().BattleEnd += StageManager.Instance.NextUnit;
+        BattleTargetDataView();
         int hit = GetHit(m_weaponPos);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)
         {
@@ -174,6 +176,10 @@ public class BattleManager : MonoBehaviour
     public void SetWeaponPos(WeaponPosition weaponPos)
     {
         m_weaponPos = weaponPos;
+    }
+    public void BattleTargetDataView()
+    {
+        StageManager.Instance.Cursor.BattleUnitView(m_attacker, m_target);
     }
     /// <summary>
     /// 単発攻撃処理

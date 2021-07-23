@@ -14,6 +14,8 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int Defense { get => m_partsData.Defense; }
     /// <summary> 現在のパーツ耐久値 </summary>
     public int CurrentPartsHp { get; protected set; }
+    /// <summary> 表示用パーツ耐久値 </summary>
+    public int ViewCurrentHp { get; protected set; }
     /// <summary> ダメージを受けた回数 </summary>
     protected int m_damageCount = 0;
     /// <summary> 受けたダメージ </summary>
@@ -36,6 +38,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     {
         m_damageSmoke.SetActive(false);
         CurrentPartsHp = MaxPartsHp;
+        ViewCurrentHp = MaxPartsHp;
         m_partsDamage = new List<int>();
     }
 
@@ -75,9 +78,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         int r = Random.Range(0, m_hitPos.Length);
         EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
         EffectManager.PlayDamage(m_partsDamage[m_damageCount], m_hitPos[r].position);
+        ViewCurrentHp -= m_partsDamage[m_damageCount];
         m_damageCount++;
         if (m_damageCount >= m_partsDamage.Count)
-        {
+        {           
             if (CurrentPartsHp <= 0)
             {
                 EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);

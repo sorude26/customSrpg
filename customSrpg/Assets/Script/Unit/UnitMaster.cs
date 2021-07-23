@@ -16,15 +16,15 @@ public class UnitMaster : MonoBehaviour
     /// <summary> 被ダメージ時のイベント </summary>
     public event Action OnDamage;
     /// <summary> 機体胴体 </summary>
-    protected PartsBody m_body = null;
+    public PartsBody Body { get; protected set; } = null;
     /// <summary> 機体頭部 </summary>
-    protected PartsHead m_head = null;
+    public PartsHead Head { get; protected set; } = null;
     /// <summary> 機体左手 </summary>
-    protected PartsArm m_lArm = null;
+    public PartsArm LArm { get; protected set; } = null;
     /// <summary> 機体右手 </summary>
-    protected PartsArm m_rArm = null;
+    public PartsArm RArm { get; protected set; } = null;
     /// <summary> 機体脚部 </summary>
-    protected PartsLeg m_leg = null;
+    public PartsLeg Leg { get; protected set; } = null;
     /// <summary> 左手武器 </summary>
     protected WeaponMaster m_lAWeapon = null;
     /// <summary> 右手武器 </summary>
@@ -45,7 +45,7 @@ public class UnitMaster : MonoBehaviour
     public int GetMaxHP()
     {
         int hp = 0;
-        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { Body, Head, LArm, RArm, Leg };
         foreach (var parts in allParts)
         {
             if (parts != null)
@@ -60,7 +60,7 @@ public class UnitMaster : MonoBehaviour
     public int GetCurrentHP()
     {
         int hp = 0;
-        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { Body, Head, LArm, RArm, Leg };
         foreach (var parts in allParts)
         {
             if (parts != null)
@@ -74,12 +74,12 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public int GetMovePower()
     {
-        int move = m_body.MovePower;
-        if (m_leg)
+        int move = Body.MovePower;
+        if (Leg)
         {
-            move += m_leg.CurrentMovePower;
+            move += Leg.CurrentMovePower;
         }
-        if (m_body.UnitOutput - GetWeight() * 2 > 0)
+        if (Body.UnitOutput - GetWeight() * 2 > 0)
         {
             move += 5;
         }
@@ -91,12 +91,12 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public float GetLiftingForce()
     {
-        float liftingForce = m_body.LiftingForce;
-        if (m_leg)
+        float liftingForce = Body.LiftingForce;
+        if (Leg)
         {
-            if (!m_leg.Break)
+            if (!Leg.Break)
             {
-                liftingForce += m_leg.CurrentLiftingForce;
+                liftingForce += Leg.CurrentLiftingForce;
             }
         }
         return liftingForce;
@@ -107,16 +107,16 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public int GetAvoidance()
     {
-        int avoidance = m_body.GetAvoidance() - GetWeight();
-        if (m_leg)
+        int avoidance = Body.GetAvoidance() - GetWeight();
+        if (Leg)
         {
-            avoidance += m_leg.CurrentAvoidance;
+            avoidance += Leg.CurrentAvoidance;
         }
-        if (m_head)
+        if (Head)
         {
-            if (!m_head.Break)
+            if (!Head.Break)
             {
-                avoidance += m_head.Avoidance;
+                avoidance += Head.Avoidance;
             }
         }
         return avoidance;
@@ -128,7 +128,7 @@ public class UnitMaster : MonoBehaviour
     public int GetWeight()
     {
         int weight = 0;
-        IParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
+        IParts[] allParts = { Body, Head, LArm, RArm, Leg, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon, m_bodyWeapon };
         foreach (var parts in allParts)
         {
             if (parts != null)
@@ -149,7 +149,7 @@ public class UnitMaster : MonoBehaviour
     {
         int count = 0;
         int armor = 0;
-        IUnitParts[] allparts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allparts = { Body, Head, LArm, RArm, Leg };
         foreach (var parts in allparts)
         {
             if (parts != null)
@@ -174,10 +174,10 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public int GetHitAccuracy(WeaponPosition position)
     {
-        int hitAccuray = m_body.HitAccuracy;
-        if (m_head)
+        int hitAccuray = Body.HitAccuracy;
+        if (Head)
         {
-            hitAccuray += m_head.HitAccuracy;
+            hitAccuray += Head.HitAccuracy;
         }
         switch (position)
         {
@@ -185,11 +185,11 @@ public class UnitMaster : MonoBehaviour
                 hitAccuray += m_bodyWeapon.HitAccuracy;
                 break;
             case WeaponPosition.LArm:
-                hitAccuray += m_lArm.HitAccuracy;
+                hitAccuray += LArm.HitAccuracy;
                 hitAccuray += m_lAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.RArm:
-                hitAccuray += m_rArm.HitAccuracy;
+                hitAccuray += RArm.HitAccuracy;
                 hitAccuray += m_rAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.LShoulder:
@@ -267,7 +267,7 @@ public class UnitMaster : MonoBehaviour
         WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_lSWeapon, m_rSWeapon };
         foreach (var weapon in weapons)
         {
-            if (weapon != null || !weapon.Break)
+            if (weapon != null && !weapon.Break)
                 weaponList.Add(weapon);
         }
         return weaponList.ToArray();
@@ -282,7 +282,7 @@ public class UnitMaster : MonoBehaviour
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
-            if (weapon != null || !weapon.Break) 
+            if (weapon != null && !weapon.Break) 
                 weaponList.Add(weapon);
         }
         return weaponList.OrderByDescending(weapon => weapon.MaxPower).FirstOrDefault();
@@ -297,7 +297,7 @@ public class UnitMaster : MonoBehaviour
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
-            if (weapon != null || !weapon.Break)
+            if (weapon != null && !weapon.Break)
                 weaponList.Add(weapon);
         }
         return weaponList.OrderByDescending(weapon => (weapon.Range + 1) * 2 * weapon.Range - (weapon.MinRange + 1) * 2 * weapon.MinRange).FirstOrDefault();
@@ -314,7 +314,7 @@ public class UnitMaster : MonoBehaviour
             return damage;
         }
         int hitPos = 0;
-        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { Body, Head, LArm, RArm, Leg };
         foreach (var parts in allParts)
         {
             if (parts != null)
@@ -390,7 +390,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="body"></param>
     public void SetParts(PartsBody body)
     {
-        m_body = body;
+        Body = body;
     }
     /// <summary>
     /// 頭部を登録する
@@ -398,7 +398,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="head"></param>
     public void SetParts(PartsHead head)
     {
-        m_head = head;
+        Head = head;
     }
     /// <summary>
     /// 腕部を登録する
@@ -409,10 +409,10 @@ public class UnitMaster : MonoBehaviour
         switch (arm.Arm)
         {
             case ArmType.Left:
-                m_lArm = arm;
+                LArm = arm;
                 break;
             case ArmType.Right:
-                m_rArm = arm;
+                RArm = arm;
                 break;
             default:
                 break;
@@ -424,7 +424,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="leg"></param>
     public void SetParts(PartsLeg leg)
     {
-        m_leg = leg;
+        Leg = leg;
     }
     /// <summary>
     /// 武装を振り分け登録する
@@ -459,7 +459,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="color"></param>
     public void UnitColorChange(Color color)
     {
-        IUnitParts[] allParts = { m_body, m_head, m_lArm, m_rArm, m_leg };
+        IUnitParts[] allParts = { Body, Head, LArm, RArm, Leg };
         foreach (var parts in allParts)
         {
             if (parts != null)

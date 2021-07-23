@@ -60,6 +60,7 @@ public class StageManager : MonoBehaviour
         m_allies.ToList().ForEach(a => a.GetUnitData().UnitColorChange(Color.blue));
         m_enemys.ToList().ForEach(e => e.GetUnitData().UnitColorChange(Color.red));
         m_players.ToList().ForEach(p => p.WakeUp());
+        m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
     }
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
