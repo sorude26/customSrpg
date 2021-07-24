@@ -228,7 +228,14 @@ public class BattleManager : MonoBehaviour
     void AttackEnd() 
     { 
         m_attackNow = false;
-        EffectManager.PlayDamage(m_totalDamage, m_target.transform.position, 300, 1f);
+        if (m_totalDamage > 0)
+        {
+            EffectManager.PlayDamage(m_totalDamage, m_target.transform.position, 300, 1f);
+        }
+        else
+        {
+            EffectManager.PlayMessage("Miss", m_target.transform.position, 300, 1f);
+        }
     }
     /// <summary>
     /// 耐久得点

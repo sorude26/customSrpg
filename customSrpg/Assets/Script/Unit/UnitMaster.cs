@@ -471,7 +471,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts != null)
             {
-                parts.ColorChange(color);
+                parts.PartsColorChange(color);
             }
         }
     }

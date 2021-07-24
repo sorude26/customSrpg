@@ -26,7 +26,8 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     [SerializeField] protected GameObject m_damageSmoke;
     [Tooltip("色が変更可能な装甲")]
     [SerializeField] protected Renderer[] m_amors;
-
+    protected Color m_startColor = Color.green;
+    protected bool m_damageColor;
     void Start()
     {
         StartSet();
@@ -42,6 +43,14 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         m_partsDamage = new List<int>();
     }
 
+    public virtual void PartsColorChange(Color color)
+    {
+        foreach (var renderer in m_amors)
+        {
+            renderer.material.color = color;
+        }
+        m_startColor = color;
+    }
     public virtual void ColorChange(Color color)
     {
         foreach (var renderer in m_amors)
@@ -79,7 +88,7 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
         EffectManager.PlayDamage(m_partsDamage[m_damageCount], m_hitPos[r].position);
         ViewCurrentHp -= m_partsDamage[m_damageCount];
-        m_damageCount++;
+        m_damageCount++;        
         if (m_damageCount >= m_partsDamage.Count)
         {           
             if (CurrentPartsHp <= 0)
@@ -89,6 +98,11 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             }
             m_damageCount = 0;
             m_partsDamage.Clear();
+        }
+        if (!m_damageColor)
+        {
+            m_damageColor = true;
+            StartCoroutine(DamageColor());
         }
     }
     /// <summary>
@@ -105,4 +119,15 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int GetMaxHP() => MaxPartsHp;
     public int GetCurrentHP() => CurrentPartsHp;
     public int GetDefense() => Defense;
+    protected virtual IEnumerator DamageColor()
+    {
+        ColorChange(Color.white);
+        yield return new WaitForSeconds(0.05f);
+        ColorChange(Color.black);
+        yield return new WaitForSeconds(0.05f);
+        ColorChange(Color.white);
+        yield return new WaitForSeconds(0.05f);
+        ColorChange(m_startColor);
+        m_damageColor = false;
+    }
 }

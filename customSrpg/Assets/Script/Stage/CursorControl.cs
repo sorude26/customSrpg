@@ -33,6 +33,7 @@ public class CursorControl : MonoBehaviour
     bool m_second;
     [SerializeField] UnitDataGuideView m_dataGuideView1;
     [SerializeField] UnitDataGuideView m_dataGuideView2;
+    [SerializeField] UnitDataGuideView m_dataGuideView3;
     void Start()
     {
         m_stageScale = MapManager.Instance.MapScale;
@@ -95,7 +96,7 @@ public class CursorControl : MonoBehaviour
             m_move = false;
             m_moveTimer = m_moveTime;
             UnitGuideViewEnd();
-            m_dataGuideView2.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
+            m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             return;
         }
     }
@@ -129,7 +130,7 @@ public class CursorControl : MonoBehaviour
         m_currentPosX = x;
         m_currentPosZ = z;
         UnitGuideViewEnd();
-        m_dataGuideView2.ViewData(StageManager.Instance.GetPositionUnit(x, z));
+        m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(x, z));
         transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
@@ -145,7 +146,7 @@ public class CursorControl : MonoBehaviour
         m_currentPosX = unit.CurrentPosX;
         m_currentPosZ = unit.CurrentPosZ;
         UnitGuideViewEnd();
-        m_dataGuideView2.ViewData(unit);
+        m_dataGuideView3.ViewData(unit);
         transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
@@ -194,11 +195,13 @@ public class CursorControl : MonoBehaviour
     {
         m_dataGuideView2.ViewData(attacker);
         m_dataGuideView1.ViewData(target);
+        m_dataGuideView3.ViewEnd();
     }
 
     public void UnitGuideViewEnd()
     {
         m_dataGuideView1.ViewEnd();
         m_dataGuideView2.ViewEnd();
+        m_dataGuideView3.ViewEnd();
     }
 }

@@ -31,5 +31,5 @@ public interface IUnitParts : IParts ,IBattleEffect
     /// パーツの色変更
     /// </summary>
     /// <param name="color"></param>
-    void ColorChange(Color color);
+    void PartsColorChange(Color color);
 }

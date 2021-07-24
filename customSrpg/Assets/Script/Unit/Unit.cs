@@ -30,6 +30,7 @@ public class Unit : MonoBehaviour
     [SerializeField] protected UnitMovelControl m_movelControl;
     /// <summary> ユニットの行動を制御する </summary>
     [SerializeField] protected MotionController m_motion;
+    /// <summary> ユニットの組み立てを行う </summary>
     [SerializeField] protected UnitBuilder m_builder;
     [SerializeField] protected int m_unitNumber;
     [Tooltip("初期座標 X:X座標、Y:Z座標")]

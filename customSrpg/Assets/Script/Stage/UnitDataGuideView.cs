@@ -48,6 +48,7 @@ public class UnitDataGuideView : MonoBehaviour
     }
     public void ViewEnd()
     {
+        StopAllCoroutines();
         foreach (var item in m_partsView)
         {
             item.SetActive(false);
