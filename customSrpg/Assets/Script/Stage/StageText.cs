@@ -6,7 +6,7 @@ using UnityEngine.UI;
 /// <summary>
 /// 数値を表示する
 /// </summary>
-public class DamgeText : MonoBehaviour
+public class StageText : MonoBehaviour
 {
     [Tooltip("表示時間")]
     [SerializeField] float m_viewTime = 0.8f;
@@ -54,6 +54,21 @@ public class DamgeText : MonoBehaviour
         gameObject.SetActive(true);
         transform.position = pos;
         m_text.text = damage.ToString();
+        m_text.fontSize = size;
+        m_viewTimer = time;
+    }
+    /// <summary>
+    /// 指定した場所、サイズ、時間で文字を表示する
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
+    /// <param name="time"></param>
+    public void Play(string message, Vector3 pos, int size, float time)
+    {
+        gameObject.SetActive(true);
+        transform.position = pos;
+        m_text.text = message;
         m_text.fontSize = size;
         m_viewTimer = time;
     }

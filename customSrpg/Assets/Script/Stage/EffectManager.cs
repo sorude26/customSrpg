@@ -37,8 +37,8 @@ public class EffectManager : MonoBehaviour
     /// <summary> 全EffectのID付き入れ物 </summary>
     Dictionary<EffectType, List<EffectControl>> m_effectDic = new Dictionary<EffectType, List<EffectControl>>();
     [SerializeField] int m_maxTextCount = 20;
-    [SerializeField] DamgeText m_damgeTextPrefab = default;
-    List<DamgeText> m_damgeTexts = new List<DamgeText>();
+    [SerializeField] StageText m_damgeTextPrefab = default;
+    List<StageText> m_damgeTexts = new List<StageText>();
     private void Awake()
     {
         m_instance = this;
@@ -109,6 +109,25 @@ public class EffectManager : MonoBehaviour
                 continue;
             }
             text.Play(damage, pos, size, time);
+            return;
+        }
+    }
+    /// <summary>
+    /// 任意の時間、メッセージを表示する
+    /// </summary>
+    /// <param name="message"></param>
+    /// <param name="pos"></param>
+    /// <param name="size"></param>
+    /// <param name="time"></param>
+    public static void PlayMessage(string message, Vector3 pos, int size, float time)
+    {
+        foreach (var text in m_instance.m_damgeTexts)
+        {
+            if (text.IsActive())
+            {
+                continue;
+            }
+            text.Play(message, pos, size, time);
             return;
         }
     }
