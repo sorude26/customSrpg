@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 武器の基底クラス
 /// </summary>
-public class WeaponMaster : PartsMaster<WeaponData>
+public abstract class WeaponMaster : PartsMaster<WeaponData>
 {
     /// <summary> 武器攻撃力 </summary>
     public int Power { get => m_partsData.Power; }
@@ -29,7 +29,7 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// <summary> 攻撃種類のイベント </summary>
     protected Action<WeaponType,int> m_attackMode;
     /// <summary> 攻撃種類のイベント </summary>
-    public event Action<WeaponType,int> OnAttackMode { add => m_attackMode += value; remove => m_attackMode -= value; }
+    public event Action<WeaponType, int> OnAttackMode { add => m_attackMode += value; remove => m_attackMode -= value; }
     /// <summary> 攻撃開始時のイベント </summary>
     protected Action m_attackStart;
     /// <summary> 攻撃開始時のイベント </summary>
@@ -47,13 +47,10 @@ public class WeaponMaster : PartsMaster<WeaponData>
     /// 武装部位を設定する
     /// </summary>
     /// <param name="position"></param>
-    public void SetWeaponPosition(WeaponPosition position)
-    {
-        WeaponPos = position;
-    }
+    public void SetWeaponPosition(WeaponPosition position) => WeaponPos = position;
     public void SetBreak() => Break = true;
     /// <summary>
     /// 攻撃開始
     /// </summary>
-    public virtual void AttackStart() { }
+    public abstract void AttackStart();
 }
