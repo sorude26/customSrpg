@@ -351,9 +351,7 @@ public class MapManager : MonoBehaviour
         {
             return true;
         }
-        map.MapScore = map.SCost + map.ZCost;
-        map.MapScore = MaxX * MaxZ - map.MapScore;
-        Debug.Log($"x:{map.PosX},z:{map.PosZ},score:{map.MapScore}");
+        map.MapScore = MaxX * MaxZ + map.ZCost;
         return RouteScoreSet(map.Parent);
     }
     /// <summary>
