@@ -36,7 +36,7 @@ public class MapCreater : ScriptableObject
                 StagePanel mapPanel = Instantiate(m_stagePanels[0]);
                 mapPanel.transform.position = new Vector3(j * mapScale, level, i * mapScale);
                 mapPanel.transform.SetParent(parent);
-                MapData map = new MapData(MapType.Normal, j, i, level, mapPanel);
+                MapData map = new MapData(MapType.Normal, j, i, j + i * maxX, level, mapPanel);
                 mapDates[j + i * maxX] = map;
             }
         }

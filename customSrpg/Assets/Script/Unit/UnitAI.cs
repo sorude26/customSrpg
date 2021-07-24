@@ -8,6 +8,8 @@ using UnityEngine;
 [CreateAssetMenu]
 public class UnitAI : ScriptableObject
 {
+    [Tooltip("攻撃目標探索範囲")]
+    [SerializeField] int m_searchRange = 8;
     /// <summary>
     /// 移動目標を設定する
     /// </summary>
@@ -22,6 +24,20 @@ public class UnitAI : ScriptableObject
         foreach (var p in map)
         {
             SetMapScore(unit, p);
+        }
+        foreach (var p in map)
+        {
+            if (p.MapScore != 0)
+            {
+                return;
+            }
+        }
+        foreach (var target in GetTargets(unit))
+        {
+            if (MapManager.Instance.AstarSearch(unit,target))
+            {
+                return;
+            }
         }
     }
     /// <summary>
@@ -112,7 +128,7 @@ public class UnitAI : ScriptableObject
     /// <param name="weapon"></param>
     /// <param name="hit"></param>
     /// <returns></returns>
-    protected Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
+    protected virtual Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
     {
         Unit target = BattleManager.Instance.GetAttackTargets(GetAttackPositions(point, weapon))
             .OrderByDescending(s => s.GetScore(weapon.MaxPower, hit)).FirstOrDefault();
@@ -123,8 +139,21 @@ public class UnitAI : ScriptableObject
     /// </summary>
     /// <param name="point"></param>
     /// <param name="score"></param>
-    protected void SetScore(MapData point, int score) 
+    protected virtual void SetScore(MapData point, int score) 
     {
         if (point.MapScore < score) { point.MapScore = score; }
+    }
+    /// <summary>
+    /// 探索範囲内の敵対ユニットを返す
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
+    protected virtual Unit[] GetTargets(Unit unit)
+    {
+        var units = StageManager.Instance.GetHostileUnits().Where(hostile =>
+        hostile.CurrentPosX <= unit.CurrentPosX + m_searchRange && hostile.CurrentPosX >= unit.CurrentPosX - m_searchRange &&
+        hostile.CurrentPosZ <= unit.CurrentPosZ + m_searchRange && hostile.CurrentPosZ >= unit.CurrentPosZ - m_searchRange);
+        if (units == null){ return null; }
+        return units.ToArray();
     }
 }

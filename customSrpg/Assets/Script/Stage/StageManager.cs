@@ -332,6 +332,11 @@ public class StageManager : MonoBehaviour
     /// <returns></returns>
     public Unit[] GetStageUnits() => m_units.Where(mu => mu.State != UnitState.Destory).ToArray();
     /// <summary>
+    /// 現在のユニットと敵対する全ユニットを返す
+    /// </summary>
+    /// <returns></returns>
+    public Unit[] GetHostileUnits() => m_units.Where(mu => mu.State == UnitState.Stop).ToArray();
+    /// <summary>
     /// 攻撃範囲を返す
     /// </summary>
     /// <returns></returns>

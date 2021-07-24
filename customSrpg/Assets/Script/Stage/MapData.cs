@@ -20,6 +20,14 @@ public enum MapType
     /// <summary> 森 </summary>
     Forest,
 }
+public enum MapState
+{
+    Floor,
+    Start,
+    Goal,
+    Open,
+    Close,
+}
 /// <summary>
 /// 地形データ
 /// </summary>
@@ -29,6 +37,8 @@ public class MapData
     public int PosX { get; }
     /// <summary> Z座標 </summary>
     public int PosZ { get; }
+    /// <summary> 一次元での座標番号 </summary>
+    public int PosID { get; }
     /// <summary> 高さ </summary>
     public float Level { get; private set; }
     /// <summary> 地形種 </summary>
@@ -39,6 +49,10 @@ public class MapData
     public int AttackPoint { get; set; }
     /// <summary> AIの計算用データ </summary>
     public int MapScore { get; set; }
+    public MapState State { get; set; }
+    public int SCost { get; set; }
+    public int ZCost { get; set; }
+    public MapData Parent { get; set; }
     /// <summary> 地形のパネル </summary>
     public StagePanel StagePanel { get; private set; }
     /// <summary>
@@ -48,15 +62,17 @@ public class MapData
     /// <param name="posX"></param>
     /// <param name="posZ"></param>
     /// <param name="level"></param>
-    public MapData(MapType type, int posX, int posZ, float level,StagePanel stagePanel)
+    public MapData(MapType type, int posX, int posZ,int posID, float level,StagePanel stagePanel)
     {
         MapType = type;
         PosX = posX;
         PosZ = posZ;
+        PosID = posID;
         Level = level;
         MovePoint = 0;
         AttackPoint = 0;
         MapScore = 0;
+        State = MapState.Floor;
         StagePanel = stagePanel;
         StagePanel.SetPos(posX, posZ);
     }    

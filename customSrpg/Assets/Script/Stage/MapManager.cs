@@ -41,9 +41,18 @@ public class MapManager : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="z"></param>
     /// <returns></returns>
-    public int GetPosition(int x,int z)
+    public int GetPosition(int x, int z)
     {
         return x + z * MaxX;
+    }
+    /// <summary>
+    /// ユニットの1次元座標を返す
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <returns></returns>
+    public int GetPosition(Unit unit)
+    {
+        return unit.CurrentPosX + unit.CurrentPosZ * MaxX;
     }
     /// <summary>
     /// 指定座標の高度を返す
@@ -51,7 +60,7 @@ public class MapManager : MonoBehaviour
     /// <param name="x"></param>
     /// <param name="z"></param>
     /// <returns></returns>
-    public float GetLevel(int x,int z)
+    public float GetLevel(int x, int z)
     {
         return MapDatas[GetPosition(x, z)].Level;
     }
@@ -97,11 +106,11 @@ public class MapManager : MonoBehaviour
     public MapData[] StartSearch(in Unit moveUnit)
     {
         MoveList.Clear();
-        for (int i = 0; i < MapDatas.Length; i++)
+        foreach (var map in MapDatas)
         {
-            MapDatas[i].MovePoint = 0;
+            map.MovePoint = 0;
         }
-        int p = GetPosition(moveUnit.CurrentPosX, moveUnit.CurrentPosZ);
+        int p = GetPosition(moveUnit);
         MoveList.Add(MapDatas[p]);
         MapDatas[p].MovePoint = moveUnit.GetUnitData().GetMovePower();
         SearchCross(p, MapDatas[p].MovePoint, moveUnit.GetUnitData().GetLiftingForce());
@@ -115,9 +124,9 @@ public class MapManager : MonoBehaviour
     public MapData[] StartSearch(int x, int z, WeaponMaster attackWeapon)
     {
         AttackList.Clear();
-        for (int i = 0; i < MapDatas.Length; i++)
+        foreach (var map in MapDatas)
         {
-            MapDatas[i].AttackPoint = 0;
+            map.AttackPoint = 0;
         }
         int p = GetPosition(x, z);
         MapDatas[p].AttackPoint = attackWeapon.Range;
@@ -132,24 +141,9 @@ public class MapManager : MonoBehaviour
     /// <param name="liftingForce"></param>
     void SearchCross(int position, int movePower, float liftingForce)
     {
-        if (0 <= position && position < MaxX * MaxZ)
+        foreach (var map in NeighorMap(position))
         {
-            if (MapDatas[position].PosZ > 0 && MapDatas[position].PosZ < MaxZ)
-            {
-                SearchPos(position - MaxX, movePower, MapDatas[position].Level, liftingForce);
-            }
-            if (MapDatas[position].PosZ >= 0 && MapDatas[position].PosZ < MaxZ - 1)
-            {
-                SearchPos(position + MaxX, movePower, MapDatas[position].Level, liftingForce);
-            }
-            if (MapDatas[position].PosX > 0 && MapDatas[position].PosX < MaxX)
-            {
-                SearchPos(position - 1, movePower, MapDatas[position].Level, liftingForce);
-            }
-            if (MapDatas[position].PosX >= 0 && MapDatas[position].PosX < MaxX - 1)
-            {
-                SearchPos(position + 1, movePower, MapDatas[position].Level, liftingForce);
-            }
+            SearchPos(map, movePower, MapDatas[position].Level, liftingForce);
         }
     }
     /// <summary>
@@ -159,35 +153,35 @@ public class MapManager : MonoBehaviour
     /// <param name="movePower"></param>
     /// <param name="currentLevel"></param>
     /// <param name="liftingForce"></param>
-    void SearchPos(int position, int movePower, float currentLevel, float liftingForce)
+    void SearchPos(MapData position, int movePower, float currentLevel, float liftingForce)
     {
-        if (position < 0 || position >= MaxX * MaxZ)//調査対象がマップ範囲内であるか確認
+        if (position == null)//調査対象がマップ範囲内であるか確認
         {
             return;
         }
-        if (GetMoveCost(MapDatas[position].MapType) == 0)//侵入可能か確認、０は侵入不可又は未設定
+        if (GetMoveCost(position.MapType) == 0)//侵入可能か確認、０は侵入不可又は未設定
         {
             return;
         }
-        if (Mathf.Abs(MapDatas[position].Level - currentLevel) > liftingForce)//高低差確認
+        if (Mathf.Abs(position.Level - currentLevel) > liftingForce)//高低差確認
         {
             return;
         }
-        if (movePower <= MapDatas[position].MovePoint)//確認済か確認
+        if (movePower <= position.MovePoint)//確認済か確認
         {
             return;
         }
-        if (StageManager.Instance.GetPositionUnit(position))
+        if (StageManager.Instance.GetPositionUnit(position.PosID))//他のユニットがいるか確認
         {
             return;
         }
         //ユニットがいるか確認
-        movePower -= GetMoveCost(MapDatas[position].MapType);//移動力変動
+        movePower -= GetMoveCost(position.MapType);//移動力変動
         if (movePower > 0)//移動可能箇所に足跡入力、再度検索
         {
-            MapDatas[position].MovePoint = movePower;
-            MoveList.Add(MapDatas[position]);
-            SearchCross(position, movePower, liftingForce);
+            position.MovePoint = movePower;
+            MoveList.Add(position);
+            SearchCross(position.PosID, movePower, liftingForce);
         }
     }
     /// <summary>
@@ -199,24 +193,9 @@ public class MapManager : MonoBehaviour
     /// <param name="verticalRang"></param>
     void SearchCross(int position, int attackRange, float startLevel, float verticalRang)
     {
-        if (0 <= position && position < MaxX * MaxZ)
+        foreach (var map in NeighorMap(position))
         {
-            if (MapDatas[position].PosZ > 0 && MapDatas[position].PosZ < MaxZ)
-            {
-                SearchAttack(position - MaxX, attackRange, startLevel, verticalRang);
-            }
-            if (MapDatas[position].PosZ >= 0 && MapDatas[position].PosZ < MaxZ - 1)
-            {
-                SearchAttack(position + MaxX, attackRange, startLevel, verticalRang);
-            }
-            if (MapDatas[position].PosX > 0 && MapDatas[position].PosX < MaxX)
-            {
-                SearchAttack(position - 1, attackRange, startLevel, verticalRang);
-            }
-            if (MapDatas[position].PosX >= 0 && MapDatas[position].PosX < MaxX - 1)
-            {
-                SearchAttack(position + 1, attackRange, startLevel, verticalRang);
-            }
+            SearchAttack(map, attackRange, startLevel, verticalRang);
         }
     }
     /// <summary>
@@ -225,35 +204,210 @@ public class MapManager : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="attackRange"></param>
     /// <param name="startLevel"></param>
-    /// <param name="verticalRange"></param>
-    void SearchAttack(int position, int attackRange, float startLevel, float verticalRange)
+    /// <param name="verticalRange"></param>    
+    void SearchAttack(MapData position, int attackRange, float startLevel, float verticalRange)
     {
-        if (position < 0 || position >= MaxX * MaxZ)//調査対象がマップ範囲内であるか確認
+        if (position == null)//調査対象がマップ範囲内であるか確認
         {
             return;
         }
-        if (GetMoveCost(MapDatas[position].MapType) == 0)//侵入可能か確認、０は侵入不可又は未設定
+        if (GetMoveCost(position.MapType) == 0)//侵入可能か確認、０は侵入不可又は未設定
         {
             return;
         }
-        if (attackRange <= MapDatas[position].AttackPoint)//確認済か確認
+        if (attackRange <= position.AttackPoint)//確認済か確認
         {
             return;
         }
-        if (MapDatas[position].Level - startLevel > verticalRange)//上方高低差確認
+        if (position.Level - startLevel > verticalRange)//上方高低差確認
         {
             return;
         }
-        if (startLevel - MapDatas[position].Level > verticalRange + verticalRange / 2)//下方高低差確認
+        if (startLevel - position.Level > verticalRange + verticalRange / 2)//下方高低差確認
         {
             return;
-        }      
+        }
         if (attackRange > 0)//攻撃可能箇所に足跡入力、再度検索
         {
             attackRange--;//攻撃範囲変動
-            MapDatas[position].AttackPoint = attackRange;
-            AttackList.Add(MapDatas[position]);
-            SearchCross(position, attackRange, startLevel, verticalRange);
+            position.AttackPoint = attackRange;
+            AttackList.Add(position);
+            SearchCross(position.PosID, attackRange, startLevel, verticalRange);
+        }
+    }
+    /// <summary>
+    /// 最短経路検索を行い、スコアを記録する
+    /// </summary>
+    /// <param name="searchUnit"></param>
+    /// <param name="targetUnit"></param>
+    /// <returns></returns>
+    public bool AstarSearch(in Unit searchUnit, in Unit targetUnit)
+    {
+        MoveList.Clear();
+        foreach (var map in MapDatas)
+        {
+            map.State = MapState.Floor;
+            map.MapScore = 0;
+        }
+        MapDatas[GetPosition(searchUnit)].State = MapState.Start;
+        MapDatas[GetPosition(targetUnit)].State = MapState.Goal;
+        if (!CheckNeighor(searchUnit, MapDatas[GetPosition(searchUnit)], targetUnit))
+        {
+            foreach (var map in MapDatas)
+            {
+                map.MapScore = 0;
+            }
+            return false;
+        }
+        return true;
+    }
+    bool CheckNeighor(in Unit unit, MapData mapData, Unit target)
+    {
+        foreach (var map in NeighorMap(mapData))
+        {
+            if (CheckPoint(unit, map, mapData, target))
+            {
+                return true;
+            }
+        }
+        var next = GetOpenMap();
+        if (next != null)
+        {
+            if (mapData.State != MapState.Start)
+            {
+                mapData.State = MapState.Close;
+            }
+            return CheckNeighor(unit, next, target);
+        }
+        return false;
+    }
+    bool CheckPoint(in Unit unit, MapData position, MapData parent, in Unit target)
+    {
+        if (position == null)
+        {
+            return false;
+        }
+        if (position.State == MapState.Goal)
+        {
+            return RouteScoreSet(parent);
+        }
+        if (position.State == MapState.Floor)
+        {
+            if (GetMoveCost(position.MapType) == 0)//侵入可能か確認、０は侵入不可又は未設定
+            {
+                position.State = MapState.Close;
+                return false;
+            }
+            if (Mathf.Abs(position.Level - parent.Level) > unit.GetUnitData().GetLiftingForce())//高低差確認
+            {
+                return false;
+            }
+            if (StageManager.Instance.GetPositionUnit(position.PosID))//他のユニットがいるか確認
+            {
+                position.State = MapState.Close;
+                return false;
+            }
+            position.State = MapState.Open;
+            position.SCost = Mathf.Abs(position.PosX - target.CurrentPosX) + Mathf.Abs(position.PosZ - target.CurrentPosZ);
+            position.ZCost = parent.ZCost + 1;
+            position.MapScore = position.SCost + position.ZCost;
+            position.Parent = parent;
+            MoveList.Add(position);
+        }
+        return false;
+    }
+    MapData GetOpenMap()
+    {
+        MapData target = null;
+        int scost = MaxX * MaxZ;
+        foreach (var item in MoveList)
+        {
+            if (item.State != MapState.Open)
+            {
+                continue;
+            }
+            if (item.MapScore < scost)
+            {
+                scost = item.MapScore;
+                target = item;
+            }
+            else if (item.MapScore == scost)
+            {
+                if (target.ZCost > item.ZCost)
+                {
+                    target = item;
+                }
+            }
+        }
+        return target;
+    }
+    bool RouteScoreSet(MapData map)
+    {
+        if (map == null)
+        {
+            return true;
+        }
+        if (map.State == MapState.Start)
+        {
+            return true;
+        }
+        map.MapScore = map.SCost + map.ZCost;
+        map.MapScore = MaxX * MaxZ - map.MapScore;
+        Debug.Log($"x:{map.PosX},z:{map.PosZ},score:{map.MapScore}");
+        return RouteScoreSet(map.Parent);
+    }
+    /// <summary>
+    /// 周囲四方向のマップデータ
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    IEnumerable<MapData> NeighorMap(int position)
+    {
+        if (0 <= position && position < MaxX * MaxZ)
+        {
+            if (MapDatas[position].PosZ > 0 && MapDatas[position].PosZ < MaxZ)
+            {
+                yield return MapDatas[position - MaxX];
+            }
+            if (MapDatas[position].PosZ >= 0 && MapDatas[position].PosZ < MaxZ - 1)
+            {
+                yield return MapDatas[position + MaxX];
+            }
+            if (MapDatas[position].PosX > 0 && MapDatas[position].PosX < MaxX)
+            {
+                yield return MapDatas[position - 1];
+            }
+            if (MapDatas[position].PosX >= 0 && MapDatas[position].PosX < MaxX - 1)
+            {
+                yield return MapDatas[position + 1];
+            }
+        }
+    }
+    /// <summary>
+    /// 周囲四方向のマップデータ
+    /// </summary>
+    /// <param name="position"></param>
+    /// <returns></returns>
+    IEnumerable<MapData> NeighorMap(MapData position)
+    {
+        if (position != null)
+        {
+            if (position.PosZ > 0 && position.PosZ < MaxZ)
+            {
+                yield return MapDatas[position.PosID - MaxX];
+            }
+            if (position.PosZ >= 0 && position.PosZ < MaxZ - 1)
+            {
+                yield return MapDatas[position.PosID + MaxX];
+            }
+            if (position.PosX > 0 && position.PosX < MaxX)
+            {
+                yield return MapDatas[position.PosID - 1];
+            }
+            if (position.PosX >= 0 && position.PosX < MaxX - 1)
+            {
+                yield return MapDatas[position.PosID + 1];
+            }
         }
     }
 }
