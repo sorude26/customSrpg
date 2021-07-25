@@ -57,8 +57,10 @@ public class Unit : MonoBehaviour
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
         m_master.OnDamage += m_motion.Damage;
-        m_master.GetWeapon(WeaponPosition.LArm).OnAttackMode += m_motion.LArmAttack;
-        m_master.GetWeapon(WeaponPosition.RArm).OnAttackMode += m_motion.RArmAttack;
+        var lArm = m_master.GetWeapon(WeaponPosition.LArm);
+        if (lArm) { lArm.OnAttackMode += m_motion.LArmAttack; }
+        var rArm = m_master.GetWeapon(WeaponPosition.RArm);
+        if (rArm) { rArm.OnAttackMode += m_motion.RArmAttack; }
     }
     /// <summary>
     /// 機体データ

@@ -395,6 +395,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="body"></param>
     public void SetParts(PartsBody body)
     {
+        if (!body) { return;}
         Body = body;
     }
     /// <summary>
@@ -403,6 +404,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="head"></param>
     public void SetParts(PartsHead head)
     {
+        if (!head) { return; }
         Head = head;
     }
     /// <summary>
@@ -411,6 +413,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="arm"></param>
     public void SetParts(PartsArm arm)
     {
+        if (!arm) { return; }
         switch (arm.Arm)
         {
             case ArmType.Left:
@@ -429,6 +432,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="leg"></param>
     public void SetParts(PartsLeg leg)
     {
+        if (!leg) { return; }
         Leg = leg;
     }
     /// <summary>
@@ -437,6 +441,7 @@ public class UnitMaster : MonoBehaviour
     /// <param name="weapon"></param>
     public void SetParts(WeaponMaster weapon)
     {
+        if (!weapon) { return; }
         switch (weapon.WeaponPos)
         {
             case WeaponPosition.LArm:
