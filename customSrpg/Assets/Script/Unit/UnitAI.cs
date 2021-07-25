@@ -17,7 +17,7 @@ public class UnitAI : ScriptableObject
     public virtual void TargetPointSet(Unit unit)
     {
         var map = MapManager.Instance.StartSearch(unit);
-        foreach (var p in map)
+        foreach (var p in MapManager.Instance.MapDatas)
         {
             p.MapScore = 0;
         }
