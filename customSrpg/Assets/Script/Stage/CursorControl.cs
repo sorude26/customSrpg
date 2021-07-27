@@ -31,6 +31,8 @@ public class CursorControl : MonoBehaviour
     float m_timer = 0;
     /// <summary> 連続移動フラグ </summary>
     bool m_second;
+    /// <summary> カーソルの移動フラグ </summary>
+    bool m_cursorMove;
     [SerializeField] UnitDataGuideView m_dataGuideView1;
     [SerializeField] UnitDataGuideView m_dataGuideView2;
     [SerializeField] UnitDataGuideView m_dataGuideView3;
@@ -40,64 +42,84 @@ public class CursorControl : MonoBehaviour
         m_stageSize.x = MapManager.Instance.MaxX;
         m_stageSize.y = MapManager.Instance.MaxZ;
         UnitGuideViewEnd();
+        Stage.InputManager.Instance.OnInputArrow += CursorMove;
     }
-
-    void Update()
+    /// <summary>
+    /// 入力があった時カーソルを動かす
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    public void CursorMove(float x,float y)
     {
-        //UpdateはInputManagerのみで使用するように変更する
-        if (m_notCursor)
+        if (m_cursorMove || m_notCursor) { return; }
+        StartCoroutine(CursorMove());
+    }
+    /// <summary>
+    /// カーソルの移動
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator CursorMove()
+    {
+        m_cursorMove = true;
+        while (m_cursorMove)
         {
-            return;
-        }
-        if (m_moveTimer > 0)
-        {
-            m_moveTimer -= Time.deltaTime;
-            return;
-        }
-        if (!m_move)
-        {            
-            float x = Input.GetAxisRaw("Horizontal");
-            float z = Input.GetAxisRaw("Vertical");
-            if (Input.GetButtonDown("Horizontal"))
+            if (m_notCursor)
             {
-                Move(x, z);
-                m_timer = 0.3f;
+                m_cursorMove = false;
+                break;
             }
-            else if (Input.GetButtonDown("Vertical"))
+            if (m_moveTimer > 0)
             {
-                Move(x, z);
-                m_timer = 0.3f;
+                m_moveTimer -= Time.deltaTime;
+                yield return new WaitForEndOfFrame();
+                continue;
             }
-            else if (x != 0 || z != 0)
+            if (!m_move)
             {
-                if (m_timer > 0)
+                float x = Input.GetAxisRaw("Horizontal");
+                float z = Input.GetAxisRaw("Vertical");
+                if (Input.GetButtonDown("Horizontal"))
                 {
-                    m_timer -= Time.deltaTime;
-                    if (m_timer < 0.15f && !m_second)
+                    Move(x, z);
+                    m_timer = 0.3f;
+                }
+                else if (Input.GetButtonDown("Vertical"))
+                {
+                    Move(x, z);
+                    m_timer = 0.3f;
+                }
+                else if (x != 0 || z != 0)
+                {
+                    if (m_timer > 0)
+                    {
+                        m_timer -= Time.deltaTime;
+                        if (m_timer < 0.15f && !m_second)
+                        {
+                            Move(x, z);
+                            m_second = true;
+                        }
+                    }
+                    else
                     {
                         Move(x, z);
-                        m_second = true;
                     }
                 }
                 else
                 {
-                    Move(x, z);
+                    m_timer = 0f;
+                    m_second = false;
+                    m_cursorMove = false;
                 }
             }
-            else
+            if (m_move && m_moveTimer <= 0)
             {
-                m_timer = 0f;
-                m_second = false;
+                this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
+                m_move = false;
+                m_moveTimer = m_moveTime;
+                UnitGuideViewEnd();
+                m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
             }
-        }
-        if (m_move && m_moveTimer <= 0)
-        {
-            this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
-            m_move = false;
-            m_moveTimer = m_moveTime;
-            UnitGuideViewEnd();
-            m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
-            return;
+            yield return new WaitForEndOfFrame();
         }
     }
     /// <summary>
