@@ -16,11 +16,11 @@ public class UnitAI : ScriptableObject
     /// <param name="unit"></param>
     public virtual void TargetPointSet(Unit unit)
     {
-        var map = MapManager.Instance.StartSearch(unit);
         foreach (var p in MapManager.Instance.MapDatas)
         {
             p.MapScore = 0;
         }
+        var map = MapManager.Instance.StartSearch(unit);
         foreach (var p in map)
         {
             SetMapScore(unit, p);
@@ -47,13 +47,12 @@ public class UnitAI : ScriptableObject
     /// <returns></returns>
     public virtual bool StartMove(Unit unit)
     {
-        TargetPointSet(unit);
+        TargetPointSet(unit); 
         var target = MapManager.Instance.StartSearch(unit).OrderByDescending(t => t.MapScore).FirstOrDefault();
         if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
         {
             return false;
         }
-        MapManager.Instance.StartSearch(unit);
         unit.TargetMoveStart(target.PosX, target.PosZ);
         return true; 
     }
