@@ -23,7 +23,7 @@ public class WeaponButtons : ButtonMaster
         for (int i = 0; i < m_buttons.Length - 1; i++)
         {
             WeaponMaster weapon = StageManager.Instance.TurnUnit?.GetUnitData().GetWeapon((WeaponPosition)i);
-            if (weapon != null)
+            if (weapon != null && !weapon.Break)
             {
                 m_buttonGuides[i].text = weapon.PartsName;
             }

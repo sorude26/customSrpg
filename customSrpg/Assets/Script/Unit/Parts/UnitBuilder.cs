@@ -115,6 +115,7 @@ public class UnitBuilder : MonoBehaviour
         m_lArm.ArmBottom.SetParent(lArm2P);
         m_head = Instantiate(GameManager.Instanse.PartsList.GetHead(data.HeadID));
         m_head.transform.position = headP.position;
+        m_head.transform.rotation = m_body.HeadPos.rotation;
         m_head.transform.SetParent(headP);
         m_rAWeapon = Instantiate(GameManager.Instanse.PartsList.GetWeapon(data.WeaponRArmID));
         m_rAWeapon.transform.position = m_rArm.Grip.position;
