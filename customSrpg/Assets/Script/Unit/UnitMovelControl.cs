@@ -298,8 +298,8 @@ public class UnitMovelControl : MonoBehaviour
     /// 検索範囲の移動経路検索し移動開始指示を出す
     /// </summary>
     /// <param name="moveList">検索範囲</param>
-    /// <param name="targetX">開始地点X軸</param>
-    /// <param name="targetZ">開始地点Z軸</param>
+    /// <param name="targetX">目標地点X軸</param>
+    /// <param name="targetZ">目標地点Z軸</param>
     /// <param name="liftingForce">現在の昇降力</param>
     public void UnitMoveSet(in MapData[] moveList, int targetX, int targetZ ,float liftingForce)
     {
@@ -339,21 +339,9 @@ public class UnitMovelControl : MonoBehaviour
     {
         if (0 <= p && p < m_gameMap.MaxX * m_gameMap.MaxZ)
         {
-            if (m_gameMap.MapDatas[p].PosZ > 0 && m_gameMap.MapDatas[p].PosZ < m_gameMap.MaxZ)
+            foreach (var map in m_gameMap.NeighorMap(m_gameMap.MapDatas[p]))
             {
-                MoveSearchPos(p - m_gameMap.MaxX, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
-            }
-            if (m_gameMap.MapDatas[p].PosZ >= 0 && m_gameMap.MapDatas[p].PosZ < m_gameMap.MaxZ - 1)
-            {
-                MoveSearchPos(p + m_gameMap.MaxX, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
-            }
-            if (m_gameMap.MapDatas[p].PosX > 0 && m_gameMap.MapDatas[p].PosX < m_gameMap.MaxX)
-            {
-                MoveSearchPos(p - 1, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
-            }
-            if (m_gameMap.MapDatas[p].PosX >= 0 && m_gameMap.MapDatas[p].PosX < m_gameMap.MaxX - 1)
-            {
-                MoveSearchPos(p + 1, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
+                MoveSearchPos(map.PosID, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
             }
         }
     }

@@ -56,7 +56,7 @@ public class Unit : MonoBehaviour
         m_builder.SetData(m_data, m_master);
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
-        m_master.OnDamage += m_motion.Damage;
+        //m_master.OnDamage += m_motion.Damage;
         var lArm = m_master.GetWeapon(WeaponPosition.LArm);
         if (lArm) { lArm.OnAttackMode += m_motion.LArmAttack; }
         var rArm = m_master.GetWeapon(WeaponPosition.RArm);

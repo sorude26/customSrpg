@@ -52,6 +52,11 @@ public class PartsArm : UnitPartsMaster<ArmData>
         {
             return 0;
         }
+        if (power == 0)
+        {
+            m_partsDamage.Add(-1);
+            return 0;
+        }
         int damage = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= damage;
         m_partsDamage.Add(damage);

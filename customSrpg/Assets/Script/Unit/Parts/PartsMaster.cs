@@ -6,12 +6,13 @@ using UnityEngine;
 /// ユニットの武器を含めた全パーツの基底クラス
 /// </summary>
 /// <typeparam name="T"></typeparam>
-public class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
+public abstract class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
 {
     [Tooltip("パーツの基礎ID")]
     [SerializeField] protected int m_partsID;
+    [Tooltip("パーツのデータ")]
     [SerializeField] protected T m_partsData;
-    /// <summary> 表示されるパーツ </summary>
+    [Tooltip("表示が切り替わるパーツ")]
     [SerializeField] protected GameObject[] m_partsObject;
     /// <summary> パーツID </summary>
     public int PartsID { get => m_partsID; }

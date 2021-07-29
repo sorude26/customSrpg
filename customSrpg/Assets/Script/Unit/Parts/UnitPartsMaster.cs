@@ -6,7 +6,7 @@ using UnityEngine;
 /// 機体パーツの基底クラス
 /// </summary>
 /// <typeparam name="T">対応するパーツのデータ</typeparam>
-public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsData
+public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsData
 {
     /// <summary> パーツ耐久値 </summary>
     public int MaxPartsHp { get => m_partsData.MaxPartsHp; }
@@ -42,7 +42,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         ViewCurrentHp = MaxPartsHp;
         m_partsDamage = new List<int>();
     }
-
+    /// <summary>
+    /// パーツの色設定
+    /// </summary>
+    /// <param name="color"></param>
     public virtual void PartsColorChange(Color color)
     {
         foreach (var renderer in m_amors)
@@ -51,6 +54,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
         }
         m_startColor = color;
     }
+    /// <summary>
+    /// 一時的な色変更
+    /// </summary>
+    /// <param name="color"></param>
     public virtual void ColorChange(Color color)
     {
         foreach (var renderer in m_amors)
@@ -63,6 +70,11 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     {
         if (CurrentPartsHp <= 0)
         {
+            return 0;
+        }
+        if (power == 0)
+        {
+            m_partsDamage.Add(-1);
             return 0;
         }
         int damage = BattleCalculator.GetDamage(power, Defense);
@@ -84,13 +96,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     /// </summary>
     public virtual void DamageEffect()
     {
-        int r = Random.Range(0, m_hitPos.Length);
-        EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
-        EffectManager.PlayDamage(m_partsDamage[m_damageCount], m_hitPos[r].position);
-        ViewCurrentHp -= m_partsDamage[m_damageCount];
-        m_damageCount++;        
+        int damage = m_partsDamage[m_damageCount];
+        m_damageCount++;
         if (m_damageCount >= m_partsDamage.Count)
-        {           
+        {
             if (CurrentPartsHp <= 0)
             {
                 EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);
@@ -99,10 +108,17 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
             m_damageCount = 0;
             m_partsDamage.Clear();
         }
-        if (!m_damageColor)
+        if (damage >= 0)
         {
-            m_damageColor = true;
-            StartCoroutine(DamageColor());
+            int r = Random.Range(0, m_hitPos.Length);
+            EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
+            EffectManager.PlayDamage(damage, m_hitPos[r].position);
+            ViewCurrentHp -= damage;
+            if (!m_damageColor)
+            {
+                m_damageColor = true;
+                StartCoroutine(DamageColor());
+            }
         }
     }
     /// <summary>
@@ -119,6 +135,10 @@ public class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsD
     public int GetMaxHP() => MaxPartsHp;
     public int GetCurrentHP() => CurrentPartsHp;
     public int GetDefense() => Defense;
+    /// <summary>
+    /// 被ダメージ時の色変化
+    /// </summary>
+    /// <returns></returns>
     protected virtual IEnumerator DamageColor()
     {
         ColorChange(Color.white);

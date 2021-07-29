@@ -24,10 +24,10 @@ namespace Stage
                 OnInputDecision?.Invoke();
                 return;
             }
-            float h = Input.GetAxisRaw("Horizontal");
-            float v = Input.GetAxisRaw("Vertical");
-            if (h != 0 || v != 0)
+            if (Input.GetButton("Horizontal") || Input.GetButton("Vertical"))
             {
+                float h = Input.GetAxisRaw("Horizontal");
+                float v = Input.GetAxisRaw("Vertical");
                 OnInputArrow?.Invoke(h, v);
             }
         }
