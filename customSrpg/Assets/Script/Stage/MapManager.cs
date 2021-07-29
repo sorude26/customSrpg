@@ -113,7 +113,7 @@ public class MapManager : MonoBehaviour
         int p = GetPosition(moveUnit);
         MoveList.Add(MapDatas[p]);
         MapDatas[p].MovePoint = moveUnit.GetUnitData().GetMovePower();
-        SearchCross(p, MapDatas[p].MovePoint, moveUnit.GetUnitData().GetLiftingForce());
+        SearchCross(MapDatas[p], MapDatas[p].MovePoint, moveUnit.GetUnitData().GetLiftingForce());
         return MoveList.ToArray();
     }
     /// <summary>
@@ -130,7 +130,7 @@ public class MapManager : MonoBehaviour
         }
         int p = GetPosition(x, z);
         MapDatas[p].AttackPoint = attackWeapon.Range;
-        SearchCross(p, MapDatas[p].AttackPoint, MapDatas[p].Level, attackWeapon.VerticalRange);
+        SearchCross(MapDatas[p], MapDatas[p].AttackPoint, MapDatas[p].Level, attackWeapon.VerticalRange);
         return AttackList.Where(ap => ap.AttackPoint < attackWeapon.Range - attackWeapon.MinRange).ToArray();
     }
     /// <summary>
@@ -139,11 +139,11 @@ public class MapManager : MonoBehaviour
     /// <param name="position"></param>
     /// <param name="movePower"></param>
     /// <param name="liftingForce"></param>
-    void SearchCross(int position, int movePower, float liftingForce)
+    void SearchCross(MapData position, int movePower, float liftingForce)
     {
         foreach (var map in NeighorMap(position))
         {
-            SearchPos(map, movePower, MapDatas[position].Level, liftingForce);
+            SearchPos(map, movePower, position.Level, liftingForce);
         }
     }
     /// <summary>
@@ -181,7 +181,7 @@ public class MapManager : MonoBehaviour
         {
             position.MovePoint = movePower;
             MoveList.Add(position);
-            SearchCross(position.PosID, movePower, liftingForce);
+            SearchCross(position, movePower, liftingForce);
         }
     }
     /// <summary>
@@ -191,7 +191,7 @@ public class MapManager : MonoBehaviour
     /// <param name="attackRange"></param>
     /// <param name="startLevel"></param>
     /// <param name="verticalRang"></param>
-    void SearchCross(int position, int attackRange, float startLevel, float verticalRang)
+    void SearchCross(MapData position, int attackRange, float startLevel, float verticalRang)
     {
         foreach (var map in NeighorMap(position))
         {
@@ -232,7 +232,7 @@ public class MapManager : MonoBehaviour
             attackRange--;//攻撃範囲変動
             position.AttackPoint = attackRange;
             AttackList.Add(position);
-            SearchCross(position.PosID, attackRange, startLevel, verticalRange);
+            SearchCross(position, attackRange, startLevel, verticalRange);
         }
     }
     /// <summary>
@@ -261,6 +261,13 @@ public class MapManager : MonoBehaviour
         }
         return true;
     }
+    /// <summary>
+    /// 周囲のマップに目標地点があるか確認する
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="mapData"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
     bool CheckNeighor(in Unit unit, MapData mapData, Unit target)
     {
         foreach (var map in NeighorMap(mapData))
@@ -281,6 +288,14 @@ public class MapManager : MonoBehaviour
         }
         return false;
     }
+    /// <summary>
+    /// 指定箇所が目標地点か確認する
+    /// </summary>
+    /// <param name="unit"></param>
+    /// <param name="position"></param>
+    /// <param name="parent"></param>
+    /// <param name="target"></param>
+    /// <returns></returns>
     bool CheckPoint(in Unit unit, MapData position, MapData parent, in Unit target)
     {
         if (position == null)
@@ -316,6 +331,10 @@ public class MapManager : MonoBehaviour
         }
         return false;
     }
+    /// <summary>
+    /// 実コスト最小のOpenマップデータを返す
+    /// </summary>
+    /// <returns></returns>
     MapData GetOpenMap()
     {
         MapData target = null;
@@ -341,6 +360,11 @@ public class MapManager : MonoBehaviour
         }
         return target;
     }
+    /// <summary>
+    /// 最短経路の目標地点に近い順に高得点を付ける
+    /// </summary>
+    /// <param name="map"></param>
+    /// <returns></returns>
     bool RouteScoreSet(MapData map)
     {
         if (map == null)
@@ -354,39 +378,13 @@ public class MapManager : MonoBehaviour
         map.MapScore = MaxX * MaxZ + map.ZCost;
         return RouteScoreSet(map.Parent);
     }
+
     /// <summary>
     /// 周囲四方向のマップデータ
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    IEnumerable<MapData> NeighorMap(int position)
-    {
-        if (0 <= position && position < MaxX * MaxZ)
-        {
-            if (MapDatas[position].PosZ > 0 && MapDatas[position].PosZ < MaxZ)
-            {
-                yield return MapDatas[position - MaxX];
-            }
-            if (MapDatas[position].PosZ >= 0 && MapDatas[position].PosZ < MaxZ - 1)
-            {
-                yield return MapDatas[position + MaxX];
-            }
-            if (MapDatas[position].PosX > 0 && MapDatas[position].PosX < MaxX)
-            {
-                yield return MapDatas[position - 1];
-            }
-            if (MapDatas[position].PosX >= 0 && MapDatas[position].PosX < MaxX - 1)
-            {
-                yield return MapDatas[position + 1];
-            }
-        }
-    }
-    /// <summary>
-    /// 周囲四方向のマップデータ
-    /// </summary>
-    /// <param name="position"></param>
-    /// <returns></returns>
-    IEnumerable<MapData> NeighorMap(MapData position)
+    public IEnumerable<MapData> NeighorMap(MapData position)
     {
         if (position != null)
         {

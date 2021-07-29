@@ -26,7 +26,7 @@ public class StageManager : MonoBehaviour
     /// <summary> 行動中のユニット </summary>
     public Unit TurnUnit { get; private set; }
     [Tooltip("プレイヤーの全ユニット")]
-    [SerializeField] Unit[] m_players;
+    [SerializeField] PlayerUnit[] m_players;
     [Tooltip("友軍の全ユニット")]
     [SerializeField] NpcUnit[] m_allies;
     [Tooltip("敵の全ユニット")]
@@ -53,7 +53,11 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        m_players.ToList().ForEach(p => m_units.Add(p));
+        m_players.ToList().ForEach(p => 
+        { 
+            m_units.Add(p);
+            m_battleManager.BattleEnd += p.ActionEnd;
+        });
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
         m_units.ForEach(u => u.StartSet());
@@ -75,11 +79,7 @@ public class StageManager : MonoBehaviour
         switch (Turn)
         {
             case TurnState.Player:
-                Unit unit = m_players.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
-                if (unit)
-                {
-                    m_uI.CommandOpen();
-                }
+                PlayerUnit unit = m_players.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(unit);
                 break;
             case TurnState.Allies:
@@ -148,6 +148,10 @@ public class StageManager : MonoBehaviour
                 break;
         }
     }
+    public void OpenCommand()
+    {
+        m_uI.CommandOpen();
+    }
     /// <summary>
     /// ステージのメッセージを再生する
     /// </summary>
@@ -176,10 +180,9 @@ public class StageManager : MonoBehaviour
     public void TestEnemyTurn()
     {
         Turn = TurnState.Player;
-        m_players.ToList().ForEach(p => p.StartUp());
-        m_players.ToList().ForEach(p => p.UnitRest());
-        m_allies.ToList().ForEach(a => a.StartUp());
-        TurnEnd();
+        m_players.ToList().ForEach(p => p.WakeUp());
+        m_allies.ToList().ForEach(a => a.WakeUp());
+        NextUnit();
     }
     public void TestAttack()
     {

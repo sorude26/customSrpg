@@ -79,7 +79,7 @@ public class NpcUnit : Unit
     /// 終了処理
     /// </summary>
     /// <returns></returns>
-    IEnumerator End()
+    protected IEnumerator End()
     {
         yield return new WaitForSeconds(m_waitTime);
         m_waitTime = 0;
