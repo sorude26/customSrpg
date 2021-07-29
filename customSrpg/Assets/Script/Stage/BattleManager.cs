@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -25,6 +25,7 @@ public class BattleManager : MonoBehaviour
     WeaponPosition m_weaponPos;
     /// <summary> 攻撃時の合計ダメージ </summary>
     int m_totalDamage;
+    public event Action BattleEnd;
     private void Awake()
     {
         Instance = this;
@@ -52,10 +53,6 @@ public class BattleManager : MonoBehaviour
             {
                 m_attackTarget.Add(unit);
             }
-        }
-        foreach (var item in m_attackTarget)
-        {
-            Debug.Log(item);
         }
     }
     /// <summary>
@@ -103,35 +100,8 @@ public class BattleManager : MonoBehaviour
     /// <param name="attackWeapon"></param>
     public void AttackStart(WeaponPosition attackWeapon)
     {
-        if (m_attackNow)
-        {
-            return;
-        }
-        EventManager.StageGuideViewEnd();
-        if (!m_target)
-        {
-            Debug.Log("攻撃対象不在");
-            return;
-        }
-        m_attackNow = true;
-        m_totalDamage = 0;
-        m_attacker.TargetLook(m_target);
-        m_target.TargetLook(m_attacker);
-        WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(attackWeapon);
-        if (weapon.Type == WeaponType.Blade || weapon.Type == WeaponType.Knuckle)
-        {
-            weapon.OnAttackStart += m_attacker.AttackMoveStart;
-            weapon.OnAttackEnd += m_attacker.AttackMoveReturn;
-        }
-        m_target.GetUnitData().SetBattleEvent(weapon);
-        m_target.GetUnitData().BattleEnd += AttackEnd;
-        BattleTargetDataView();
-        int hit = GetHit(attackWeapon);
-        for (int i = 0; i < weapon.MaxAttackNumber; i++)
-        {
-            Attack(m_target, hit, weapon.Power);
-        }
-        weapon.AttackStart();
+        SetWeaponPos(attackWeapon);
+        AttackStart();
     }
     /// <summary>
     /// プレイヤーの攻撃開始
@@ -160,7 +130,6 @@ public class BattleManager : MonoBehaviour
         }
         m_target.GetUnitData().SetBattleEvent(weapon);
         m_target.GetUnitData().BattleEnd += AttackEnd;
-        m_target.GetUnitData().BattleEnd += StageManager.Instance.NextUnit;
         BattleTargetDataView();
         int hit = GetHit(m_weaponPos);
         for (int i = 0; i < weapon.MaxAttackNumber; i++)
@@ -189,14 +158,14 @@ public class BattleManager : MonoBehaviour
     /// <param name="power"></param>
     void Attack(Unit target,int hit,int power)
     {
-        int r = Random.Range(0, 100);
+        int r = UnityEngine.Random.Range(0, 100);
         if (r <= hit)
         {
             m_totalDamage += target.GetUnitData().HitCheckShot(power);
         }
         else
         {
-            Debug.Log("Miss!");
+            target.GetUnitData().HitCheckShot(0);
         }
     }
     /// <summary>
@@ -236,6 +205,7 @@ public class BattleManager : MonoBehaviour
         {
             EffectManager.PlayMessage("Miss", m_target.transform.position, 300, 1f);
         }
+        BattleEnd?.Invoke();
     }
     /// <summary>
     /// 耐久得点
