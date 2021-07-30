@@ -43,4 +43,13 @@ public class PartsLeg : UnitPartsMaster<LegData>
         CurrentMovePower /= 5;
         Break = true;
     }
+    public override void DestoryParts()
+    {
+        Transform[] allParts = { m_lLeg3, m_lLeg2, m_lLeg1, m_rLeg3, m_rLeg2, m_rLeg1 };
+        foreach (var parts in allParts)
+        {
+            Destroy(parts.gameObject);
+        }
+        base.DestoryParts();
+    }
 }

@@ -27,4 +27,8 @@ public interface IParts
     /// </summary>
     /// <returns></returns>
     bool GetBreak();
+    /// <summary>
+    /// パーツを消す
+    /// </summary>
+    void DestoryParts();
 }

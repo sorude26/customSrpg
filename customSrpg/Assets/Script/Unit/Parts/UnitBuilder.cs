@@ -71,6 +71,27 @@ public class UnitBuilder : MonoBehaviour
                 break;
         }
     }
+    public void ResetBuild(UnitBuildData data, UnitMaster unitMaster)
+    {
+        DestroyAllParts();
+        SetData(data, unitMaster);
+    }
+    public void DestroyAllParts() 
+    {
+        IParts[] allParts = { m_lAWeapon, m_rAWeapon, m_bodyWeapon, m_head, m_lArm, m_rArm, m_body, m_leg };
+        foreach (var parts in allParts)
+        {
+            parts?.DestoryParts();
+        }
+        m_head = null;
+        m_body = null;
+        m_lArm = null;
+        m_rArm = null;
+        m_leg = null;
+        m_lAWeapon = null;
+        m_rAWeapon = null;
+        m_bodyWeapon = null;        
+    }
     /// <summary>
     /// 人型の機体を生成する
     /// </summary>

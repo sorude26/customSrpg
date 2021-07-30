@@ -64,6 +64,7 @@ public class StageUI : MonoBehaviour
         }
         else
         {
+            EventManager.StageGuideViewEnd();
             StageManager.Instance.TurnUnit.UnitRest();
             StageManager.Instance.NextUnit();
             CommandClose();

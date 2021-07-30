@@ -72,4 +72,13 @@ public class PartsArm : UnitPartsMaster<ArmData>
         }
         return damage;
     }
+    public override void DestoryParts()
+    {
+        Transform[] allParts = { m_grip, m_armBottom, m_armTop, m_shoulder };
+        foreach (var parts in allParts)
+        {
+            Destroy(parts.gameObject);
+        }
+        base.DestoryParts();
+    }
 }

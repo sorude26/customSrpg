@@ -161,6 +161,10 @@ public class MotionController : MonoBehaviour
     {
         m_anime.Play("HumanDestroy");
     }
+    public void Idle()
+    {
+        m_anime.Play("Idle");
+    }
     void DestroyEnd()
     {
         EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
