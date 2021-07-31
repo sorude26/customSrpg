@@ -41,7 +41,7 @@ public class StageManager : MonoBehaviour
     BattleManager m_battleManager;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
-    bool attack;
+    bool m_attack;
     bool m_gameEnd;
     /// <summary> ステージに付随するカーソル </summary>
     public CursorControl Cursor { get => m_cursor; }
@@ -184,22 +184,9 @@ public class StageManager : MonoBehaviour
         m_allies.ToList().ForEach(a => a.WakeUp());
         NextUnit();
     }
-    public void TestAttack()
-    {
-        attack = true;
-        TurnUnit.MoveSkep();
-        AttackSearch(TurnUnit.CurrentPosX, TurnUnit.CurrentPosZ);
-    }
-    public void TestTargetAttack()
-    {
-        m_cursor.Warp(m_battleManager.SetTarget(0));
-        m_targetMark.transform.position = m_cursor.transform.position;
-        m_battleManager.AttackStart(WeaponPosition.Body);
-        attack = false;
-    }
     public void PointMoveTest(int x, int z)
     {
-        if (attack)
+        if (m_attack)
         {
             return;
         }

@@ -20,6 +20,7 @@ public class ShotWeapon : WeaponMaster
     }
     IEnumerator Shot()
     {
+        yield return new WaitForSeconds(0.5f);
         m_muzzleFlash.SetActive(true);
         int count = m_partsData.MaxAttackNumber;
         while (count > 0)
@@ -30,6 +31,7 @@ public class ShotWeapon : WeaponMaster
             yield return new WaitForSeconds(m_partsData.AttackInterval);
         }
         m_muzzleFlash.SetActive(false);
+        yield return new WaitForSeconds(0.5f);
         m_attackEnd?.Invoke();
         m_attackEnd = null;
         m_attack = null;

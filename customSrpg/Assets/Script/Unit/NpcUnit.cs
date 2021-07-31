@@ -26,6 +26,7 @@ public class NpcUnit : Unit
         if (State == UnitState.StandBy)
         {
             State = UnitState.Action;
+            m_waitTime = 0.1f;
             StartCoroutine(StartAI());
         }
     }
@@ -82,7 +83,7 @@ public class NpcUnit : Unit
     protected IEnumerator End()
     {
         yield return new WaitForSeconds(m_waitTime);
-        m_waitTime = 0;
+        m_waitTime = 0.1f;
         UnitRest();
         StageManager.Instance.NextUnit();
     }

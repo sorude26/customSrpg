@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -297,11 +298,10 @@ public class UnitMovelControl : MonoBehaviour
     /// <summary>
     /// 検索範囲の移動経路検索し移動開始指示を出す
     /// </summary>
-    /// <param name="moveList">検索範囲</param>
     /// <param name="targetX">目標地点X軸</param>
     /// <param name="targetZ">目標地点Z軸</param>
     /// <param name="liftingForce">現在の昇降力</param>
-    public void UnitMoveSet(in MapData[] moveList, int targetX, int targetZ ,float liftingForce)
+    public void UnitMoveSet(int targetX, int targetZ ,float liftingForce)
     {
         if (m_moveMode)
         {
@@ -315,6 +315,7 @@ public class UnitMovelControl : MonoBehaviour
                 SkipMove(m_startPosX, m_startPosZ);
             }
         }
+        Debug.Log($"MoveSet{targetX}:{targetZ},Start{m_startPosX}:{m_startPosZ}");
         if (targetX == m_startPosX && targetZ == m_startPosZ)
         {
             Warp(targetX, targetZ);
@@ -326,7 +327,7 @@ public class UnitMovelControl : MonoBehaviour
         m_unitMoveList = new List<Vector2Int>();
         m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
         int p = m_gameMap.GetPosition(targetX, targetZ);
-        SearchCross(p, moveList[p].MovePoint, moveList);
+        SearchCross(p, m_gameMap.MapDatas[p].MovePoint);
     }
 
     /// <summary>
@@ -334,14 +335,14 @@ public class UnitMovelControl : MonoBehaviour
     /// </summary>
     /// <param name="p">現在座標</param>
     /// <param name="movePower">移動力</param>
-    /// <param name="moveList">移動範囲リスト</param>
-    protected void SearchCross(int p, int movePower, in MapData[] moveList)
+    protected void SearchCross(int p, int movePower)
     {
         if (0 <= p && p < m_gameMap.MaxX * m_gameMap.MaxZ)
         {
+            int cost = m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType);
             foreach (var map in m_gameMap.NeighorMap(m_gameMap.MapDatas[p]))
             {
-                MoveSearchPos(map.PosID, movePower, moveList[p].Level, moveList, m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType));
+                MoveSearchPos(map.PosID, movePower, m_gameMap.MapDatas[p].Level, cost);
             }
         }
     }
@@ -351,19 +352,16 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="p">対象座標</param>
     /// <param name="movePower">移動力</param>
     /// <param name="currentLevel">現在高度</param>
-    /// <param name="moveList">移動範囲リスト</param>
     /// <param name="moveCost">移動前座標の移動コスト</param>
-    protected void MoveSearchPos(int p, int movePower, float currentLevel, in MapData[] moveList, int moveCost)
+    protected void MoveSearchPos(int p, int movePower, float currentLevel, int moveCost)
     {
         if (m_moveMode) { return; }//検索終了か確認
         if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return; }//マップ範囲内か確認
-        if (movePower + moveCost != moveList[p].MovePoint) { return; }//一つ前の座標か確認
-        if (Mathf.Abs(moveList[p].Level - currentLevel) > LiftingForce) { return; }//高低差の確認
-
-        movePower = moveList[p].MovePoint;
+        if (movePower + moveCost != m_gameMap.MapDatas[p].MovePoint) { return; }//一つ前の座標か確認
+        if (Mathf.Abs(m_gameMap.MapDatas[p].Level - currentLevel) > LiftingForce) { return; }//高低差の確認
+        movePower = m_gameMap.MapDatas[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存
-
         if (m_startPosX == m_gameMap.MapDatas[p].PosX && m_startPosZ == m_gameMap.MapDatas[p].PosZ) //初期地点か確認
         {
             m_moveMode = true; //移動モード移行
@@ -375,7 +373,7 @@ public class UnitMovelControl : MonoBehaviour
         }
         else
         {
-            SearchCross(p, movePower, moveList);
+            SearchCross(p, movePower);
         }
     }
     public void AttackMoveStart()

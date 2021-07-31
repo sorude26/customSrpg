@@ -177,9 +177,9 @@ public class MapManager : MonoBehaviour
         }
         //ユニットがいるか確認
         movePower -= GetMoveCost(position.MapType);//移動力変動
+        position.MovePoint = movePower;
         if (movePower > 0)//移動可能箇所に足跡入力、再度検索
         {
-            position.MovePoint = movePower;
             MoveList.Add(position);
             SearchCross(position, movePower, liftingForce);
         }
@@ -384,26 +384,26 @@ public class MapManager : MonoBehaviour
     /// </summary>
     /// <param name="position"></param>
     /// <returns></returns>
-    public IEnumerable<MapData> NeighorMap(MapData position)
+    public MapData[] NeighorMap(MapData position)
     {
-        if (position != null)
+        if (position == null) { return null; }
+        var mapData = new List<MapData>();
+        if (position.PosZ > 0 && position.PosZ < MaxZ)
         {
-            if (position.PosZ > 0 && position.PosZ < MaxZ)
-            {
-                yield return MapDatas[position.PosID - MaxX];
-            }
-            if (position.PosZ >= 0 && position.PosZ < MaxZ - 1)
-            {
-                yield return MapDatas[position.PosID + MaxX];
-            }
-            if (position.PosX > 0 && position.PosX < MaxX)
-            {
-                yield return MapDatas[position.PosID - 1];
-            }
-            if (position.PosX >= 0 && position.PosX < MaxX - 1)
-            {
-                yield return MapDatas[position.PosID + 1];
-            }
+            mapData.Add(MapDatas[position.PosID - MaxX]);
         }
+        if (position.PosZ >= 0 && position.PosZ < MaxZ - 1)
+        {
+            mapData.Add(MapDatas[position.PosID + MaxX]);
+        }
+        if (position.PosX > 0 && position.PosX < MaxX)
+        {
+            mapData.Add(MapDatas[position.PosID - 1]);
+        }
+        if (position.PosX >= 0 && position.PosX < MaxX - 1)
+        {
+            mapData.Add(MapDatas[position.PosID + 1]);
+        }
+        return mapData.ToArray();
     }
 }

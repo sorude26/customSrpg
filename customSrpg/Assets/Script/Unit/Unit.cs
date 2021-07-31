@@ -85,7 +85,8 @@ public class Unit : MonoBehaviour
     /// <param name="z"></param>
     public void TargetMoveStart(int x, int z)
     {
-        m_movelControl.UnitMoveSet(MapManager.Instance.MapDatas, x, z, m_master.GetLiftingForce());
+        MapManager.Instance.StartSearch(this);
+        m_movelControl.UnitMoveSet(x, z, m_master.GetLiftingForce());
     }
     /// <summary>
     /// 移動終了時のイベントを登録する
