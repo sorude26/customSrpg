@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
@@ -122,6 +123,12 @@ public class BattleManager : MonoBehaviour
         m_totalDamage = 0;
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
+        StartCoroutine(BattleStart());
+        StageManager.Instance.Cursor.Warp(m_target.transform.position,m_attacker.transform.position);
+    }
+    IEnumerator BattleStart()
+    {
+        yield return StageManager.Instance.Cursor.Camera.PointFocus();
         WeaponMaster weapon = m_attacker.GetUnitData().GetWeapon(m_weaponPos);
         if (weapon.Type == WeaponType.Blade || weapon.Type == WeaponType.Knuckle)
         {
@@ -195,7 +202,12 @@ public class BattleManager : MonoBehaviour
     /// 攻撃終了時の処理
     /// </summary>
     void AttackEnd() 
-    { 
+    {
+        StartCoroutine(AllBattleEnd());
+    }
+    IEnumerator AllBattleEnd()
+    {
+        yield return StageManager.Instance.Cursor.Camera.FocusEnd();
         m_attackNow = false;
         if (m_totalDamage > 0)
         {

@@ -22,7 +22,7 @@ public class CursorControl : MonoBehaviour
     /// <summary> 描画されるカーソル </summary>
     [SerializeField] GameObject m_cursor;
     /// <summary> 移動処理フラグ </summary>
-    bool m_move;    
+    bool m_move;
     /// <summary> 移動入力待ち時間 </summary>
     float m_moveTime = 0.03f;
     /// <summary> 移動待機タイマー </summary>
@@ -33,9 +33,11 @@ public class CursorControl : MonoBehaviour
     bool m_second;
     /// <summary> カーソルの移動フラグ </summary>
     bool m_cursorMove;
+    [SerializeField] CameraControl m_camera;
     [SerializeField] UnitDataGuideView m_dataGuideView1;
     [SerializeField] UnitDataGuideView m_dataGuideView2;
     [SerializeField] UnitDataGuideView m_dataGuideView3;
+    public CameraControl Camera { get => m_camera; }
     void Start()
     {
         m_stageScale = MapManager.Instance.MapScale;
@@ -49,7 +51,7 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="y"></param>
-    public void CursorMove(float x,float y)
+    public void CursorMove(float x, float y)
     {
         if (m_cursorMove || m_notCursor) { return; }
         StartCoroutine(CursorMove());
@@ -147,13 +149,14 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    public void Warp(int x,int z)
+    public void Warp(int x, int z)
     {
+        m_cursor.SetActive(true);
         m_currentPosX = x;
         m_currentPosZ = z;
         UnitGuideViewEnd();
         m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(x, z));
-        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX,m_currentPosZ), m_currentPosZ * m_stageScale);
+        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
     }
     /// <summary>
     /// カーソルを指定ユニットの場所に移動する
@@ -165,18 +168,25 @@ public class CursorControl : MonoBehaviour
         {
             return;
         }
+        m_cursor.SetActive(true);
         m_currentPosX = unit.CurrentPosX;
         m_currentPosZ = unit.CurrentPosZ;
         UnitGuideViewEnd();
         m_dataGuideView3.ViewData(unit);
         transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
     }
+    public void Warp(Vector3 point1, Vector3 point2)
+    {
+        UnitGuideViewEnd();
+        m_cursor.SetActive(false);
+        transform.position = (point1 + point2) * 0.5f;
+    }
     /// <summary>
     /// 入力が地形の範囲内であればカーソルの座標を変更し、移動処理フラグをTrueにする
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    void Move(float x,float z)
+    void Move(float x, float z)
     {
         if (x == 0 && z == 0)
         {
@@ -213,7 +223,7 @@ public class CursorControl : MonoBehaviour
             }
         }
     }
-    public void BattleUnitView(Unit attacker,Unit target)
+    public void BattleUnitView(Unit attacker, Unit target)
     {
         m_dataGuideView2.ViewData(attacker);
         m_dataGuideView1.ViewData(target);
