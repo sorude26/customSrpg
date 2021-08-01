@@ -72,11 +72,12 @@ public class BattleCalculator : ScriptableObject
     /// 防御力と命中率を考慮した推定ダメージを返す
     /// </summary>
     /// <param name="attack"></param>
+    /// <param name="number"></param>
     /// <param name="defense"></param>
     /// <param name="hit"></param>
     /// <returns></returns>
-    public static int EstimatedDamage(int attack, int defense, int hit) =>
-        (attack * attack / (attack / 2 + defense)) * hit / 100;
+    public static int EstimatedDamage(int attack, int number, int defense, int hit) =>
+        (attack * attack / (attack / 2 + defense)) * hit / 100 * number;
     /// <summary>
     /// 行動を考慮したダメージを返す
     /// </summary>

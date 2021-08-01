@@ -13,7 +13,7 @@ public abstract class WeaponMaster : PartsMaster<WeaponData>
     /// <summary> 総攻撃回数 </summary>
     public int MaxAttackNumber { get => m_partsData.MaxAttackNumber; }
     /// <summary> 最大攻撃力 </summary>
-    public int MaxPower { get => m_partsData.Power * m_partsData.MaxAttackNumber; }
+    public int MaxPower { get => m_partsData.Power * m_partsData.Power + m_partsData.Power * m_partsData.MaxAttackNumber; }
     /// <summary> 命中精度 </summary>
     public int HitAccuracy { get => m_partsData.HitAccuracy; }
     /// <summary> 最大射程 </summary>
