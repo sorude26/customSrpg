@@ -12,6 +12,7 @@ public class PlayerUnit : NpcUnit
             State = UnitState.Action;
             if (m_autoMode)
             {
+                m_waitTime = 0.1f;
                 StartCoroutine(StartAI());
             }
             else
@@ -20,13 +21,31 @@ public class PlayerUnit : NpcUnit
             }
         }
     }
+    /// <summary>
+    /// マニュアル時の行動終了処理
+    /// </summary>
     public void ActionEnd()
     {
-        if (m_attackMode || State != UnitState.Action)
+        if (m_autoMode || State != UnitState.Action)
         {
             return;
         }
         m_waitTime = m_actionEndWaitTime;
         StartCoroutine(End());
+    }
+    public void ChangeMode()
+    {
+        if (State != UnitState.Stop)
+        {
+            return;
+        }
+        if (m_autoMode)
+        {
+            m_autoMode = false;
+        }
+        else
+        {
+            m_autoMode = true;
+        }
     }
 }

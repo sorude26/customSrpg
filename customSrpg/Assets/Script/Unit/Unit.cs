@@ -189,8 +189,8 @@ public class Unit : MonoBehaviour
     /// <param name="power"></param>
     /// <param name="hit"></param>
     /// <returns></returns>
-    public virtual int GetScore(int power, int hit) =>
+    public virtual int GetScore(int power, int number, int hit) =>
         BattleManager.Instance.GetPointDurable(m_master.GetMaxHP(), m_master.GetCurrentHP())
-        + BattleManager.Instance.GetPointDamage(BattleCalculator.EstimatedDamage(power, m_master.GetAmorPoint(),
-            BattleManager.Instance.GetHit( hit , m_master.GetAvoidance())), m_master.GetCurrentHP());
+        + BattleManager.Instance.GetPointDamage(BattleCalculator.EstimatedDamage(power, number, m_master.GetAmorPoint(),
+            BattleManager.Instance.GetHit(hit, m_master.GetAvoidance())), m_master.GetCurrentHP());
 }

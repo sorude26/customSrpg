@@ -59,7 +59,7 @@ public class StagePanel : MonoBehaviour
     {
         if (m_moveMode)
         {
-            StageManager.Instance.PointMoveTest(m_posX, m_posZ);
+            StageManager.Instance.PointMove(m_posX, m_posZ);
         }
     }
     private void OnEnable()

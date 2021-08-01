@@ -129,7 +129,7 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     public void Decision()
     {
-        StageManager.Instance.PointMoveTest(m_currentPosX, m_currentPosZ);
+        StageManager.Instance.PointMove(m_currentPosX, m_currentPosZ);
     }
     /// <summary>
     /// カーソルを非表示にし、操作不能にする

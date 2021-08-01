@@ -70,7 +70,7 @@ public class UnitAI : ScriptableObject
         {
             int hit = BattleManager.Instance.GetHit(unit.GetUnitData().GetWeaponPosition(weapon),unit);
             target = BattleManager.Instance.GetAttackTargets(MapManager.Instance.StartSearch(unit.CurrentPosX, unit.CurrentPosZ, weapon))
-            .OrderByDescending(s => s.GetScore(weapon.MaxPower, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.Power,weapon.MaxAttackNumber, hit)).FirstOrDefault();
             if (target)
             {
                 BattleManager.Instance.SetTarget(target);
@@ -111,11 +111,10 @@ public class UnitAI : ScriptableObject
         int hit = BattleManager.Instance.GetHit(weapon, unit);
         WeaponMaster attackWeapon = unit.GetUnitData().GetWeapon(weapon);
         if (attackWeapon == null) { return false; }
-        int power = attackWeapon.MaxPower;
         Unit target = GetTarget(point, attackWeapon, hit);
         if (target)
         {
-            SetScore(point, target.GetScore(power, hit));
+            SetScore(point, target.GetScore(attackWeapon.Power, attackWeapon.MaxAttackNumber, hit));
             return true;
         }
         return false;
@@ -130,7 +129,7 @@ public class UnitAI : ScriptableObject
     protected virtual Unit GetTarget(MapData point,WeaponMaster weapon,int hit)
     {
         Unit target = BattleManager.Instance.GetAttackTargets(GetAttackPositions(point, weapon))
-            .OrderByDescending(s => s.GetScore(weapon.MaxPower, hit)).FirstOrDefault();
+            .OrderByDescending(s => s.GetScore(weapon.Power,weapon.MaxAttackNumber, hit)).FirstOrDefault();
         return target;
     }
     /// <summary>
