@@ -179,7 +179,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     protected virtual void UnitDestroy()
     {
-        EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+        EffectManager.PlayEffect(EffectType.Explosion, transform.position);
         State = UnitState.Destory;
         m_motion.Destroy();
     }

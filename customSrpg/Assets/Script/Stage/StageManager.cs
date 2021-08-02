@@ -27,10 +27,13 @@ public class StageManager : MonoBehaviour
     public Unit TurnUnit { get; private set; }
     [Tooltip("プレイヤーの全ユニット")]
     [SerializeField] PlayerUnit[] m_players;
+    [SerializeField] Color m_playerColor;
     [Tooltip("友軍の全ユニット")]
     [SerializeField] NpcUnit[] m_allies;
+    [SerializeField] Color m_alliesColor;
     [Tooltip("敵の全ユニット")]
     [SerializeField] NpcUnit[] m_enemys;
+    [SerializeField] Color m_enemyColor;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
     [SerializeField] StageMassage m_massage;
@@ -52,17 +55,21 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        m_players.ToList().ForEach(p => 
-        { 
+        m_players.ToList().ForEach(p =>
+        {
             m_units.Add(p);
             m_battleManager.BattleEnd += p.ActionEnd;
         });
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
         m_units.ForEach(u => u.StartSet());
-        m_allies.ToList().ForEach(a => a.GetUnitData().UnitColorChange(Color.blue));
-        m_enemys.ToList().ForEach(e => e.GetUnitData().UnitColorChange(Color.red));
-        m_players.ToList().ForEach(p => p.WakeUp());
+        m_allies.ToList().ForEach(a => a.GetUnitData().UnitColorChange(m_alliesColor));
+        m_enemys.ToList().ForEach(e => e.GetUnitData().UnitColorChange(m_enemyColor));
+        m_players.ToList().ForEach(p =>
+        {
+            p.GetUnitData().UnitColorChange(m_playerColor);
+            p.WakeUp();
+        });
         m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
     }
     /// <summary>
@@ -134,7 +141,7 @@ public class StageManager : MonoBehaviour
                 break;
             case TurnState.Enemy:
                 Turn = TurnState.End;
-                m_enemys.ToList().ForEach(p => p.TurnEnd());                
+                m_enemys.ToList().ForEach(p => p.TurnEnd());
                 TurnEnd();
                 break;
             case TurnState.End:
@@ -156,7 +163,7 @@ public class StageManager : MonoBehaviour
     /// </summary>
     /// <param name="massageNum"></param>
     /// <returns></returns>
-    IEnumerator StageMassage(uint massageNum,Action action)
+    IEnumerator StageMassage(uint massageNum, Action action)
     {
         bool view = true;
         while (view)
@@ -302,14 +309,14 @@ public class StageManager : MonoBehaviour
     /// <param name="p"></param>
     /// <returns></returns>
     public Unit GetPositionUnit(int p) =>
-        m_units.Where(mu => mu.State != UnitState.Destory && MapManager.Instance.GetPosition(mu.CurrentPosX,mu.CurrentPosZ) == p).FirstOrDefault();
+        m_units.Where(mu => mu.State != UnitState.Destory && MapManager.Instance.GetPosition(mu.CurrentPosX, mu.CurrentPosZ) == p).FirstOrDefault();
     /// <summary>
     /// 指定箇所のユニットを返す
     /// </summary>
     /// <param name="x"></param>
     /// <param name="z"></param>
     /// <returns></returns>
-    public Unit GetPositionUnit(int x, int z) => 
+    public Unit GetPositionUnit(int x, int z) =>
         m_units.Where(mu => mu.State != UnitState.Destory && mu.CurrentPosX == x && mu.CurrentPosZ == z).FirstOrDefault();
     /// <summary>
     /// 現在の全ユニットを返す

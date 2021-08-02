@@ -211,7 +211,7 @@ public class BattleManager : MonoBehaviour
         m_attackNow = false;
         if (m_totalDamage > 0)
         {
-            EffectManager.PlayDamage(m_totalDamage, m_target.transform.position, 300, 1f);
+            EffectManager.PlayMessage($"Total:{m_totalDamage}", m_target.transform.position, 250, 1f);
         }
         else
         {

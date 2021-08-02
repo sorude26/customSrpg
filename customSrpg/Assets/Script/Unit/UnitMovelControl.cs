@@ -315,7 +315,6 @@ public class UnitMovelControl : MonoBehaviour
                 SkipMove(m_startPosX, m_startPosZ);
             }
         }
-        Debug.Log($"MoveSet{targetX}:{targetZ},Start{m_startPosX}:{m_startPosZ}");
         if (targetX == m_startPosX && targetZ == m_startPosZ)
         {
             Warp(targetX, targetZ);
@@ -327,7 +326,15 @@ public class UnitMovelControl : MonoBehaviour
         m_unitMoveList = new List<Vector2Int>();
         m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
         int p = m_gameMap.GetPosition(targetX, targetZ);
-        SearchCross(p, m_gameMap.MapDatas[p].MovePoint);
+        if(!SearchCross(p, m_gameMap.MapDatas[p].MovePoint))
+        {
+            Debug.Log("NonePos!");
+            CurrentPosX = m_unitMoveList[0].x;
+            CurrentPosZ = m_unitMoveList[0].y;
+            PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
+            MoveEndEvent?.Invoke();
+            MoveEndEvent = null;
+        }
     }
 
     /// <summary>
@@ -335,16 +342,20 @@ public class UnitMovelControl : MonoBehaviour
     /// </summary>
     /// <param name="p">現在座標</param>
     /// <param name="movePower">移動力</param>
-    protected void SearchCross(int p, int movePower)
+    protected bool SearchCross(int p, int movePower)
     {
         if (0 <= p && p < m_gameMap.MaxX * m_gameMap.MaxZ)
         {
             int cost = m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType);
             foreach (var map in m_gameMap.NeighorMap(m_gameMap.MapDatas[p]))
             {
-                MoveSearchPos(map.PosID, movePower, m_gameMap.MapDatas[p].Level, cost);
+                if(MoveSearchPos(map.PosID, movePower, m_gameMap.MapDatas[p].Level, cost))
+                {
+                    return true;
+                }
             }
         }
+        return false;
     }
     /// <summary>
     /// 対象座標の確認
@@ -353,12 +364,12 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="movePower">移動力</param>
     /// <param name="currentLevel">現在高度</param>
     /// <param name="moveCost">移動前座標の移動コスト</param>
-    protected void MoveSearchPos(int p, int movePower, float currentLevel, int moveCost)
+    protected bool MoveSearchPos(int p, int movePower, float currentLevel, int moveCost)
     {
-        if (m_moveMode) { return; }//検索終了か確認
-        if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return; }//マップ範囲内か確認
-        if (movePower + moveCost != m_gameMap.MapDatas[p].MovePoint) { return; }//一つ前の座標か確認
-        if (Mathf.Abs(m_gameMap.MapDatas[p].Level - currentLevel) > LiftingForce) { return; }//高低差の確認
+        if (m_moveMode) { return false; }//検索終了か確認
+        if (p < 0 || p >= m_gameMap.MaxX * m_gameMap.MaxZ) { return false; }//マップ範囲内か確認
+        if (movePower + moveCost != m_gameMap.MapDatas[p].MovePoint) { return false; }//一つ前の座標か確認
+        if (Mathf.Abs(m_gameMap.MapDatas[p].Level - currentLevel) > LiftingForce) { return false; }//高低差の確認
         movePower = m_gameMap.MapDatas[p].MovePoint;
         Vector2Int pos = new Vector2Int(m_gameMap.MapDatas[p].PosX, m_gameMap.MapDatas[p].PosZ);
         m_unitMoveList.Add(pos); //移動順データ保存
@@ -369,11 +380,11 @@ public class UnitMovelControl : MonoBehaviour
             UnitAngleSet();
             MoveStartEvent?.Invoke();
             StartCoroutine(UnitMove());//移動開始
-            return;
+            return true;
         }
         else
         {
-            SearchCross(p, movePower);
+            return SearchCross(p, movePower);
         }
     }
     public void AttackMoveStart()
