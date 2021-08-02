@@ -17,6 +17,8 @@ public enum EffectType
     ExplosionParts,
     /// <summary> ユニット破壊 </summary>
     ExplosionUnit,
+    /// <summary> 爆発大 </summary>
+    Explosion,
 }
 public class EffectManager : MonoBehaviour
 {
