@@ -30,4 +30,9 @@ public class TestBuilder : MonoBehaviour
         m_builder.ResetBuild(m_buildData, m_master);
         m_master.UnitColorChange(m_color);
     }
+    private void OnValidate()
+    {
+        if(m_master)
+        m_master.UnitColorChange(m_color);
+    }
 }
