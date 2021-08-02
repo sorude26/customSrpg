@@ -9,13 +9,12 @@ Material:
   m_PrefabAsset: {fileID: 0}
   m_Name: Glass
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
-  m_ShaderKeywords: _ALPHAPREMULTIPLY_ON
+  m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 3000
-  stringTagMap:
-    RenderType: Transparent
+  m_CustomRenderQueue: -1
+  stringTagMap: {}
   disabledShaderPasses: []
   m_SavedProperties:
     serializedVersion: 3
@@ -64,20 +63,20 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 1
     - _DetailNormalMapScale: 1
-    - _DstBlend: 10
-    - _GlossMapScale: 0.785
-    - _Glossiness: 0.583
+    - _DstBlend: 0
+    - _GlossMapScale: 0.76
+    - _Glossiness: 0.55
     - _GlossyReflections: 1
-    - _Metallic: 0.743
-    - _Mode: 3
+    - _Metallic: 0.84
+    - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
-    - _ZWrite: 0
+    - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 0.6084906, g: 0.7515421, b: 1, a: 1}
-    - _EmissionColor: {r: 0.11454255, g: 0.2722286, b: 0.6226415, a: 1}
+    - _Color: {r: 0.4575472, g: 0.655107, b: 1, a: 1}
+    - _EmissionColor: {r: 0, g: 0.0003025429, b: 0.0009765625, a: 1}
     - _SpecColor: {r: 0.5283019, g: 0.5283019, b: 0.5283019, a: 1}

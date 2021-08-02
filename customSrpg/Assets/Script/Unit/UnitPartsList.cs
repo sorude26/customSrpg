@@ -16,7 +16,18 @@ public struct UnitBuildData
     public int LegID;
     public int WeaponBodyID;
     public int WeaponRArmID;
-    public int WeaponLArmID;    
+    public int WeaponLArmID;
+    public UnitBuildData(int head,int body,int rArm,int lArm,int leg,int weaponB,int weaponRA,int weaponLA)
+    {
+        HeadID = head;
+        BodyID = body;
+        RArmID = rArm;
+        LArmID = lArm;
+        LegID = leg;
+        WeaponBodyID = weaponB;
+        WeaponRArmID = weaponRA;
+        WeaponLArmID = weaponLA;
+    }
 }
 /// <summary>
 /// 全パーツを保有するオブジェクト
