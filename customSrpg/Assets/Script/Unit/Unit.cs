@@ -43,11 +43,13 @@ public class Unit : MonoBehaviour
     public UnitState State { get; protected set; }
     //仮データ
     [SerializeField] UnitBuildData m_data;
+    bool m_start;
     /// <summary>
     /// 初期化処理
     /// </summary>
     public virtual void StartSet()
     {
+        if (m_start) return;
         State = UnitState.Stop;
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
@@ -61,6 +63,20 @@ public class Unit : MonoBehaviour
         if (lArm) { lArm.OnAttackMode += m_motion.LArmAttack; }
         var rArm = m_master.GetWeapon(WeaponPosition.RArm);
         if (rArm) { rArm.OnAttackMode += m_motion.RArmAttack; }
+        m_start = true;
+    }
+    /// <summary>
+    /// パラメータ指定での初期設定
+    /// </summary>
+    /// <param name="startPos"></param>
+    /// <param name="buildData"></param>
+    /// <param name="unitColor"></param>
+    public void StartSet(Vector2Int startPos, UnitBuildData buildData,Color unitColor)
+    {
+        m_startPos = startPos;
+        m_data = buildData;
+        StartSet();
+        m_master.UnitColorChange(unitColor);
     }
     /// <summary>
     /// 機体データ
