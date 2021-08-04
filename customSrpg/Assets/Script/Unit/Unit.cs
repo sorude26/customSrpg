@@ -53,9 +53,9 @@ public class Unit : MonoBehaviour
         State = UnitState.Stop;
         CurrentPosX = m_startPos.x;
         CurrentPosZ = m_startPos.y;
-        m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_master.BodyBreak += UnitDestroy;
         m_builder.SetData(m_data, m_master);
+        m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
         //m_master.OnDamage += m_motion.Damage;

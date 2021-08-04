@@ -36,6 +36,14 @@ public class MapManager : MonoBehaviour
         AttackList = new List<MapData>();
     }
     /// <summary>
+    /// ユニットの出現可能箇所の配列を返す
+    /// </summary>
+    /// <returns></returns>
+    public MapData[] UnitSpownPoint()
+    {
+        return MapDatas.Where(p => p.MapType != MapType.NonAggressive).ToArray();
+    }
+    /// <summary>
     /// 2次元座標を1次元座標に変換する
     /// </summary>
     /// <param name="x"></param>

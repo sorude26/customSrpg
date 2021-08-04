@@ -54,21 +54,23 @@ public class UnitMovelControl : MonoBehaviour
     [SerializeField] protected UnitAngle m_unitAngle = UnitAngle.Back;
     /// <summary> 現在の向き </summary>
     protected UnitAngle m_currentAngle;
-    
+
     /// <summary>
     /// 位置の初期化と位置決定時のイベント登録
     /// </summary>
     /// <param name="positionSet"></param>
     /// <param name="x"></param>
     /// <param name="z"></param>
-    public void StartSet(Action<int,int> positionSet,int x,int z)
+    public void StartSet(Action<int, int> positionSet, int x, int z)
     {
         PositionSet += positionSet;
         m_gameMap = MapManager.Instance;
         CurrentPosX = x;
         CurrentPosZ = z;
-        SetPos(x, z); 
+        SetPos(x, z);
         transform.position = new Vector3(m_startPosX * m_gameMap.MapScale, m_startPosY, m_startPosZ * m_gameMap.MapScale);
+        PositionAngle(x, z);
+        UnitAngleChange();
     }
     /// <summary>
     /// 位置を保存する
@@ -143,10 +145,10 @@ public class UnitMovelControl : MonoBehaviour
         }
         else if (m_movePos.z != m_targetPos.z)
         {
-            MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Front, UnitAngle.Back);            
+            MoveAround(ref m_movePos.z, m_targetPos.z, UnitAngle.Front, UnitAngle.Back);
         }
         UnitAngleChange();
-    }    
+    }
     /// <summary>
     /// 水平方向への移動処理
     /// </summary>
@@ -154,7 +156,7 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="targetPos"></param>
     /// <param name="angle1"></param>
     /// <param name="angle2"></param>
-    void MoveAround(ref float movePos,float targetPos,UnitAngle angle1,UnitAngle angle2)
+    void MoveAround(ref float movePos, float targetPos, UnitAngle angle1, UnitAngle angle2)
     {
         if (movePos < targetPos)
         {
@@ -211,7 +213,7 @@ public class UnitMovelControl : MonoBehaviour
             StopAllCoroutines();
             Warp(m_unitMoveList[0].x, m_unitMoveList[0].y);
             m_moveMode = false;
-        }        
+        }
     }
     /// <summary>
     /// 移動処理中ならば処理を停止しワープさせる
@@ -242,7 +244,7 @@ public class UnitMovelControl : MonoBehaviour
     /// </summary>
     /// <param name="posX"></param>
     /// <param name="posZ"></param>
-    protected void Warp(int posX,int posZ)
+    protected void Warp(int posX, int posZ)
     {
         CurrentPosX = posX;
         CurrentPosZ = posZ;
@@ -285,6 +287,44 @@ public class UnitMovelControl : MonoBehaviour
         }
     }
     /// <summary>
+    /// 座標に応じた向きに設定する
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="z"></param>
+    public void PositionAngle(int x,int z)
+    {
+        if (x < m_gameMap.MaxX / 2)
+        {
+            if (x < m_gameMap.MaxX / 5)
+            {
+                m_unitAngle = UnitAngle.Front;
+            }
+            else if (z < m_gameMap.MaxZ / 2)
+            {
+                m_unitAngle = UnitAngle.Right;
+            }
+            else
+            {
+                m_unitAngle = UnitAngle.Left;
+            }
+        }
+        else
+        {
+            if (x > (m_gameMap.MaxX * 2) / 5)
+            {
+                m_unitAngle = UnitAngle.Back;
+            }
+            else if (z < m_gameMap.MaxZ / 2)
+            {
+                m_unitAngle = UnitAngle.Right;
+            }
+            else
+            {
+                m_unitAngle = UnitAngle.Left;
+            }
+        }
+    }
+    /// <summary>
     /// 指定座標の方向を向く
     /// </summary>
     /// <param name="target"></param>
@@ -301,13 +341,13 @@ public class UnitMovelControl : MonoBehaviour
     /// <param name="targetX">目標地点X軸</param>
     /// <param name="targetZ">目標地点Z軸</param>
     /// <param name="liftingForce">現在の昇降力</param>
-    public void UnitMoveSet(int targetX, int targetZ ,float liftingForce)
+    public void UnitMoveSet(int targetX, int targetZ, float liftingForce)
     {
         if (m_moveMode)
         {
             if (m_unitMoveList[0].x == targetX && m_unitMoveList[0].y == targetZ)
             {
-                SkipMove(targetX,targetZ);
+                SkipMove(targetX, targetZ);
                 return;
             }
             else
@@ -326,7 +366,7 @@ public class UnitMovelControl : MonoBehaviour
         m_unitMoveList = new List<Vector2Int>();
         m_unitMoveList.Add(new Vector2Int(targetX, targetZ)); //目標データ保存
         int p = m_gameMap.GetPosition(targetX, targetZ);
-        if(!SearchCross(p, m_gameMap.MapDatas[p].MovePoint))
+        if (!SearchCross(p, m_gameMap.MapDatas[p].MovePoint))
         {
             Debug.Log("NonePos!");
             CurrentPosX = m_unitMoveList[0].x;
@@ -349,7 +389,7 @@ public class UnitMovelControl : MonoBehaviour
             int cost = m_gameMap.GetMoveCost(m_gameMap.MapDatas[p].MapType);
             foreach (var map in m_gameMap.NeighorMap(m_gameMap.MapDatas[p]))
             {
-                if(MoveSearchPos(map.PosID, movePower, m_gameMap.MapDatas[p].Level, cost))
+                if (MoveSearchPos(map.PosID, movePower, m_gameMap.MapDatas[p].Level, cost))
                 {
                     return true;
                 }

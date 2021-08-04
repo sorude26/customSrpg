@@ -85,15 +85,15 @@ public class StageManager : MonoBehaviour
         switch (Turn)
         {
             case TurnState.Player:
-                PlayerUnit unit = m_players.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
-                SetNextUnit(unit);
+                PlayerUnit player = m_players.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                SetNextUnit(player);
                 break;
             case TurnState.Allies:
                 NpcUnit ally = m_allies.Where(a => a.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(ally);
                 break;
             case TurnState.Enemy:
-                NpcUnit enemy = m_enemys.Where(p => p.State == UnitState.StandBy).FirstOrDefault();
+                NpcUnit enemy = m_enemys.Where(e => e.State == UnitState.StandBy).FirstOrDefault();
                 SetNextUnit(enemy);
                 break;
             default:
@@ -148,7 +148,7 @@ public class StageManager : MonoBehaviour
                 Turn = TurnState.Player;
                 m_players.ToList().ForEach(p => p.WakeUp());
                 m_allies.ToList().ForEach(a => a.UnitRest());
-                StartCoroutine(StageMassage(0, () => NextUnit()));
+                StartCoroutine(StageMassage(0, NextUnit));
                 break;
             default:
                 break;
