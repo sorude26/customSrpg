@@ -64,7 +64,7 @@ public class BattleCalculator : ScriptableObject
     /// <returns></returns>
     public static int GetDamage(int attack, int defense)
     {
-        float r = Random.Range(0.8f, 1.2f);
+        float r = Random.Range(0.9f, 1.2f);
         r = attack * attack / (attack / 2 + defense) * r;
         return (int)r;
     }
@@ -77,7 +77,7 @@ public class BattleCalculator : ScriptableObject
     /// <param name="hit"></param>
     /// <returns></returns>
     public static int EstimatedDamage(int attack, int number, int defense, int hit) =>
-        (attack * attack / (attack / 2 + defense)) * hit / 100 * number;
+        attack * attack / (attack / 2 + defense) * (hit / 100) * number;
     /// <summary>
     /// 行動を考慮したダメージを返す
     /// </summary>
