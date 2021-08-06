@@ -9,7 +9,7 @@ using UnityEngine;
 public class UnitAI : ScriptableObject
 {
     [Tooltip("攻撃目標探索範囲")]
-    [SerializeField] int m_searchRange = 8;
+    [SerializeField] protected int m_searchRange = 8;
     /// <summary>
     /// 移動目標を設定する
     /// </summary>

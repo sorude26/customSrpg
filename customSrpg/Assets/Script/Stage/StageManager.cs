@@ -31,11 +31,14 @@ public class StageManager : MonoBehaviour
     [Tooltip("友軍の全ユニット")]
     [SerializeField] NpcUnit[] m_allies;
     [SerializeField] Color m_alliesColor;
+    [SerializeField] SortieUnits m_alliesData;
     [Tooltip("敵の全ユニット")]
     [SerializeField] NpcUnit[] m_enemys;
     [SerializeField] Color m_enemyColor;
+    [SerializeField] SortieUnits m_enemysData;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
+    [SerializeField] StageUnitCreater m_unitCreater;
     [SerializeField] StageMassage m_massage;
     [SerializeField] CursorControl m_cursor;
     [SerializeField] StageUI m_uI;
@@ -60,6 +63,33 @@ public class StageManager : MonoBehaviour
             m_units.Add(p);
             m_battleManager.BattleEnd += p.ActionEnd;
         });
+        //StartSetUnit();
+        StartSetTest();
+    }
+    void StartSetTest()
+    {
+        m_units.ForEach(u => u.StartSet());
+        m_mapDatas = MapManager.Instance.UnitSpownPoint();
+        for (int i = 0; i < m_mapDatas.Length; i++)
+        {
+            int r = UnityEngine.Random.Range(0, m_mapDatas.Length);
+            MapData map = m_mapDatas[i];
+            m_mapDatas[i] = m_mapDatas[r];
+            m_mapDatas[r] = map;
+        }
+        m_allies = m_unitCreater.StageUnitCreate(m_mapDatas, m_alliesData,0);
+        m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_enemysData, m_alliesData.AllUnitNumber);
+        m_allies.ToList().ForEach(a => m_units.Add(a));
+        m_enemys.ToList().ForEach(e => m_units.Add(e));
+        m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
+        m_players.ToList().ForEach(p =>
+        {
+            p.GetUnitData().UnitColorChange(m_playerColor);
+            p.WakeUp();
+        });
+    }
+    void StartSetUnit()
+    {
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
         m_units.ForEach(u => u.StartSet());
