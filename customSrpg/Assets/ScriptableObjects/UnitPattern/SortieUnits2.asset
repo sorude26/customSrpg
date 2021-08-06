@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9c1bf2104cd8e47b809c9ae6d155c5, type: 3}
+  m_Name: SortieUnits2
+  m_EditorClassIdentifier: 
+  m_sortieUnitsPattern: 0400000002000000
+  m_unitsColorPattern:
+  - {r: 0.23589355, g: 0.3398385, b: 0.8773585, a: 0}
+  - {r: 0.2660199, g: 0.32643375, b: 0.9245283, a: 0}
+  m_sortieUnitsBuildPattern:
+  - HeadID: 2
+    BodyID: 2
+    RArmID: 2
+    LArmID: 2
+    LegID: 2
+    WeaponBodyID: 0
+    WeaponRArmID: 1
+    WeaponLArmID: 5
+  - HeadID: 3
+    BodyID: 4
+    RArmID: 3
+    LArmID: 3
+    LegID: 4
+    WeaponBodyID: 0
+    WeaponRArmID: 4
+    WeaponLArmID: 2
