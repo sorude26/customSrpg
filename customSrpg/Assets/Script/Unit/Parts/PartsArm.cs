@@ -60,7 +60,7 @@ public class PartsArm : UnitPartsMaster<ArmData>
         int damage = BattleCalculator.GetDamage(power, Defense);
         CurrentPartsHp -= damage;
         m_partsDamage.Add(damage);
-        if (CurrentPartsHp < MaxPartsHp / 2)
+        if (CurrentPartsHp < MaxPartsHp / 3)
         {
             m_damageSmoke.SetActive(true);
         }

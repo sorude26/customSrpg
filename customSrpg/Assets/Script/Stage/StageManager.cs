@@ -279,6 +279,7 @@ public class StageManager : MonoBehaviour
             }
         }
         m_gameEnd = true;
+        m_cursor.Warp(TurnUnit);
         StartCoroutine(LastStageMassage(3, () => Debug.Log("勝利")));
         StartCoroutine(m_cursor.Camera.PointFocus());
         return true;
