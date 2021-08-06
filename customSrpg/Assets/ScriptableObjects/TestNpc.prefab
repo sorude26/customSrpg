@@ -663,7 +663,6 @@ MonoBehaviour:
   m_movelControl: {fileID: 282408722830958864}
   m_motion: {fileID: 7849173534561811990}
   m_builder: {fileID: 8658090112324341129}
-  m_unitNumber: 0
   m_startPos: {x: 0, y: 0}
   m_data:
     HeadID: 1
@@ -674,7 +673,8 @@ MonoBehaviour:
     WeaponBodyID: 0
     WeaponRArmID: 0
     WeaponLArmID: 0
-  m_unitAI: {fileID: 11400000, guid: 32213571443968147ad66868b5ff02f4, type: 2}
+  m_unitAI: {fileID: 11400000, guid: 24ef71b026bbf154da1e6416a4cfa284, type: 2}
+  m_actionEndWaitTime: 1
 --- !u!1 &8266259910698831434
 GameObject:
   m_ObjectHideFlags: 0
