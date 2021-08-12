@@ -30,11 +30,12 @@ public class UnitBuilder : MonoBehaviour
     [SerializeField] Transform rLeg1P;
     [SerializeField] Transform rLeg2P;
     [SerializeField] Transform rLeg3P;
-   
+
     /// <summary>
     /// 機体の構成データを受け取り設定後機体の生成を行う
     /// </summary>
     /// <param name="data"></param>
+    /// <param name="unitMaster"></param> 
     public void SetData(UnitBuildData data, UnitMaster unitMaster)
     {
         BuildUnit(data);
