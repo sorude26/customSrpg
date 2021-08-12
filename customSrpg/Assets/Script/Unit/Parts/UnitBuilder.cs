@@ -51,6 +51,11 @@ public class UnitBuilder : MonoBehaviour
         m_bodyWeapon?.SetWeaponPosition(WeaponPosition.Body);
         unitMaster.SetParts(m_bodyWeapon);
     }
+    public Transform SetDataModel(UnitBuildData data, UnitMaster unitMaster)
+    {
+        SetData(data, unitMaster);
+        return ModelSet();
+    }
     /// <summary>
     /// ユニットを生成し、各関節と連携させる
     /// </summary>
@@ -77,6 +82,11 @@ public class UnitBuilder : MonoBehaviour
         DestroyAllParts();
         SetData(data, unitMaster);
     }
+    public Transform ResetBuildModel(UnitBuildData data, UnitMaster unitMaster)
+    {
+        DestroyAllParts();
+        return SetDataModel(data, unitMaster);
+    }
     public void DestroyAllParts() 
     {
         IParts[] allParts = { m_lAWeapon, m_rAWeapon, m_bodyWeapon, m_head, m_lArm, m_rArm, m_body, m_leg };
@@ -92,6 +102,12 @@ public class UnitBuilder : MonoBehaviour
         m_lAWeapon = null;
         m_rAWeapon = null;
         m_bodyWeapon = null;        
+    }
+    Transform ModelSet()
+    {
+        lArm2P.rotation = Quaternion.Euler(-50, 0, 0);
+        rArm2P.rotation = Quaternion.Euler(-50, 0, 0);
+        return m_body.transform;
     }
     /// <summary>
     /// 人型の機体を生成する
