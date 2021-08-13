@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -6,67 +7,38 @@ namespace Customize
 {
     public class ColorChangeControl : MonoBehaviour
     {
+        public event Action<Color> OnColorChange;
         Color m_color;
-        [SerializeField] Image m_panel;
+        [SerializeField] ColorPanel m_panel;
+        byte[] m_colorPattern = { 20, 40, 63, 86, 109, 132, 155, 188, 211, 234, 247, 255 };
+        Vector3[] m_rgbPattern = {
+            new Vector3(1, 0, 0), new Vector3(1, 0.3f, 0), new Vector3(1, 0.5f, 0), new Vector3(1, 0.8f, 0), new Vector3(1, 1, 0), new Vector3(0.5f, 1, 0),
+            new Vector3(0, 1, 0), new Vector3(0, 1, 0.5f), new Vector3(0, 1, 1), new Vector3(0, 0.8f, 1), new Vector3(0, 0.5f, 1), new Vector3(0, 0.2f, 1),
+            new Vector3(0, 0, 1), new Vector3(0.5f, 0, 1), new Vector3(1, 0, 1), new Vector3(1, 0, 0.8f), new Vector3(1, 0, 0.5f), new Vector3(1, 1, 1) };
         private void Start()
         {
             StartSet();
         }
         public void StartSet()
         {
-            int max = 5;
-            int r = 5;
-            int g = 0;
-            int b = 0;
-            int min = 0;
-            for (int a = 0; a < 5; a++)
+            int count = 0;
+            for (int y = 0; y < m_rgbPattern.Length; y++)
             {
-                for (int k = 0; k < 6; k++)
+                for (int i = 11; i >= 0; i--)
                 {
-                    for (int i = 0; i < 45; i++)
-                    {
-                        var panel = Instantiate(m_panel, gameObject.transform);
-                        panel.color = new Color32((byte)(r * 51), (byte)(g * 51), (byte)(b * 51), 255);
-                        if (r == max && g < max && b == min)
-                        {
-                            g++;
-                        }
-                        else if (r > min && g == max && b == min)
-                        {
-                            r--;
-                        }
-                        else if (g == max && b < max && r == min)
-                        {
-                            b++;
-                        }
-                        else if (b == max && g > min && r == min)
-                        {
-                            g--;
-                        }
-                        else if (b == max && r < max && g == min)
-                        {
-                            r++;
-                        }
-                        else if (b > min && r == max && g == min)
-                        {
-                            b--;
-                        }
-                    }
-                    min++;
-                    r = max;
-                    g = min;
-                    b = min;
+                    var panel = Instantiate(m_panel, gameObject.transform);
+                    panel.SetColor(new Color32((byte)(m_colorPattern[i] * m_rgbPattern[y].x),
+                        (byte)(m_colorPattern[i] * m_rgbPattern[y].y),
+                        (byte)(m_colorPattern[i] * m_rgbPattern[y].z), 255),count);
+                    panel.OnClickColor += SetColor;
+                    count++;
                 }
-                max--;
-                min = 0;
-                r = max;
-                g = min;
-                b = min;
-            }            
+            }
         }
-        public void SetColor(Color color)
+        public void SetColor(Color color, int number)
         {
             m_color = color;
+            OnColorChange?.Invoke(m_color);
         }
     }
 }

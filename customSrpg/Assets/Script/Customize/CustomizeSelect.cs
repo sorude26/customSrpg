@@ -8,6 +8,7 @@ namespace Customize
     {
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
+        [SerializeField] ColorChangeControl m_colorControl;
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
@@ -18,6 +19,7 @@ namespace Customize
             {
                 m_allModels[i].StartSet();
             }
+            m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
         }
         public void NextModel()
