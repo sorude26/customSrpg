@@ -14,10 +14,11 @@ namespace Customize
         int m_maxNumber;
         void Start()
         {
+            m_colorControl.StartSet();
             m_maxNumber = GameManager.Instanse.HaveUnitNumber;
             for (int i = 0; i < m_maxNumber; i++)
             {
-                m_allModels[i].StartSet();
+                m_allModels[i].StartSet(m_colorControl.GetColor);
             }
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
@@ -44,10 +45,11 @@ namespace Customize
         {
             m_selectModel = m_allModels[m_number];
             m_cameraTarget.transform.position = m_selectModel.CameraPos.position;
+            m_colorControl.SetTargetColor(m_allModels[m_number].ColorNum);
         }
-        public void ChangeColor(Color color)
+        public void ChangeColor(Color color,int number)
         {
-            m_selectModel.ChangeColor(color);
+            m_selectModel.ChangeColor(color,number);
         }
         public void ChangeParts(UnitBuildData buildData)
         {

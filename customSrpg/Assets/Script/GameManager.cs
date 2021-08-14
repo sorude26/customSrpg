@@ -9,8 +9,8 @@ public class GameManager : MonoBehaviour
     public UnitPartsList PartsList { get => m_partsList; }
     [SerializeField] UnitBuildData[] m_playerUnits;
     public UnitBuildData[] PlayerUnits { get => m_playerUnits; }
-    [SerializeField] Color[] m_playerColor;
-    public Color[] PlayerColor { get => m_playerColor; }
+    [SerializeField] int[] m_playerColor;
+    public int[] PlayerColor { get => m_playerColor; }
     [SerializeField] int m_haveUnitNumber = 3;
     public int HaveUnitNumber { get => m_haveUnitNumber; }
     private void Awake()

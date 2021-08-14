@@ -19,6 +19,10 @@ namespace Customize
             m_number = number;
             m_color = color;
         }
+        public Color GetColor()
+        {
+            return m_color;
+        }
         public void OnClick()
         {
             OnClickColor?.Invoke(m_color, m_number);
