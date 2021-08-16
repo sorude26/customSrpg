@@ -44,7 +44,7 @@ public class CursorControl : MonoBehaviour
         m_stageSize.x = MapManager.Instance.MaxX;
         m_stageSize.y = MapManager.Instance.MaxZ;
         UnitGuideViewEnd();
-        Stage.InputManager.Instance.OnInputArrow += CursorMove;
+        GameScene.InputManager.Instance.OnInputArrow += CursorMove;
     }
     /// <summary>
     /// 入力があった時カーソルを動かす

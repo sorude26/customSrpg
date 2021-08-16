@@ -32,8 +32,8 @@ public class StageUI : MonoBehaviour
 
     public void CommandOpen()
     {
-        Stage.InputManager.Instance.OnInputArrow += CursorMove;
-        Stage.InputManager.Instance.OnInputDecision += Decision;
+        GameScene.InputManager.Instance.OnInputArrow += CursorMove;
+        GameScene.InputManager.Instance.OnInputDecision += Decision;
         AllButtonClose();
         m_actionB.Open();
         m_targetButton = m_actionB;
@@ -42,13 +42,13 @@ public class StageUI : MonoBehaviour
     {
         m_move = false;
         m_attack = false;
-        Stage.InputManager.Instance.OnInputArrow -= CursorMove;
-        Stage.InputManager.Instance.OnInputDecision -= Decision;
+        GameScene.InputManager.Instance.OnInputArrow -= CursorMove;
+        GameScene.InputManager.Instance.OnInputDecision -= Decision;
         AllButtonClose();
     }
     public void CommandMoveEnd()
     {
-        Stage.InputManager.Instance.OnInputDecision -= StageManager.Instance.Cursor.Decision;
+        GameScene.InputManager.Instance.OnInputDecision -= StageManager.Instance.Cursor.Decision;
         OnClickButton(1);
     }
 
@@ -133,7 +133,7 @@ public class StageUI : MonoBehaviour
                 m_actionB.Close();
                 m_targetButton = null;
                 m_move = true;
-                Stage.InputManager.Instance.OnInputDecision += StageManager.Instance.Cursor.Decision;
+                GameScene.InputManager.Instance.OnInputDecision += StageManager.Instance.Cursor.Decision;
                 break;
             case 1://移動終了
                 m_targetButton = m_moveEndB;

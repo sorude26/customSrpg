@@ -6,6 +6,7 @@ namespace Customize
 {
     public class CustomizeSelect : MonoBehaviour
     {
+        [SerializeField] CustomizeUI m_ui;
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
@@ -22,6 +23,7 @@ namespace Customize
             }
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
+            m_ui.OnCursor += m_colorControl.CursorMove;
         }
         public void NextModel()
         {

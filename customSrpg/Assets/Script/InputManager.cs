@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Stage
+namespace GameScene
 {
     /// <summary>
     /// 全入力を管理する
