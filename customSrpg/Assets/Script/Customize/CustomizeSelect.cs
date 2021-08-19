@@ -24,6 +24,12 @@ namespace Customize
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
             m_ui.OnCursor += m_colorControl.CursorMove;
+            StartCoroutine(Test());
+        }
+        IEnumerator Test()
+        {
+            yield return new WaitForEndOfFrame();
+            ModelSet();
         }
         public void NextModel()
         {

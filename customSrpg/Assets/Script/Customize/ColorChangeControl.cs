@@ -16,14 +16,14 @@ namespace Customize
         int m_number;
         public void StartSet()
         {
-            m_panels = new ColorPanel[m_colorData.PatternNum * m_colorData.ColorTypeNum];
+            m_panels = new ColorPanel[m_colorData.PatternNum * m_colorData.ColorTypeNum * 2];
             int count = 0;
             for (int y = 0; y < m_colorData.ColorTypeNum; y++)
             {
-                for (int i = 11; i >= 0; i--)
+                for (int i = 23; i >= 0; i--)
                 {
                     var panel = Instantiate(m_panel, gameObject.transform);
-                    panel.SetColor(m_colorData.GetColor(m_colorData.PatternNum * y + i), count);
+                    panel.SetColor(m_colorData.GetColor(m_colorData.PatternNum * y * 2 + i), count);
                     panel.OnClickColor += SetColor;
                     m_panels[count] = panel;
                     count++;
@@ -72,19 +72,19 @@ namespace Customize
         }
         public void CursorUp()
         {
-            m_number -= m_colorData.PatternNum;
+            m_number -= m_colorData.PatternNum * 2;
             if (m_number < 0)
             {
-                m_number += m_colorData.ColorTypeNum * m_colorData.PatternNum;
+                m_number += m_panels.Length;
             }
             SetColor(m_number);
         }
         public void CursorDown()
         {
-            m_number += m_colorData.PatternNum;
-            if (m_number >= m_colorData.ColorTypeNum * m_colorData.PatternNum)
+            m_number += m_colorData.PatternNum * 2;
+            if (m_number >= m_panels.Length)
             {
-                m_number -= m_colorData.ColorTypeNum * m_colorData.PatternNum;
+                m_number -= m_panels.Length;
             }
             SetColor(m_number);
         }
@@ -93,14 +93,14 @@ namespace Customize
             m_number--;
             if (m_number < 0)
             {
-                m_number += m_colorData.ColorTypeNum * m_colorData.PatternNum;
+                m_number += m_panels.Length;
             }
             SetColor(m_number);
         }
         public void CursorRight()
         {
             m_number++;
-            if (m_number >= m_colorData.ColorTypeNum * m_colorData.PatternNum)
+            if (m_number >= m_panels.Length)
             {
                 m_number = 0;
             }

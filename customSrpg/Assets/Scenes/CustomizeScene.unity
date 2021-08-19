@@ -884,8 +884,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 700, y: 0}
-  m_SizeDelta: {x: 545, y: 810}
+  m_AnchoredPosition: {x: 550, y: -200}
+  m_SizeDelta: {x: 795, y: 600}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &569279317
 MonoBehaviour:
@@ -901,7 +901,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_panel: {fileID: 1339893679380262560, guid: 866421827f0a063488cc593d782b6024, type: 3}
   m_target: {fileID: 1567655153}
-  m_colorData: {fileID: 11400000, guid: c3a05dcab1100e646b856df443b81f3f, type: 2}
+  m_colorData: {fileID: 11400000, guid: 0935402708aae06458f3c2fa2ed89ab6, type: 2}
 --- !u!114 &569279318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -915,15 +915,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 5
+    m_Left: 3
     m_Right: 0
-    m_Top: 5
+    m_Top: 3
     m_Bottom: 0
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 40, y: 40}
-  m_Spacing: {x: 5, y: 5}
+  m_CellSize: {x: 30, y: 30}
+  m_Spacing: {x: 3, y: 3}
   m_Constraint: 0
   m_ConstraintCount: 2
 --- !u!114 &569279319
@@ -1801,7 +1801,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -1800, y: 0}
-  m_SizeDelta: {x: 45, y: 45}
+  m_SizeDelta: {x: 35, y: 35}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1567655155
 MonoBehaviour:
