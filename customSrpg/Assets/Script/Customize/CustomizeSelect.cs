@@ -10,11 +10,14 @@ namespace Customize
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
+        [SerializeField] CommandControl m_commandControl;
         CustomizeModel m_selectModel;
+        CommandBox[] m_commands;
         int m_number = 0;
         int m_maxNumber;
         void Start()
         {
+            m_commands = m_commandControl.StartSet();
             m_colorControl.StartSet();
             m_maxNumber = GameManager.Instanse.HaveUnitNumber;
             for (int i = 0; i < m_maxNumber; i++)
