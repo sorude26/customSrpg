@@ -12,12 +12,10 @@ namespace Customize
         [SerializeField] ColorChangeControl m_colorControl;
         [SerializeField] CommandControl m_commandControl;
         CustomizeModel m_selectModel;
-        CommandBox[] m_commands;
         int m_number = 0;
         int m_maxNumber;
         void Start()
         {
-            m_commands = m_commandControl.StartSet();
             m_colorControl.StartSet();
             m_maxNumber = GameManager.Instanse.HaveUnitNumber;
             for (int i = 0; i < m_maxNumber; i++)
@@ -27,12 +25,7 @@ namespace Customize
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
             m_ui.OnCursor += m_colorControl.CursorMove;
-            StartCoroutine(Test());
-        }
-        IEnumerator Test()
-        {
-            yield return new WaitForEndOfFrame();
-            ModelSet();
+            m_commandControl.StartSet();
         }
         public void NextModel()
         {

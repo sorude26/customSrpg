@@ -16,9 +16,9 @@ public class ColorData : ScriptableObject
     {
         if (patternNum >= m_colorPattern.Length)
         {
-            return new Color32((byte)((m_rgbPattern[colorType].x * m_colorPattern[PatternNum * 2 - patternNum - 1]) + ((1 + m_rgbPattern[colorType].x)/2 * m_colorPattern[patternNum - PatternNum])),
-                         (byte)((m_rgbPattern[colorType].y * m_colorPattern[PatternNum * 2 - patternNum - 1]) + ((1 + m_rgbPattern[colorType].y)/2 * m_colorPattern[patternNum - PatternNum] )),
-                         (byte)((m_rgbPattern[colorType].z * m_colorPattern[PatternNum * 2 - patternNum - 1]) + ((1 + m_rgbPattern[colorType].z)/2 * m_colorPattern[patternNum - PatternNum])), 255);
+            return new Color32((byte)((m_rgbPattern[colorType].x * m_colorPattern[PatternNum * 2 - patternNum - 1])),
+                         (byte)((m_rgbPattern[colorType].y * m_colorPattern[PatternNum * 2 - patternNum - 1] )),
+                         (byte)((m_rgbPattern[colorType].z * m_colorPattern[PatternNum * 2 - patternNum - 1] )), 255);
         }
         return new Color32((byte)(m_colorPattern[patternNum] * m_rgbPattern[colorType].x),
                          (byte)(m_colorPattern[patternNum] * m_rgbPattern[colorType].y),
