@@ -10,7 +10,8 @@ namespace Customize
     public class ColorPanel : MonoBehaviour, IPointerClickHandler
     {
         [SerializeField] Image m_colorImage;
-        public event Action<Color, int> OnClickColor;
+        [SerializeField] GameObject m_targetMark;
+        public event Action<int> OnClickColor;
         int m_number;
         Color m_color;
         public void SetColor(Color32 color,int number)
@@ -18,6 +19,7 @@ namespace Customize
             m_colorImage.color = color;
             m_number = number;
             m_color = color;
+            m_targetMark.SetActive(false);
         }
         public Color GetColor()
         {
@@ -25,9 +27,17 @@ namespace Customize
         }
         public void OnClick()
         {
-            OnClickColor?.Invoke(m_color, m_number);
+            OnClickColor?.Invoke(m_number);
+            m_targetMark.SetActive(true);
         }
-
+        public void OnSelect()
+        {
+            m_targetMark.SetActive(true);
+        }
+        public void OutSelect()
+        {
+            m_targetMark.SetActive(false);
+        }
         void IPointerClickHandler.OnPointerClick(PointerEventData eventData)
         {
             OnClick();

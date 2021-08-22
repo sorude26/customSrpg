@@ -10,10 +10,9 @@ namespace Customize
         public event Action<Color,int> OnColorChange;
         Color m_color;
         [SerializeField] ColorPanel m_panel;
-        [SerializeField] GameObject m_target;
         [SerializeField] ColorData m_colorData;
         ColorPanel[] m_panels;
-        int m_number;
+        int m_number = 0;
         public void StartSet()
         {
             m_panels = new ColorPanel[m_colorData.PatternNum * m_colorData.ColorTypeNum * 2];
@@ -30,26 +29,28 @@ namespace Customize
                 }
             }
         }
+        public void OpenColorPanel()
+        {
+            gameObject.SetActive(true);
+        }
+        public void CloseColorPanel()
+        {
+            gameObject.SetActive(false);
+        }
         public Color GetColor(int number)
         {
             return m_panels[number].GetColor();
         }
         public void SetColor(int number)
         {
+            foreach (var panel in m_panels)
+            {
+                panel.OutSelect();
+            }
             m_color = GetColor(number);
             OnColorChange?.Invoke(m_color, number);
-            SetTargetColor(number);
-        }
-        public void SetColor(Color color, int number)
-        {
-            m_color = color;
-            OnColorChange?.Invoke(m_color,number);
-            SetTargetColor(number);
-        }
-        public void SetTargetColor(int number)
-        {
-            m_target.transform.position = m_panels[number].gameObject.transform.position;
             m_number = number;
+            m_panels[number].OnSelect();
         }
         public void CursorMove(float x,float y)
         {

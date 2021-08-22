@@ -10,7 +10,7 @@ namespace Customize
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
-        [SerializeField] CommandControl m_commandControl;
+        [SerializeField] CommandControl[] m_commandControls;
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
@@ -25,7 +25,10 @@ namespace Customize
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
             m_ui.OnCursor += m_colorControl.CursorMove;
-            m_commandControl.StartSet();
+            foreach (var command in m_commandControls)
+            {
+                command.StartSet();
+            }
         }
         public void NextModel()
         {
@@ -45,11 +48,15 @@ namespace Customize
             }
             ModelSet();
         }
+        void SelectReset()
+        {
+
+        }
         void ModelSet()
         {
             m_selectModel = m_allModels[m_number];
             m_cameraTarget.transform.position = m_selectModel.CameraPos.position;
-            m_colorControl.SetTargetColor(m_allModels[m_number].ColorNum);
+            m_colorControl.SetColor(m_allModels[m_number].ColorNum);
         }
         public void ChangeColor(Color color,int number)
         {
