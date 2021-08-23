@@ -3,9 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-interface ICommand
+namespace GameScene
 {
-    void StartSet();
-    void SelectCommand();
+    /// <summary>
+    /// 全てのコマンドが持つ機能
+    /// </summary>
+    interface ICommand
+    {
+        /// <summary> コマンドの初期化処理 </summary>
+        void StartSet();
+        /// <summary> コマンドの選択時処理 </summary>
+        void SelectCommand();
+    }
 }
