@@ -10,7 +10,11 @@ namespace Customize
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
+        /// <summary>
+        /// 1:基本選択、2：機体選択、3：色相選択、4：機体パーツ選択、5：武器選択、6：決定選択、
+        /// </summary>
         [SerializeField] CommandControl[] m_commandControls;
+        int m_commandNumber = 0;
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
@@ -24,11 +28,18 @@ namespace Customize
             }
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
-            m_ui.OnCursor += m_colorControl.CursorMove;
             foreach (var command in m_commandControls)
             {
                 command.StartSet();
             }
+        }
+        void CommandChange()
+        {
+            foreach (var command in m_commandControls)
+            {
+                command.gameObject.SetActive(false);
+            }
+            m_commandControls[m_commandNumber].gameObject.SetActive(true);
         }
         public void NextModel()
         {
@@ -52,11 +63,30 @@ namespace Customize
         {
 
         }
+        public void SelectColorChange()
+        {
+            m_commandNumber = 3;
+            CommandChange();
+        }
+        public void SelectTargetUnit()
+        {
+            m_commandNumber = 2;
+            CommandChange();
+        }
+        public void SelectPartsChange()
+        {
+            m_commandNumber = 4;
+            CommandChange();
+        }
         void ModelSet()
         {
             m_selectModel = m_allModels[m_number];
             m_cameraTarget.transform.position = m_selectModel.CameraPos.position;
             m_colorControl.SetColor(m_allModels[m_number].ColorNum);
+        }
+        public void OpenColorPanel()
+        {
+            m_ui.OnCursor += m_colorControl.CursorMove;
         }
         public void ChangeColor(Color color,int number)
         {

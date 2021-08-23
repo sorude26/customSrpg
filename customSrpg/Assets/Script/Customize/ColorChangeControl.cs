@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace Customize
 {
-    public class ColorChangeControl : MonoBehaviour
+    public class ColorChangeControl : MonoBehaviour ,ICommand
     {
         public event Action<Color,int> OnColorChange;
         Color m_color;
@@ -106,6 +106,11 @@ namespace Customize
                 m_number = 0;
             }
             SetColor(m_number);
+        }
+
+        public void SelectCommand()
+        {
+            
         }
     }
 }

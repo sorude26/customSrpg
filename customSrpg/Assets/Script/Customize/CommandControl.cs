@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CommandControl : MonoBehaviour
+public class CommandControl : MonoBehaviour,ICommand
 {
     [Tooltip("コマンドボタンのPrefab")]
     [SerializeField] CommandBox m_commandBox;
@@ -11,6 +11,7 @@ public class CommandControl : MonoBehaviour
     [Tooltip("コマンド名")]
     [SerializeField] string[] m_commandsName;
     CommandBox[] m_commands;
+    int m_commandNum = 0;
     public CommandBox[] Commands { get => m_commands; }
     public void StartSet()
     {
@@ -27,5 +28,10 @@ public class CommandControl : MonoBehaviour
             commands.Add(command);
         }
         m_commands = commands.ToArray();
+    }   
+
+    public void SelectCommand()
+    {
+        m_commands[m_commandNum].SelectCommand();
     }
 }
