@@ -369,8 +369,6 @@ public class UnitMovelControl : MonoBehaviour
         if (!SearchCross(p, m_gameMap.MapDatas[p].MovePoint))
         {
             Debug.Log("NonePos!");
-            CurrentPosX = m_unitMoveList[0].x;
-            CurrentPosZ = m_unitMoveList[0].y;
             PositionSet?.Invoke(CurrentPosX, CurrentPosZ);
             MoveEndEvent?.Invoke();
             MoveEndEvent = null;
