@@ -5,7 +5,7 @@ using UnityEngine;
 namespace GameScene
 {
     /// <summary>
-    /// カーソルの移動機能を持つUIコマンド操作の基底クラス
+    /// カーソルの機能を持つUIコマンド操作の基底クラス
     /// </summary>
     public abstract class CommandControlBase : MonoBehaviour, ICommand
     {
@@ -24,8 +24,13 @@ namespace GameScene
         public abstract void StartSet();
         /// <summary> コマンドの選択時処理 </summary>
         public abstract void SelectCommand();
+        public abstract void DecisionCommand();
+        public abstract void OutCommand();
         /// <summary>カーソルの移動後処理 </summary>
-        protected abstract void CursorSet(int number);
+        protected virtual void CursorSet(int number)
+        {
+            SelectCommand();
+        }
         /// <summary>カーソルの移動入力処理 </summary>
         public virtual void CursorMove(float x, float y)
         {

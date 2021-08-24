@@ -58,10 +58,22 @@ public class Unit : MonoBehaviour
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
         //m_master.OnDamage += m_motion.Damage;
+        if (m_master.Body.BodyPartsType == UnitType.Giant)
+        {
+            Animator anime = m_master.Body.GetComponent<Animator>();
+            if (anime)
+            {
+                m_motion.SetAnime(anime, UnitType.Giant);
+            }
+        }
         var lArm = m_master.GetWeapon(WeaponPosition.LArm);
         if (lArm) { lArm.OnAttackMode += m_motion.LArmAttack; }
         var rArm = m_master.GetWeapon(WeaponPosition.RArm);
         if (rArm) { rArm.OnAttackMode += m_motion.RArmAttack; }
+        var body = m_master.GetWeapon(WeaponPosition.Body);
+        if (body) { body.OnAttackMode += m_motion.BodyAttack; }
+        var shoulder = m_master.GetWeapon(WeaponPosition.Shoulder);
+        if (shoulder) { shoulder.OnAttackMode += m_motion.ShoulderAttack; }
         m_start = true;
     }
     /// <summary>

@@ -24,15 +24,21 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
     [SerializeField] Transform m_rArmParts;
     [Tooltip("内蔵武器")]
     [SerializeField] WeaponMaster m_weapon;
+    [Tooltip("肩武器")]
+    [SerializeField] WeaponMaster m_weaponShoulder;
+    [SerializeField] Transform m_bodyPos;
     /// <summary> 頭部パーツ接続部 </summary>
     public Transform HeadPos { get => m_headParts; }
     /// <summary> 左手パーツ接続部 </summary>
     public Transform LArmPos { get => m_lArmParts; }
     /// <summary> 右手パーツ接続部 </summary>
     public Transform RArmPos { get => m_rArmParts; }
+    public Transform BodyPos { get => m_bodyPos; }
     /// <summary> 内蔵武器 </summary>
     public WeaponMaster BodyWeapon { get => m_weapon; }
-    
+    /// <summary> 肩装備武器 </summary>
+    public WeaponMaster ShoulderWeapon { get => m_weaponShoulder; }
+
     protected override void PartsBreak()
     {
         Break = true;
@@ -53,6 +59,15 @@ public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
         {
             size += m_weapon.PartsSize;
         }
+        if (m_weaponShoulder)
+        {
+            size += m_weaponShoulder.PartsSize;
+        }
         return size;
+    }
+    void DestroyEnd()
+    {
+        EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+        gameObject.SetActive(false);
     }
 }

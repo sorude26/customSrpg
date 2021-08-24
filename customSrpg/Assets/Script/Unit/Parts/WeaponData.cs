@@ -22,7 +22,7 @@ public enum WeaponPosition
     Body,
     LArm,
     RArm,
-    LShoulder,
+    Shoulder,
     RShoulder,
     None,
 }

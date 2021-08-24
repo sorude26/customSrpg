@@ -15,6 +15,7 @@ public class UnitBuilder : MonoBehaviour
     WeaponMaster m_rAWeapon;
     WeaponMaster m_lAWeapon;
     WeaponMaster m_bodyWeapon;
+    WeaponMaster m_shoulderWeapon;
     [SerializeField] Transform headP;
     [SerializeField] Transform bodybP;
     [SerializeField] Transform lArmbP;
@@ -50,6 +51,8 @@ public class UnitBuilder : MonoBehaviour
         unitMaster.SetParts(m_lAWeapon);
         m_bodyWeapon?.SetWeaponPosition(WeaponPosition.Body);
         unitMaster.SetParts(m_bodyWeapon);
+        m_shoulderWeapon?.SetWeaponPosition(WeaponPosition.Shoulder);
+        unitMaster.SetParts(m_shoulderWeapon);
     }
     public Transform SetDataModel(UnitBuildData data, UnitMaster unitMaster)
     {
@@ -72,6 +75,9 @@ public class UnitBuilder : MonoBehaviour
             case UnitType.Helicopter:
                 break;
             case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                BuildGiant(data);
                 break;
             default:
                 break;
@@ -107,7 +113,7 @@ public class UnitBuilder : MonoBehaviour
     {
         lArm2P.rotation = Quaternion.Euler(-50, 0, 0);
         rArm2P.rotation = Quaternion.Euler(-50, 0, 0);
-        return m_body.transform;
+        return m_body.BodyPos;
     }
     /// <summary>
     /// 人型の機体を生成する
@@ -189,5 +195,13 @@ public class UnitBuilder : MonoBehaviour
         m_body.transform.position = bodybP.position;
         m_body.transform.SetParent(bodybP);
         if (m_body.BodyWeapon) { m_bodyWeapon = m_body.BodyWeapon; }
+    }
+    void BuildGiant(UnitBuildData data)
+    {
+        m_body = Instantiate(GameManager.Instanse.PartsList.GetBody(data.BodyID)); 
+        m_body.transform.position = transform.position;
+        m_body.transform.SetParent(transform);
+        if (m_body.BodyWeapon) { m_bodyWeapon = m_body.BodyWeapon; }
+        if (m_body.ShoulderWeapon) { m_shoulderWeapon = m_body.ShoulderWeapon; }
     }
 }

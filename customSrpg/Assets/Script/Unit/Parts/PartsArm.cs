@@ -28,21 +28,14 @@ public class PartsArm : UnitPartsMaster<ArmData>
     public Transform ArmBottom { get => m_armBottom; }
     /// <summary> 手持ち武器 </summary>
     public WeaponMaster GripWeapon { get; private set; }
-    /// <summary> 肩装備武器 </summary>
-    public WeaponMaster ShoulderWeapon { get; private set; }
     
     public void SetGripWeapon(WeaponMaster weapon) { GripWeapon = weapon; }
-    public void SetShoulderWeapon(WeaponMaster weapon) { ShoulderWeapon = weapon; }
     public override int GetSize()
     {
         int size = PartsSize;
         if (GripWeapon)
         {
             size += GripWeapon.PartsSize;
-        }
-        if (ShoulderWeapon)
-        {
-            size += ShoulderWeapon.PartsSize;
         }
         return size;
     }

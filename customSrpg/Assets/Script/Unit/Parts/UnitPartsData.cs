@@ -11,6 +11,7 @@ public enum UnitType
     Walker,
     Helicopter,
     Tank,
+    Giant,
 }
 /// <summary>
 /// 手の種類

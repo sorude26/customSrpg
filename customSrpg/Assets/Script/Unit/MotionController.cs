@@ -7,8 +7,14 @@ using UnityEngine;
 /// </summary>
 public class MotionController : MonoBehaviour
 {
-    [SerializeField] UnitType m_unitType;
+    UnitType m_unitType = UnitType.Human;
     private Animator m_anime;
+    public void SetAnime(Animator anime,UnitType unitType)
+    {
+        m_anime = anime;
+        m_unitType = unitType;
+        Wait();
+    }
     public void StartSet()
     {
         m_anime = GetComponent<Animator>();
@@ -19,7 +25,67 @@ public class MotionController : MonoBehaviour
     /// </summary>
     public virtual void Wait()
     {
-        m_anime.Play("HumanWait");
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("HumanWait");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("HumanWait");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                m_anime.Play("Wait");
+                break;
+            default:
+                break;
+        }
+    }
+
+    public virtual void BodyAttack(WeaponType weapon, int number)
+    {
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("WalkerAttack");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("WalkerAttack");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                m_anime.Play("ArmAttack");
+                break;
+            default:
+                break;
+        }
+    }
+    public virtual void ShoulderAttack(WeaponType weapon, int number)
+    {
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("WalkerAttack");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("WalkerAttack");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                m_anime.Play("CannonAttack");
+                break;
+            default:
+                break;
+        }
     }
     /// <summary>
     /// 右手の攻撃
@@ -142,7 +208,24 @@ public class MotionController : MonoBehaviour
     /// </summary>
     public virtual void Walk()
     {
-        m_anime.Play("HumanWalk");
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("HumanWalk");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("HumanWalk");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                m_anime.Play("Walk");
+                break;
+            default:
+                break;
+        }
     }
     public void GuardRArm()
     {
@@ -159,7 +242,24 @@ public class MotionController : MonoBehaviour
     }
     public void Destroy()
     {
-        m_anime.Play("HumanDestroy");
+        switch (m_unitType)
+        {
+            case UnitType.Human:
+                m_anime.Play("HumanDestroy");
+                break;
+            case UnitType.Walker:
+                m_anime.Play("HumanDestroy");
+                break;
+            case UnitType.Helicopter:
+                break;
+            case UnitType.Tank:
+                break;
+            case UnitType.Giant:
+                m_anime.Play("Destroy");
+                break;
+            default:
+                break;
+        }
     }
     public void Idle()
     {

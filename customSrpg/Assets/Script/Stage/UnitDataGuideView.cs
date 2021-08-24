@@ -11,7 +11,7 @@ public class UnitDataGuideView : MonoBehaviour
     [SerializeField] GaugeControl m_lArmGauge;
     [SerializeField] GaugeControl m_legGauge;
     [SerializeField] GameObject[] m_partsView;
-    public void ViewData(Unit unit)
+    public void ViewData(in Unit unit)
     {
         if (unit == null)
         {
@@ -30,11 +30,14 @@ public class UnitDataGuideView : MonoBehaviour
                 break;
             case UnitType.Tank:
                 break;
+            case UnitType.Giant:
+                DataSetGiant(unit);
+                break;
             default:
                 break;
         }
     }
-    void DataSetHuman(Unit unit)
+    void DataSetHuman(in Unit unit)
     {
         if (m_headGauge.GaugeSet(unit.GetUnitData().Head.ViewCurrentHp, unit.GetUnitData().Head.MaxPartsHp) > 0)
             m_partsView[0].SetActive(true);
@@ -47,7 +50,7 @@ public class UnitDataGuideView : MonoBehaviour
         if (m_legGauge.GaugeSet(unit.GetUnitData().Leg.ViewCurrentHp, unit.GetUnitData().Leg.MaxPartsHp) > 0)
             m_partsView[4].SetActive(true);
     }
-    void DataSetWalker(Unit unit)
+    void DataSetWalker(in Unit unit)
     {
         m_headGauge.GaugeNone();
         m_partsView[0].SetActive(false);
@@ -59,6 +62,19 @@ public class UnitDataGuideView : MonoBehaviour
         m_partsView[3].SetActive(false);
         if (m_legGauge.GaugeSet(unit.GetUnitData().Leg.ViewCurrentHp, unit.GetUnitData().Leg.MaxPartsHp) > 0)
             m_partsView[4].SetActive(true);
+    }
+    void DataSetGiant(in Unit unit)
+    {
+        m_headGauge.GaugeNone();
+        m_partsView[0].SetActive(false);
+        if (m_bodyGauge.GaugeSet(unit.GetUnitData().Body.ViewCurrentHp, unit.GetUnitData().Body.MaxPartsHp) > 0)
+            m_partsView[1].SetActive(true);
+        m_rArmGauge.GaugeNone();
+        m_partsView[2].SetActive(false);
+        m_lArmGauge.GaugeNone();
+        m_partsView[3].SetActive(false);
+        m_legGauge.GaugeNone();
+        m_partsView[4].SetActive(false);
     }
     public void ViewEnd()
     {
