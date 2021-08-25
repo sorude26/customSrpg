@@ -46,10 +46,12 @@ public class NpcUnit : Unit
     /// <returns></returns>
     protected IEnumerator Move()
     {
-        if(m_unitAI.StartMove(this))
+        Vector2Int movePos = m_unitAI.StartMove(this);
+        if (movePos != new Vector2Int(-1,-1))
         {
             m_moveMode = true;
             m_movelControl.MoveEndEvent += MoveModeEnd;
+            TargetMoveStart(movePos.x, movePos.y);
         }
         while (m_moveMode)
         {
@@ -64,14 +66,14 @@ public class NpcUnit : Unit
     /// <returns></returns>
     protected IEnumerator Attack()
     {
-        m_attackWeapon = m_unitAI.StartAttack(this);
+        m_attackWeapon = m_unitAI.AttackWeapon(this);
         if (m_attackWeapon)
         {
-            m_attackMode = true;
-            m_attackWeapon.OnAttackEnd += AttackModeEnd;
             m_waitTime = m_actionEndWaitTime;
+            m_attackWeapon.OnAttackEnd += AttackModeEnd;
+            m_attackMode = BattleManager.Instance.AttackStart(m_attackWeapon.WeaponPos);
         }
-        while (m_attackMode)
+        while (m_attackMode || BattleManager.Instance.AttackNow)
         {
             yield return null;
         }

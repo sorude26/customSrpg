@@ -45,23 +45,22 @@ public class UnitAI : ScriptableObject
     /// </summary>
     /// <param name="unit"></param>
     /// <returns></returns>
-    public virtual bool StartMove(Unit unit)
+    public virtual Vector2Int StartMove(Unit unit)
     {
         TargetPointSet(unit); 
         var target = MapManager.Instance.StartSearch(unit).OrderByDescending(t => t.MapScore).FirstOrDefault();
         if (target.PosX == unit.CurrentPosX && target.PosZ == unit.CurrentPosZ)
         {
-            return false;
+            return new Vector2Int(-1, -1);
         }
-        unit.TargetMoveStart(target.PosX, target.PosZ);
-        return true; 
+        return new Vector2Int(target.PosX, target.PosZ); 
     }
     /// <summary>
     /// 攻撃可能な最も攻撃力の高い武器を返す
     /// </summary>
     /// <param name="unit"></param>
     /// <returns></returns>
-    public virtual WeaponMaster StartAttack(Unit unit)
+    public virtual WeaponMaster AttackWeapon(Unit unit)
     {
         WeaponMaster attackWeapon = null;
         var weapons = unit.GetUnitData().GetWeapons().OrderByDescending(weapon => weapon.MaxPower);
@@ -74,7 +73,6 @@ public class UnitAI : ScriptableObject
             if (target)
             {
                 BattleManager.Instance.SetTarget(target);
-                BattleManager.Instance.AttackStart(unit.GetUnitData().GetWeaponPosition(weapon));
                 attackWeapon = weapon;
                 break;
             }

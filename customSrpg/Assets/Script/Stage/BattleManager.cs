@@ -21,7 +21,7 @@ public class BattleManager : MonoBehaviour
     /// <summary> 攻撃対象 </summary>
     Unit m_target;
     /// <summary> 攻撃中フラグ </summary>
-    bool m_attackNow;
+    public bool AttackNow { get; private set; }
     /// <summary> 攻撃者の武装位置 </summary>
     WeaponPosition m_weaponPos;
     /// <summary> 攻撃時の合計ダメージ </summary>
@@ -99,32 +99,34 @@ public class BattleManager : MonoBehaviour
     /// 指定した武器で攻撃を開始する
     /// </summary>
     /// <param name="attackWeapon"></param>
-    public void AttackStart(WeaponPosition attackWeapon)
+    public bool AttackStart(WeaponPosition attackWeapon)
     {
         SetWeaponPos(attackWeapon);
-        AttackStart();
+        return AttackStart();
     }
     /// <summary>
     /// プレイヤーの攻撃開始
     /// </summary>
-    public void AttackStart()
+    public bool AttackStart()
     {
-        if (m_attackNow)
+        if (AttackNow)
         {
-            return;
+            Debug.Log("攻撃中");
+            return false;
         }
         EventManager.StageGuideViewEnd();
         if (!m_target)
         {
             Debug.Log("攻撃対象不在");
-            return;
+            return false;
         }
-        m_attackNow = true;
+        AttackNow = true;
         m_totalDamage = 0;
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         StartCoroutine(BattleStart());
         StageManager.Instance.Cursor.Warp(m_target.transform.position,m_attacker.transform.position);
+        return true;
     }
     IEnumerator BattleStart()
     {
@@ -208,14 +210,14 @@ public class BattleManager : MonoBehaviour
     IEnumerator AllBattleEnd()
     {
         yield return StageManager.Instance.Cursor.Camera.FocusEnd();
-        m_attackNow = false;
+        AttackNow = false;
         if (m_totalDamage > 0)
         {
-            EffectManager.PlayMessage($"Total:{m_totalDamage}", m_target.transform.position, 250, 1f);
+            EffectManager.PlayMessage($"Total:{m_totalDamage}", m_target.transform.position, 550, 1f);
         }
         else
         {
-            EffectManager.PlayMessage("Miss", m_target.transform.position, 300, 1f);
+            EffectManager.PlayMessage("Miss", m_target.transform.position, 500, 1f);
         }
         BattleEnd?.Invoke();
     }

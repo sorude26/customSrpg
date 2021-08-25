@@ -206,7 +206,7 @@ public class Unit : MonoBehaviour
     /// </summary>
     protected virtual void UnitDestroy()
     {
-        EffectManager.PlayEffect(EffectType.Explosion, transform.position);
+        EffectManager.PlayEffect(EffectType.Explosion, m_master.Body.BodyPos.position);
         State = UnitState.Destory;
         m_motion.Destroy();
     }
