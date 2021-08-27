@@ -28,7 +28,10 @@ namespace GameScene
             {
                 float h = Input.GetAxisRaw("Horizontal");
                 float v = Input.GetAxisRaw("Vertical");
-                OnInputArrow?.Invoke(h, v);
+                if (new Vector2(h,v).sqrMagnitude > 0.1f)
+                {
+                   OnInputArrow?.Invoke(h, v);
+                }
             }
         }
     }

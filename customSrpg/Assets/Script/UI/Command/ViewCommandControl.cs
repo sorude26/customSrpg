@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class VeiwCommandControl : MonoBehaviour
+public class ViewCommandControl : CommandButton<ViewCommandControl>
 {
     [SerializeField] CommandBox m_commandPrefab;
     [SerializeField] Vector2 m_commandSpan = Vector2.down;
@@ -42,7 +43,6 @@ public class VeiwCommandControl : MonoBehaviour
             return;
         }
         m_basePos.localPosition = (Vector2)m_basePos.localPosition - m_commandSpan;
-        m_commands[m_selectNum -1].GetComponent<RectTransform>().localPosition = m_commandSpan * (m_commandNum -m_selectNum - 1) + m_commandStartPos;
     }
     public void Back()
     {
@@ -50,10 +50,22 @@ public class VeiwCommandControl : MonoBehaviour
         if (m_selectNum < 0)
         {
             m_selectNum = m_commandNum - 1;
-            m_basePos.localPosition = Vector2.zero;
+            m_basePos.localPosition = (Vector2)m_basePos.localPosition - m_commandSpan * m_selectNum;
             return;
         }
         m_basePos.localPosition = (Vector2)m_basePos.localPosition + m_commandSpan;
-        m_commands[m_selectNum + 1].GetComponent<RectTransform>().localPosition = m_commandStartPos;
+    }
+
+    public override void StartSet(int id, Action<int> action)
+    {
+    }
+
+    public override ViewCommandControl SelectCommand()
+    {
+        return this;
+    }
+
+    public override void OutCommand()
+    {
     }
 }

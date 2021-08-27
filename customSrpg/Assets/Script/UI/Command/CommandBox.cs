@@ -4,14 +4,18 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class CommandBox : MonoBehaviour
+public class CommandBox : CommandButton<CommandBox>
 {
     [Tooltip("コマンド名表示テキスト")]
     [SerializeField] Text[] m_commandText;
     [Tooltip("実行ボタン")]
     [SerializeField] Button m_button;
     /// <summary> クリック時のイベント </summary>
-    public event Action OnClickEvent;
+    public override event Action<int> OnCommand;
+    public override void StartSet(int id, Action<int> action)
+    {
+        
+    }
     /// <summary>
     /// コマンド名設定
     /// </summary>
@@ -26,12 +30,18 @@ public class CommandBox : MonoBehaviour
     /// <summary>
     /// 選択時の処理
     /// </summary>
-    public void OnClickCommand()
+    public override void OnClickCommand()
     {
-        OnClickEvent?.Invoke();
+        OnCommand?.Invoke(CommandID);
     }
-    public void SelectCommand()
+    public override CommandBox SelectCommand()
     {
         m_button.Select();
+        return this;
+    }
+
+    public override void OutCommand()
+    {
+
     }
 }
