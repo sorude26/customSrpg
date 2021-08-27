@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GameScene;
-
+using UIControl;
 public class CommandControl : MonoBehaviour,ICommand
 {
     [Tooltip("コマンドボタンのPrefab")]

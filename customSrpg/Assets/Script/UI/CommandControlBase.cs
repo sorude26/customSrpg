@@ -7,7 +7,7 @@ namespace GameScene
     /// <summary>
     /// カーソルの機能を持つUIコマンド操作の基底クラス
     /// </summary>
-    public abstract class CommandControlBase : MonoBehaviour, ICommand
+    public abstract class CommandControlBase : MonoBehaviour
     {
         /// <summary> 現在選択中のコマンドナンバー </summary>
         protected int m_number;

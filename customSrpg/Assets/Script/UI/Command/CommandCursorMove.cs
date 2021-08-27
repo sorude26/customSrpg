@@ -2,109 +2,111 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public partial class CommandBase : MonoBehaviour
+namespace UIControl
 {
-    public abstract class CommandCursorMove
+    public partial class CommandBase : MonoBehaviour
     {
-        public abstract void CursorMove(CommandBase owner,Vector2 dir);
-    }
-    public class NoneMove : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir) { }
-    }
-    public class MoveUDInR : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir)
+        public abstract class CommandCursorMove
         {
-            if (dir.x > 0)
+            public abstract void CursorMove(CommandBase owner, Vector2 dir);
+        }
+        public class NoneMove : CommandCursorMove
+        {
+            public override void CursorMove(CommandBase owner, Vector2 dir) { }
+        }
+        public class MoveUDInR : CommandCursorMove
+        {
+            public override void CursorMove(CommandBase owner, Vector2 dir)
             {
-                owner.Decide();
-                return;
-            }
-            if (dir.y < 0)
-            {
-                owner.NextCommand();
-            }
-            else
-            {
-                owner.BackCommand();
+                if (dir.x > 0)
+                {
+                    owner.Decide();
+                    return;
+                }
+                if (dir.y < 0)
+                {
+                    owner.NextCommand();
+                }
+                else
+                {
+                    owner.BackCommand();
+                }
             }
         }
-    }
-    public class MoveUDOnly : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir)
+        public class MoveUDOnly : CommandCursorMove
         {
-            if (dir.y < 0)
+            public override void CursorMove(CommandBase owner, Vector2 dir)
             {
-                owner.NextCommand();
-            }
-            else
-            {
-                owner.BackCommand();
+                if (dir.y < 0)
+                {
+                    owner.NextCommand();
+                }
+                else
+                {
+                    owner.BackCommand();
+                }
             }
         }
-    }
-    public class MoveLRInD : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir)
+        public class MoveLRInD : CommandCursorMove
         {
-            if (dir.y < 0)
+            public override void CursorMove(CommandBase owner, Vector2 dir)
             {
-                owner.Decide();
-                return;
-            }
-            if (dir.x > 0)
-            {
-                owner.NextCommand();
-            }
-            else
-            {
-                owner.BackCommand();
+                if (dir.y < 0)
+                {
+                    owner.Decide();
+                    return;
+                }
+                if (dir.x > 0)
+                {
+                    owner.NextCommand();
+                }
+                else
+                {
+                    owner.BackCommand();
+                }
             }
         }
-    }
-    public class MoveLRInDOutU : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir)
+        public class MoveLRInDOutU : CommandCursorMove
         {
-            if (dir.y < 0)
+            public override void CursorMove(CommandBase owner, Vector2 dir)
             {
-                owner.Decide();
-                return;
-            }
-            else if (dir.y > 0)
-            {
-                owner.Cancel();
-                return;
-            }
-            if (dir.x > 0)
-            {
-                owner.NextCommand();
-            }
-            else
-            {
-                owner.BackCommand();
+                if (dir.y < 0)
+                {
+                    owner.Decide();
+                    return;
+                }
+                else if (dir.y > 0)
+                {
+                    owner.Cancel();
+                    return;
+                }
+                if (dir.x > 0)
+                {
+                    owner.NextCommand();
+                }
+                else
+                {
+                    owner.BackCommand();
+                }
             }
         }
-    }
-    public class MoveLROutUD : CommandCursorMove
-    {
-        public override void CursorMove(CommandBase owner, Vector2 dir)
+        public class MoveLROutUD : CommandCursorMove
         {
-            if (dir.y != 0)
+            public override void CursorMove(CommandBase owner, Vector2 dir)
             {
-                owner.Cancel();
-                return;
-            }
-            if (dir.x > 0)
-            {
-                owner.NextCommand();
-            }
-            else
-            {
-                owner.BackCommand();
+                if (dir.y != 0)
+                {
+                    owner.Cancel();
+                    return;
+                }
+                if (dir.x > 0)
+                {
+                    owner.NextCommand();
+                }
+                else
+                {
+                    owner.BackCommand();
+                }
             }
         }
     }

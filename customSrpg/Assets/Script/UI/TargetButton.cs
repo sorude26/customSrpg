@@ -9,6 +9,7 @@ using UnityEngine;
 public class TargetButton : ButtonMaster
 {
     List<Unit> m_targets;
+    
     public override void Open()
     {
         gameObject.SetActive(true);

@@ -46,4 +46,10 @@ public class UnitPartsList : ScriptableObject
     public PartsArm GetLArm(int id) => m_arms.Where(parts => parts.GetID() == id && parts.Arm == ArmType.Left).FirstOrDefault();
     public PartsLeg GetLeg(int id) => m_legs.Where(parts => parts.GetID() == id).FirstOrDefault();
     public WeaponMaster GetWeapon(int id) => m_weapons.Where(parts => parts.GetID() == id).FirstOrDefault();
+    public PartsBody[] GetAllBodys() => m_bodys;
+    public PartsHead[] GetAllHeads() => m_heads;
+    public PartsArm[] GetAllRArms() => m_arms.Where(parts => parts.Arm == ArmType.Right).ToArray();
+    public PartsArm[] GetAllLArms() => m_arms.Where(parts => parts.Arm == ArmType.Left).ToArray();
+    public PartsLeg[] GetAllLegs() => m_legs;
+    public WeaponMaster[] GetAllWeapons() => m_weapons;
 }

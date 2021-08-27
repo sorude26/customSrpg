@@ -4,7 +4,7 @@ using UnityEngine;
 /// <summary>
 /// 胴体パーツ
 /// </summary>
-public class PartsBody : UnitPartsMaster<BodyData> ,IUnitParts
+public class PartsBody : UnitPartsMaster<BodyData>
 {
     /// <summary> 機体出力 </summary>
     public int UnitOutput { get => m_partsData.UnitOutput; }
