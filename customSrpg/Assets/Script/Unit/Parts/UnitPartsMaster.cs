@@ -50,7 +50,10 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
     {
         foreach (var renderer in m_amors)
         {
-            renderer.material.color = color;
+            if (renderer != null)
+            {
+                renderer.material.color = color;
+            }
         }
         m_startColor = color;
     }

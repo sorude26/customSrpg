@@ -107,7 +107,9 @@ public class UnitBuilder : MonoBehaviour
         m_leg = null;
         m_lAWeapon = null;
         m_rAWeapon = null;
-        m_bodyWeapon = null;        
+        m_bodyWeapon = null;
+        lArm2P.rotation = Quaternion.Euler(0, 0, 0);
+        rArm2P.rotation = Quaternion.Euler(0, 0, 0);
     }
     Transform ModelSet()
     {

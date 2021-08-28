@@ -10,12 +10,13 @@ namespace UIControl
         [Tooltip("コマンド名表示テキスト")]
         [SerializeField] Text[] m_commandText;
         [Tooltip("実行ボタン")]
-        [SerializeField] Button m_button;
+        [SerializeField] protected Button m_button;
         /// <summary> クリック時のイベント </summary>
         public override event Action<int> OnCommand;
         public override void StartSet(int id, Action<int> action)
         {
-
+            CommandID = id;
+            OnCommand += action;
         }
         /// <summary>
         /// コマンド名設定
@@ -43,7 +44,7 @@ namespace UIControl
 
         public override void OutCommand()
         {
-
+            
         }
     }
 }

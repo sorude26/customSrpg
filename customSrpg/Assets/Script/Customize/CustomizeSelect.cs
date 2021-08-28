@@ -7,6 +7,7 @@ namespace Customize
 {
     public class CustomizeSelect : MonoBehaviour
     {
+        public static CustomizeSelect Instance { get; private set; } 
         [SerializeField] CustomizeUI m_ui;
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
@@ -19,6 +20,10 @@ namespace Customize
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
+        private void Awake()
+        {
+            Instance = this;
+        }
         void Start()
         {
             m_colorControl.StartSet();
@@ -96,6 +101,55 @@ namespace Customize
         public void ChangeParts(UnitBuildData buildData)
         {
             m_selectModel.ChangeParts(buildData);
+        }
+        public void ChangePartsBody(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.BodyID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsHead(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.HeadID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsRArm(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.RArmID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsLArm(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.LArmID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsLeg(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.LegID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsRArmWeapon(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.WeaponRArmID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
+        }
+        public void ChangePartsLArmWeapon(int id)
+        {
+            var data = m_selectModel.BuildData;
+            data.WeaponLArmID = id;
+            m_selectModel.ChangeParts(data);
+            ModelSet();
         }
     }
 }

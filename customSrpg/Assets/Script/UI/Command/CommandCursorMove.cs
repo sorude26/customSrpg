@@ -27,7 +27,7 @@ namespace UIControl
                 {
                     owner.NextCommand();
                 }
-                else
+                else if (dir.y > 0)
                 {
                     owner.BackCommand();
                 }
@@ -41,7 +41,7 @@ namespace UIControl
                 {
                     owner.NextCommand();
                 }
-                else
+                else if(dir.y > 0)
                 {
                     owner.BackCommand();
                 }
@@ -60,7 +60,7 @@ namespace UIControl
                 {
                     owner.NextCommand();
                 }
-                else
+                else if (dir.x < 0)
                 {
                     owner.BackCommand();
                 }
@@ -84,7 +84,7 @@ namespace UIControl
                 {
                     owner.NextCommand();
                 }
-                else
+                else if (dir.x < 0)
                 {
                     owner.BackCommand();
                 }
@@ -103,7 +103,7 @@ namespace UIControl
                 {
                     owner.NextCommand();
                 }
-                else
+                else if (dir.x < 0)
                 {
                     owner.BackCommand();
                 }

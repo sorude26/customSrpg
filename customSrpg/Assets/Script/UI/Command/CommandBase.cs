@@ -5,33 +5,45 @@ using UnityEngine;
 
 namespace UIControl
 {
+    [RequireComponent(typeof(ViewCommandControl))]
     public partial class CommandBase : MonoBehaviour
     {
+        [SerializeField] int m_type = 0;
         public int CommandID { get; private set; }
-        public int SelectNumber { get; private set; }
         protected bool m_select;
-        ViewCommandControl m_parent;
         protected CommandCursorMove m_commandMove;
-        ViewCommandControl m_commandControl;
-        public void CursorMove(Vector2 dir)
+        protected CommandCursorMove[] m_moveType = { new NoneMove(), new MoveUDOnly(), new MoveLRInD(), new MoveUDInR(), new MoveLROutUD(), new MoveLRInDOutU() };
+        ViewCommandControl m_selectControl;
+        public void StartSet()
         {
+            m_commandMove = m_moveType[m_type];
+            m_selectControl = GetComponent<ViewCommandControl>();
+            m_selectControl.StartSet(CommandID, SelectControl);
+        }
+        public void CursorMove(float x,float y)
+        {
+            Vector2 dir = new Vector2(x, y);
             m_commandMove?.CursorMove(this, dir);
         }
         public virtual void NextCommand()
         {
-            m_commandControl?.Next();
+            m_selectControl?.Next();
         }
         public virtual void BackCommand()
         {
-            m_commandControl?.Back();
+            m_selectControl?.Back();
         }
         public virtual void Decide()
         {
-            m_commandControl?.OnClickCommand();
+
         }
         public virtual void Cancel()
         {
-            m_commandControl?.OutCommand();
+
+        }
+        public virtual void SelectControl(int num)
+        {
+
         }
     }
 }
