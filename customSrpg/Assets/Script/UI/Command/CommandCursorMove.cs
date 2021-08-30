@@ -109,5 +109,50 @@ namespace UIControl
                 }
             }
         }
+        public class AllOut : CommandCursorMove
+        {
+            public override void CursorMove(CommandBase owner, Vector2 dir)
+            {
+                owner.MoveParent();
+            }
+        }
+        public class MoveUDInROutL : CommandCursorMove
+        {
+            public override void CursorMove(CommandBase owner, Vector2 dir)
+            {
+                if (dir.x > 0)
+                {
+                    owner.Decide();
+                    return;
+                }
+                else if (dir.x < 0)
+                {
+                    owner.Cancel();
+                    return;
+                }
+                if (dir.y < 0)
+                {
+                    owner.NextCommand();
+                }
+                else if (dir.y > 0)
+                {
+                    owner.BackCommand();
+                }
+            }
+        }
+        public class MoveLROnly : CommandCursorMove
+        {
+            public override void CursorMove(CommandBase owner, Vector2 dir)
+            {
+                if (dir.x > 0)
+                {
+                    owner.NextCommand();
+                }
+                else if (dir.x < 0)
+                {
+                    owner.BackCommand();
+                }
+            }
+        }
     }
 }

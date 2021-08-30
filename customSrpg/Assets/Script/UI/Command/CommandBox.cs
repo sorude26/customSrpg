@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 namespace UIControl
 {
-    public class CommandBox : CommandButton<CommandBox>
+    public class CommandBox : CommandButton
     {
         [Tooltip("コマンド名表示テキスト")]
         [SerializeField] Text[] m_commandText;
@@ -36,10 +36,9 @@ namespace UIControl
         {
             OnCommand?.Invoke(CommandID);
         }
-        public override CommandBox SelectCommand()
+        public override void SelectCommand()
         {
             m_button.Select();
-            return this;
         }
 
         public override void OutCommand()

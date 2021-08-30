@@ -8,7 +8,7 @@ public class UnitPartsChangeHead : UnitPartsChange
 {
     public override int CommandNum { get => GameManager.Instanse.PartsList.GetAllHeads().Length; }
 
-    public override void SetData(CommandBox[] commands)
+    public override void SetData(CommandBase[] commands)
     {
         var allParts = GameManager.Instanse.PartsList.GetAllHeads();
         m_commandNames = new string[allParts.Length];
@@ -17,8 +17,9 @@ public class UnitPartsChangeHead : UnitPartsChange
         {
             m_commandNames[i] = allParts[i].PartsName;
             m_partsIDs[i] = allParts[i].PartsID;
-            commands[i].SetText(m_commandNames[i]);
-            commands[i].StartSet(i, PartsChange);
+            var comand = commands[i].GetComponent<ViewCommandControl>();
+            comand.SetText(m_commandNames[i]);
+            comand.StartSet(i, PartsChange);
         }
         OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsHead;
     }

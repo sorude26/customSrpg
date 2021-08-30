@@ -10,7 +10,7 @@ public class UnitPartsChange : CommandAction
     protected int[] m_partsIDs;
     public override int CommandNum { get => GameManager.Instanse.PartsList.GetAllBodys().Length; }
 
-    public override void SetData(CommandBox[] commands)
+    public override void SetData(CommandBase[] commands)
     {
         var allParts = GameManager.Instanse.PartsList.GetAllBodys();
         m_commandNames = new string[allParts.Length];
@@ -19,8 +19,9 @@ public class UnitPartsChange : CommandAction
         {
             m_commandNames[i] = allParts[i].PartsName;
             m_partsIDs[i] = allParts[i].PartsID;
-            commands[i].SetText(m_commandNames[i]);
-            commands[i].StartSet(i, PartsChange);
+            var comand = commands[i].GetComponent<ViewCommandControl>();
+            comand.SetText(m_commandNames[i]);
+            comand.StartSet(i, PartsChange);
         }
         OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsBody;
     }
