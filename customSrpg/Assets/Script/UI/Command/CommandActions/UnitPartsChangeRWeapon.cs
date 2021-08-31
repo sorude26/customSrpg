@@ -20,6 +20,6 @@ public class UnitPartsChangeRWeapon : UnitPartsChange
             comand.SetText(m_commandNames[i]);
             comand.StartSet(i, PartsChange);
         }
-        OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsRArmWeapon;
+        OnPartsChange += Customize.CustomizeManager.Instance.ChangePartsRArmWeapon;
     }
 }

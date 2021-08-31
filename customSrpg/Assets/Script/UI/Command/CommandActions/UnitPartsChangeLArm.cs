@@ -20,6 +20,6 @@ public class UnitPartsChangeLArm : UnitPartsChange
             comand.SetText(m_commandNames[i]);
             comand.StartSet(i, PartsChange);
         }
-        OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsLArm;
+        OnPartsChange += Customize.CustomizeManager.Instance.ChangePartsLArm;
     }
 }

@@ -21,6 +21,6 @@ public class UnitPartsChangeHead : UnitPartsChange
             comand.SetText(m_commandNames[i]);
             comand.StartSet(i, PartsChange);
         }
-        OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsHead;
+        OnPartsChange += Customize.CustomizeManager.Instance.ChangePartsHead;
     }
 }

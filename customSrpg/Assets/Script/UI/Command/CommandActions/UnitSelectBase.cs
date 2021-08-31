@@ -13,11 +13,11 @@ public class UnitSelectBase : CommandBase
 
     public override void CommandDecide()
     {
-        CommandBaseControl.Instance.SetAction(Customize.CustomizeSelect.Instance.CursorMove, MoveParent);
+        CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.CursorMove, MoveParent);
     }
     public override void SelectCommand()
     {
-        CommandBaseControl.Instance.SetAction(Customize.CustomizeSelect.Instance.CursorMove, MoveParent);
+        CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.CursorMove, MoveParent);
     }
     public override void SelectOut()
     {

@@ -23,7 +23,7 @@ public class UnitPartsChange : CommandAction
             comand.SetText(m_commandNames[i]);
             comand.StartSet(i, PartsChange);
         }
-        OnPartsChange += Customize.CustomizeSelect.Instance.ChangePartsBody;
+        OnPartsChange += Customize.CustomizeManager.Instance.ChangePartsBody;
     }
     public virtual void PartsChange(int num)
     {

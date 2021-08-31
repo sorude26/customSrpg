@@ -6,9 +6,9 @@ using GameScene;
 
 namespace Customize
 {
-    public class CustomizeSelect : MonoBehaviour
+    public class CustomizeManager : MonoBehaviour
     {
-        public static CustomizeSelect Instance { get; private set; } 
+        public static CustomizeManager Instance { get; private set; } 
         [SerializeField] CustomizeUI m_ui;
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;

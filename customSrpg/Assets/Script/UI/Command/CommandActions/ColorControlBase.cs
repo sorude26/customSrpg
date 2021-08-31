@@ -12,14 +12,14 @@ public class ColorControlBase : CommandBase
 
     public override void CommandDecide()
     {
-        CommandBaseControl.Instance.SetAction(Customize.CustomizeSelect.Instance.OpenColorPanel(), MoveParent);
+        CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.OpenColorPanel(), MoveParent);
     }
     public override void SelectCommand()
     {
-        CommandBaseControl.Instance.SetAction(Customize.CustomizeSelect.Instance.OpenColorPanel(), MoveParent);
+        CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.OpenColorPanel(), MoveParent);
     }
     public override void SelectOut()
     {
-        Customize.CustomizeSelect.Instance.CloseColorPanel();
+        Customize.CustomizeManager.Instance.CloseColorPanel();
     }
 }
