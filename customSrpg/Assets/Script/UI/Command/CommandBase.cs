@@ -11,7 +11,7 @@ namespace UIControl
         [SerializeField] string m_name;
         [SerializeField] int m_moveType = 0;
         [SerializeField] int m_setType = 0;
-        protected CommandSet[] m_sets = { new DecOn(), new DecInCanOut(), new DecMessCanOut() };
+        protected CommandSet[] m_sets = { new DecOn(), new DecInCanOut(), new DecMessCanOut(), new DecOut() };
         protected CommandCursorMove[] m_moveTypes = { new NoneMove(), new MoveUDOnly(), new MoveLRInD(), 
             new MoveUDInR(), new MoveLROutUD(), new MoveLRInDOutU(), new AllOut() ,new MoveUDInROutL(), new MoveLROnly()};
         public ViewCommandControl SelectController { get; private set; }
@@ -20,7 +20,7 @@ namespace UIControl
         [SerializeField] CommandBase m_protoCommande;
         [SerializeField] CommandAction m_action;
         CommandBase[] m_children;
-        public void StartSet()
+        public virtual void StartSet()
         {
             SelectController = GetComponent<ViewCommandControl>();
             if (m_action && m_protoCommande)
@@ -33,7 +33,7 @@ namespace UIControl
             }
             SelectOut();
         }
-        public void StartSetDefault()
+        public virtual void StartSetDefault()
         {
             m_children = new CommandBase[m_defaultCommandes.Length];
             for (int i = 0; i < m_defaultCommandes.Length; i++)
@@ -49,7 +49,7 @@ namespace UIControl
             SelectController.StartSet(m_children);
             SelectController.SetText(m_name);
         }
-        public void StartSetAction()
+        public virtual void StartSetAction()
         {
             m_children = new CommandBase[m_action.CommandNum];
             for (int i = 0; i < m_action.CommandNum; i++)
@@ -66,11 +66,11 @@ namespace UIControl
             m_action.SetData(m_children);
             SelectController.SetText(m_name);
         }
-        public void SetParent(CommandBase parent)
+        public virtual void SetParent(CommandBase parent)
         {
             m_parent = parent;
         }
-        public void CursorMove(float x,float y)
+        public virtual void CursorMove(float x,float y)
         {
             Vector2 dir = new Vector2(x, y);
             m_moveTypes[m_moveType]?.CursorMove(this, dir);

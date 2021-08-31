@@ -26,5 +26,10 @@ namespace UIControl
             public override void Decide(CommandBase owner) => owner.CommandDecide();
             public override void Cancel(CommandBase owner) { }
         }
+        public class DecOut : CommandSet
+        {
+            public override void Decide(CommandBase owner) => owner.MoveParent();
+            public override void Cancel(CommandBase owner) { }
+        }
     }
 }

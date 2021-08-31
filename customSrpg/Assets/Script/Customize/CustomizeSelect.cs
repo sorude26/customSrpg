@@ -65,10 +65,6 @@ namespace Customize
             }
             ModelSet();
         }
-        void SelectReset()
-        {
-
-        }
         public void SelectColorChange()
         {
             m_commandNumber = 3;

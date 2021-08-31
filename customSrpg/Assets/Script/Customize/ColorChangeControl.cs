@@ -7,7 +7,7 @@ using GameScene;
 
 namespace Customize
 {
-    public class ColorChangeControl : MonoBehaviour ,ICommand
+    public class ColorChangeControl : MonoBehaviour
     {
         public event Action<Color,int> OnColorChange;
         Color m_color;
