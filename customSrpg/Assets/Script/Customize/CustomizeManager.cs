@@ -23,7 +23,7 @@ namespace Customize
         void Start()
         {
             m_colorControl.StartSet();
-            m_maxNumber = GameManager.Instanse.HaveUnitNumber;
+            m_maxNumber = UnitBuildDataManager.MaxUintCount;
             for (int i = 0; i < m_maxNumber; i++)
             {
                 m_allModels[i].StartSet(m_colorControl.GetColor);
@@ -132,6 +132,13 @@ namespace Customize
             data.WeaponLArmID = id;
             m_selectModel.ChangeParts(data);
             ModelSet();
+        }
+        void DataSet()
+        {
+            foreach (var model in m_allModels)
+            {
+                model.SaveModelData();
+            }
         }
     }
 }

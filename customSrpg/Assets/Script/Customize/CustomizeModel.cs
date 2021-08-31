@@ -23,11 +23,11 @@ namespace Customize
 
         public void StartSet(Func<int,Color> getColor)
         {
-            m_buildData = GameManager.Instanse.PlayerUnits[m_modelNum];
+            m_buildData = UnitBuildDataManager.PlayerUnitBuildDatas[m_modelNum];
             m_builder = GetComponent<UnitBuilder>();
             m_master = GetComponent<UnitMaster>();
             CameraPos = m_builder.SetDataModel(m_buildData, m_master);
-            m_colorNum = GameManager.Instanse.PlayerColor[m_modelNum];
+            m_colorNum = UnitBuildDataManager.PlayerColors[m_modelNum];
             m_color = getColor.Invoke(m_colorNum);
             m_master.UnitColorChange(m_color);
         }
@@ -43,9 +43,9 @@ namespace Customize
             CameraPos = m_builder.ResetBuildModel(m_buildData, m_master);
             m_master.UnitColorChange(m_color);
         }
-        public void SetData()
+        public void SaveModelData()
         {
-            //GameMnagerに保存を行う
+            UnitBuildDataManager.SetData(m_modelNum, m_buildData, m_colorNum);
         }
     }
 }
