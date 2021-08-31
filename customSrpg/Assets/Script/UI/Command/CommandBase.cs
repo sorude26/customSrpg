@@ -8,14 +8,14 @@ namespace UIControl
     [RequireComponent(typeof(ViewCommandControl))]
     public partial class CommandBase : MonoBehaviour
     {
-        [SerializeField] string m_name;
-        [SerializeField] int m_moveType = 0;
-        [SerializeField] int m_setType = 0;
+        [SerializeField] protected string m_name;
+        [SerializeField] protected int m_moveType = 0;
+        [SerializeField] protected int m_setType = 0;
         protected CommandSet[] m_sets = { new DecOn(), new DecInCanOut(), new DecMessCanOut(), new DecOut() };
         protected CommandCursorMove[] m_moveTypes = { new NoneMove(), new MoveUDOnly(), new MoveLRInD(), 
             new MoveUDInR(), new MoveLROutUD(), new MoveLRInDOutU(), new AllOut() ,new MoveUDInROutL(), new MoveLROnly()};
-        public ViewCommandControl SelectController { get; private set; }
-        CommandBase m_parent;
+        public ViewCommandControl SelectController { get; protected set; }
+        protected CommandBase m_parent;
         [SerializeField] CommandBase[] m_defaultCommandes;
         [SerializeField] CommandBase m_protoCommande;
         [SerializeField] CommandAction m_action;

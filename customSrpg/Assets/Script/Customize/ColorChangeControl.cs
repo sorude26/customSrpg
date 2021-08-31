@@ -13,6 +13,7 @@ namespace Customize
         Color m_color;
         [SerializeField] ColorPanel m_panel;
         [SerializeField] ColorData m_colorData;
+        [SerializeField] GameObject m_panelBase;
         ColorPanel[] m_panels;
         int m_number = 0;
         public void StartSet()
@@ -23,21 +24,13 @@ namespace Customize
             {
                 for (int i = 23; i >= 0; i--)
                 {
-                    var panel = Instantiate(m_panel, gameObject.transform);
+                    var panel = Instantiate(m_panel, m_panelBase.transform);
                     panel.SetColor(m_colorData.GetColor(m_colorData.PatternNum * y * 2 + i), count);
                     panel.OnClickColor += SetColor;
                     m_panels[count] = panel;
                     count++;
                 }
             }
-        }
-        public void OpenColorPanel()
-        {
-            gameObject.SetActive(true);
-        }
-        public void CloseColorPanel()
-        {
-            gameObject.SetActive(false);
         }
         public Color GetColor(int number)
         {
@@ -109,10 +102,13 @@ namespace Customize
             }
             SetColor(m_number);
         }
-
-        public void SelectCommand()
+        public void OpenPanel()
         {
-            
+            m_panelBase.transform.localScale = Vector3.one;
+        }
+        public void ClosePanel()
+        {
+            m_panelBase.transform.localScale = Vector3.zero;
         }
     }
 }
