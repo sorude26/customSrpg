@@ -95,6 +95,7 @@ public class UnitBuilder : MonoBehaviour
     }
     public void DestroyAllParts() 
     {
+        bodybP.SetParent(legbP);
         IParts[] allParts = { m_lAWeapon, m_rAWeapon, m_bodyWeapon, m_head, m_lArm, m_rArm, m_body, m_leg };
         foreach (var parts in allParts)
         {
@@ -194,6 +195,7 @@ public class UnitBuilder : MonoBehaviour
         m_leg.RLeg2.SetParent(rLeg2P);
         m_leg.RLeg3.SetParent(rLeg3P);
         bodybP.transform.position = m_leg.LegTop.position;
+        bodybP.SetParent(m_leg.LegTop);
         m_body = Instantiate(GameManager.Instanse.PartsList.GetBody(data.BodyID));
         m_body.transform.position = bodybP.position;
         m_body.transform.SetParent(bodybP);

@@ -480,4 +480,23 @@ public class UnitMaster : MonoBehaviour
             }
         }
     }
+    public Animator[] GetAnimators()
+    {
+        List<Animator> animators = new List<Animator>();
+        IParts[] allParts = { Body, Head, LArm, RArm, Leg, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon, m_bodyWeapon };
+        int count = 0;
+        foreach (var parts in allParts)
+        {
+            if (parts != null && parts.PartsAnime != null)
+            {
+                animators.Add(parts.PartsAnime);
+                count++;
+            }
+        }
+        if (count == 0)
+        {
+            return null;
+        }
+        return animators.ToArray();
+    }
 }

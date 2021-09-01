@@ -14,6 +14,8 @@ public abstract class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     [SerializeField] protected T m_partsData;
     [Tooltip("表示が切り替わるパーツ")]
     [SerializeField] protected GameObject[] m_partsObject;
+    [Tooltip("パーツのアニメーション")]
+    [SerializeField] protected Animator m_anime;
     /// <summary> パーツID </summary>
     public int PartsID { get => m_partsID; }
     /// <summary> パーツ名 </summary>
@@ -24,6 +26,8 @@ public abstract class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     public int PartsSize { get => m_partsData.PartsSize; }
     /// <summary> 破壊フラグ </summary>
     public bool Break { get; protected set; }
+    /// <summary> パーツの固有アニメーション </summary>
+    public Animator PartsAnime { get => m_anime; }
     public int GetID() => PartsID;
     public int GetWeight() => Weight;
     public virtual int GetSize() => PartsSize;

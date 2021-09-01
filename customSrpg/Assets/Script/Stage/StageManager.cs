@@ -28,13 +28,11 @@ public class StageManager : MonoBehaviour
     [Tooltip("プレイヤーの全ユニット")]
     [SerializeField] PlayerUnit[] m_players;
     [SerializeField] Color m_playerColor;
-    [Tooltip("友軍の全ユニット")]
-    [SerializeField] NpcUnit[] m_allies;
-    [SerializeField] Color m_alliesColor;
+    /// <summary> 友軍の全ユニット </summary>
+    NpcUnit[] m_allies;
     [SerializeField] SortieUnits m_alliesData;
-    [Tooltip("敵の全ユニット")]
-    [SerializeField] NpcUnit[] m_enemys;
-    [SerializeField] Color m_enemyColor;
+    /// <summary> 敵の全ユニット </summary>
+    NpcUnit[] m_enemys;
     [SerializeField] SortieUnits m_enemysData;
     /// <summary> ステージ上の全ユニット </summary>
     List<Unit> m_units;
@@ -43,7 +41,6 @@ public class StageManager : MonoBehaviour
     [SerializeField] CursorControl m_cursor;
     [SerializeField] StageUI m_uI;
     [SerializeField] GameObject m_targetMark;
-    [SerializeField] WeaponMaster m_testWeapon;
     BattleManager m_battleManager;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
@@ -58,17 +55,16 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        m_players.ToList().ForEach(p =>
-        {
-            m_units.Add(p);
-            m_battleManager.BattleEnd += p.ActionEnd;
-        });
-        //StartSetUnit();
-        StartSetTest();
+        //m_players.ToList().ForEach(p =>
+        //{
+        //    m_units.Add(p);
+        //    m_battleManager.BattleEnd += p.ActionEnd;
+        //});
+        StartSet();
     }
-    void StartSetTest()
+    void StartSet()
     {
-        m_units.ForEach(u => u.StartSet());
+        //m_units.ForEach(u => u.StartSet());
         m_mapDatas = MapManager.Instance.UnitSpownPoint();
         for (int i = 0; i < m_mapDatas.Length; i++)
         {
@@ -87,21 +83,7 @@ public class StageManager : MonoBehaviour
             p.GetUnitData().UnitColorChange(m_playerColor);
             p.WakeUp();
         });
-    }
-    void StartSetUnit()
-    {
-        m_allies.ToList().ForEach(a => m_units.Add(a));
-        m_enemys.ToList().ForEach(e => m_units.Add(e));
-        m_units.ForEach(u => u.StartSet());
-        m_allies.ToList().ForEach(a => a.GetUnitData().UnitColorChange(m_alliesColor));
-        m_enemys.ToList().ForEach(e => e.GetUnitData().UnitColorChange(m_enemyColor));
-        m_players.ToList().ForEach(p =>
-        {
-            p.GetUnitData().UnitColorChange(m_playerColor);
-            p.WakeUp();
-        });
-        m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
-    }
+    }   
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
     /// </summary>
@@ -306,20 +288,6 @@ public class StageManager : MonoBehaviour
         m_cursor.CursorStart();
         TurnUnit.SetMoveEvent(m_cursor.CursorStop);
         TurnUnit.SetMoveEvent(m_uI.CommandMoveEnd);
-    }
-    /// <summary>
-    /// 攻撃範囲を検索し表示する
-    /// </summary>
-    public void AttackSearch(int x, int z)
-    {
-        m_battleManager.SetAttacker(TurnUnit);
-        EventManager.AttackSearchEnd();
-        m_attackDatas = MapManager.Instance.StartSearch(x, z, m_testWeapon);
-        foreach (var target in m_attackDatas)
-        {
-            target.StagePanel.ViewAttackPanel();
-        }
-        m_battleManager.SetAttackTargets();
     }
     /// <summary>
     /// 攻撃範囲を検索し表示する

@@ -74,6 +74,11 @@ public class Unit : MonoBehaviour
         if (body) { body.OnAttackMode += m_motion.BodyAttack; }
         var shoulder = m_master.GetWeapon(WeaponPosition.Shoulder);
         if (shoulder) { shoulder.OnAttackMode += m_motion.ShoulderAttack; }
+        var partsAnime = m_master.GetAnimators();
+        if (partsAnime != null)
+        {
+            m_motion.SetChildAnime(partsAnime);
+        }
         m_start = true;
     }
     /// <summary>

@@ -31,4 +31,5 @@ public interface IParts
     /// パーツを消す
     /// </summary>
     void DestoryParts();
+    Animator PartsAnime { get; }
 }

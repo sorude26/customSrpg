@@ -9,6 +9,7 @@ public class MotionController : MonoBehaviour
 {
     UnitType m_unitType = UnitType.Human;
     private Animator m_anime;
+    private List<Animator> m_childAnime;
     public void SetAnime(Animator anime,UnitType unitType)
     {
         m_anime = anime;
@@ -18,6 +19,15 @@ public class MotionController : MonoBehaviour
     public void StartSet()
     {
         m_anime = GetComponent<Animator>();
+        Wait();
+    }
+    public void SetChildAnime(Animator[] animes)
+    {
+        m_childAnime = new List<Animator>();
+        foreach (var anime in animes)
+        {
+            m_childAnime.Add(anime);
+        }
         Wait();
     }
     /// <summary>
@@ -42,6 +52,13 @@ public class MotionController : MonoBehaviour
                 break;
             default:
                 break;
+        }
+        if (m_childAnime != null)
+        {
+            foreach (var anime in m_childAnime)
+            {
+                anime.Play("Wait");
+            }
         }
     }
 
@@ -225,6 +242,12 @@ public class MotionController : MonoBehaviour
                 break;
             default:
                 break;
+        }if (m_childAnime != null)
+        {
+            foreach (var anime in m_childAnime)
+            {
+                anime.Play("Walk");
+            }
         }
     }
     public void GuardRArm()
