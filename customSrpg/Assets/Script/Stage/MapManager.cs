@@ -423,7 +423,14 @@ public class MapManager : MonoBehaviour
         }
         return mapData.ToArray();
     }
-
+    /// <summary>
+    /// 指定領域のマップデータを返す
+    /// </summary>
+    /// <param name="startX"></param>
+    /// <param name="sizeX"></param>
+    /// <param name="startZ"></param>
+    /// <param name="sizeZ"></param>
+    /// <returns></returns>
     public IEnumerable<MapData> GetArea(int startX, int sizeX, int startZ, int sizeZ)
     {
         int x = 0;
@@ -436,6 +443,32 @@ public class MapManager : MonoBehaviour
             }
             x++;
             if (x >= sizeX)
+            {
+                x = 0;
+                z++;
+            }
+        }
+    }
+    /// <summary>
+    /// 指定領域外のマップデータを返す
+    /// </summary>
+    /// <param name="startX"></param>
+    /// <param name="sizeX"></param>
+    /// <param name="startZ"></param>
+    /// <param name="sizeZ"></param>
+    /// <returns></returns>
+    public IEnumerable<MapData> GetOutArea(int startX, int sizeX, int startZ, int sizeZ)
+    {
+        int x = 0;
+        int z = 0;
+        while (x < MaxX && z < MaxZ)
+        {
+            if (x < startX || z < startZ || x >= startX + sizeX || z >= startZ + sizeZ)
+            {
+                yield return this[x, z];
+            }
+            x++;
+            if (x >= MaxX)
             {
                 x = 0;
                 z++;

@@ -56,17 +56,22 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        //m_players.ToList().ForEach(p =>
-        //{
-        //    m_units.Add(p);
-        //    m_battleManager.BattleEnd += p.ActionEnd;
-        //});
+        m_mapDatas = MapManager.Instance.GetArea(0, 4, 0, 4).Where(p => p.MapType != MapType.NonAggressive).ToArray();
+        foreach (var mapData in m_mapDatas)
+        {
+            mapData.StagePanel.ViewStartPanel();
+        }
+        m_players.ToList().ForEach(p =>
+        {
+            m_units.Add(p);
+            m_battleManager.BattleEnd += p.ActionEnd;
+        });
         StartSet();
     }
     void StartSet()
     {
-        //m_units.ForEach(u => u.StartSet());
-        m_mapDatas = MapManager.Instance.UnitSpownPoint();
+        m_units.ForEach(u => u.StartSet());
+        m_mapDatas = MapManager.Instance.GetOutArea(0, 4, 0, 4).Where(p => p.MapType != MapType.NonAggressive).ToArray();
         for (int i = 0; i < m_mapDatas.Length; i++)
         {
             int r = UnityEngine.Random.Range(0, m_mapDatas.Length);

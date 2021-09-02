@@ -17,6 +17,10 @@ public class StagePanel : MonoBehaviour
         m_posX = x;
         m_posZ = z;
     }
+    public void ViewStartPanel()
+    {
+        m_attackPanel.SetActive(true);
+    }
     /// <summary>
     /// 移動可能表示を出す
     /// </summary>
