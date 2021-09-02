@@ -45,6 +45,7 @@ public class StageManager : MonoBehaviour
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
     bool m_gameEnd;
+    [SerializeField] Transform m_stage;
     /// <summary> ステージに付随するカーソル </summary>
     public CursorControl Cursor { get => m_cursor; }
     private void Awake()
@@ -73,8 +74,8 @@ public class StageManager : MonoBehaviour
             m_mapDatas[i] = m_mapDatas[r];
             m_mapDatas[r] = map;
         }
-        m_allies = m_unitCreater.StageUnitCreate(m_mapDatas, m_alliesData,0);
-        m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_enemysData, m_alliesData.AllUnitNumber);
+        m_allies = m_unitCreater.StageUnitCreate(m_mapDatas, m_alliesData,0, m_stage);
+        m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_enemysData, m_alliesData.AllUnitNumber, m_stage);
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
         m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);

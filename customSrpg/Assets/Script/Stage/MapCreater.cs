@@ -40,16 +40,30 @@ public class MapCreater : ScriptableObject
                 mapDates[j + i * maxX] = map;
             }
         }
-        CreateRoad(maxX, maxZ, mapDates, mapScale,parent);
-        foreach (var item in mapDates)
+        return mapDates;
+    }
+    /// <summary>
+    /// 街を生成する
+    /// </summary>
+    /// <param name="map"></param>
+    public void CityCreate(MapManager map)
+    {
+        CreateRoad(map, map.transform);
+        foreach (var point in map.MapDatas)
         {
-            if (item.MapType != MapType.Road)
+            if (point.MapType != MapType.Road)
             {
-                item.SetMapType(MapType.Normal);
+                point.SetMapType(MapType.Normal);
             }
         }
-        CreateBuilding(maxX, maxZ, mapDates, mapScale,parent);
-        return mapDates;
+        CreateBuilding(map, map.transform);
+        foreach (var point in map.MapDatas)
+        {
+            if (point.MapType == MapType.Normal)
+            {
+                point.SetMapType(MapType.Asphalt);
+            }
+        }
     }
     /// <summary>
     /// 道のパターンをシャッフルする
@@ -74,30 +88,28 @@ public class MapCreater : ScriptableObject
     /// <summary>
     /// 道を生成する
     /// </summary>
-    /// <param name="maxX"></param>
-    /// <param name="maxZ"></param>
-    /// <param name="datas"></param>
-    /// <param name="mapScale"></param>
-    void CreateRoad(int maxX, int maxZ, MapData[] datas, int mapScale, Transform parent)
+    /// <param name="map"></param>
+    /// <param name="parent"></param>
+    void CreateRoad(MapManager map, Transform parent)
     {
         int roadCount = 0;
-        for (int i = Random.Range(0, 3); i < maxZ - 1; i++)
+        for (int i = Random.Range(0, 3); i < map.MaxZ - 1; i++)
         {
             if (roadCount >= m_hRoadPattern.Length - 1)
             {
                 break;
             }
-            for (int v = 0; v < maxX; v++)
+            for (int v = 0; v < map.MaxX; v++)
             {
                 var road = Instantiate(m_roads[m_hRoadPattern[roadCount]]);
-                road.transform.position = new Vector3(v * mapScale, 0, i * mapScale);
+                road.transform.position = new Vector3(v * map.MapScale, 0, i * map.MapScale);
                 road.transform.rotation = Quaternion.Euler(0, 270, 0);
                 road.transform.SetParent(parent);
                 for (int c = 0; c < m_hRoadPattern[roadCount] + 2; c++)
                 {
-                    if (i + c < maxZ)
+                    if (i + c < map.MaxZ)
                     {
-                        datas[v + maxX * (c + i)].SetMapType(MapType.Road);
+                        map.MapDatas[v + map.MaxX * (c + i)].SetMapType(MapType.Road);
                     }
                 }
             }
@@ -105,22 +117,22 @@ public class MapCreater : ScriptableObject
             roadCount++;
         }
         roadCount = 0;
-        for (int i = Random.Range(0, 3); i < maxX - 1; i++)
+        for (int i = Random.Range(0, 3); i < map.MaxX - 1; i++)
         {
             if (roadCount >= m_vRoadPattern.Length - 1)
             {
                 break;
             }
-            for (int h = 0; h < maxX; h++)
+            for (int h = 0; h < map.MaxX; h++)
             {
                 var road = Instantiate(m_roads[m_vRoadPattern[roadCount]]);
-                road.transform.position = new Vector3(i * mapScale, 0, h * mapScale);
+                road.transform.position = new Vector3(i * map.MapScale, 0, h * map.MapScale);
                 road.transform.SetParent(parent);
                 for (int c = 0; c < m_vRoadPattern[roadCount] + 2; c++)
                 {
-                    if (i + c < maxZ)
+                    if (i + c < map.MaxZ)
                     {
-                        datas[c + i + maxX * h].SetMapType(MapType.Road);
+                        map.MapDatas[c + i + map.MaxX * h].SetMapType(MapType.Road);
                     }
                 }
             }
@@ -131,15 +143,13 @@ public class MapCreater : ScriptableObject
     /// <summary>
     /// 空地に場所に建造物を建てる
     /// </summary>
-    /// <param name="maxX"></param>
-    /// <param name="maxZ"></param>
-    /// <param name="datas"></param>
-    /// <param name="mapScale"></param>
-    void CreateBuilding(int maxX, int maxZ,MapData[] datas, int mapScale, Transform parent)
+    /// <param name="map"></param>
+    /// <param name="parent"></param>
+    void CreateBuilding(MapManager map, Transform parent)
     {
-        for (int i = 0; i < datas.Length; i++)
+        for (int i = 0; i < map.MapDatas.Length; i++)
         {
-            if (BuildCheck(maxX, maxZ, datas, i, mapScale, 2,parent))
+            if (BuildCheck(map,map[i].PosX,map[i].PosZ, 2, 2, parent))
             {
                 continue;
             }
@@ -147,41 +157,31 @@ public class MapCreater : ScriptableObject
     }
     /// <summary>
     /// 空地に対応する建造物を生成する
-    /// </summary>
-    /// <param name="maxX"></param>
-    /// <param name="maxZ"></param>
-    /// <param name="datas"></param>
-    /// <param name="point"></param>
-    /// <param name="mapScale"></param>
+    /// <summary>
+    /// <param name="map"></param>
+    /// <param name="startX"></param>
+    /// <param name="startZ"></param>
+    /// <param name="sizeX"></param>
+    /// <param name="sizeZ"></param>
+    /// <param name="parent"></param>
     /// <returns></returns>
-    bool BuildCheck(int maxX, int maxZ, MapData[] datas,int point,int mapScale,int size, Transform parent)
+    bool BuildCheck(MapManager map,int startX,int startZ, int sizeX, int sizeZ, Transform parent)
     {
-        for (int h = 0; h < size; h++)
+        var area = map.GetArea(startX, sizeX, startZ, sizeZ);
+        foreach (var point in area)
         {
-            for (int v = 0; v < size; v++)
+            if (point.MapType != MapType.Normal)
             {
-                if (point + h + maxZ * v < maxX * maxZ)
-                {
-                    if (datas[point + h + maxZ * v].MapType != MapType.Normal)
-                    {
-                        return false;
-                    }
-                }
+                return false;
             }
         }
         int r = Random.Range(0, m_building.Length);
         var building = Instantiate(m_building[r]);
-        building.transform.position = new Vector3(datas[point].PosX * mapScale, 0, datas[point].PosZ * mapScale);
+        building.transform.position = new Vector3(map[startX, startZ].PosX * map.MapScale, 0, map[startX, startZ].PosZ * map.MapScale);
         building.transform.SetParent(parent);
-        for (int h = 0; h < size; h++)
+        foreach (var point in area)
         {
-            for (int v = 0; v < size; v++)
-            {
-                if (point + h + maxZ * v < maxX * maxZ)
-                {
-                    datas[point + h + maxZ * v].SetMapType(MapType.NonAggressive);
-                }
-            }
+            point.SetMapType(MapType.NonAggressive);
         }
         return true;
     }

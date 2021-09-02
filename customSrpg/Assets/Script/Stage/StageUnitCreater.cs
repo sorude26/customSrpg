@@ -8,7 +8,7 @@ using UnityEngine;
 public class StageUnitCreater : ScriptableObject
 {
     [SerializeField] NpcUnit m_unitModelPrefab;
-    public NpcUnit[] StageUnitCreate(MapData[] positions, SortieUnits units,int start)
+    public NpcUnit[] StageUnitCreate(MapData[] positions, SortieUnits units,int start,Transform parent)
     {
         List<NpcUnit> unit = new List<NpcUnit>();
         int i = start;       
@@ -20,16 +20,17 @@ public class StageUnitCreater : ScriptableObject
                 {
                     break;
                 }
-                unit.Add(CreateUnit(positions[i], units.BuildPattern[k], units.ColorPattern[k]));
+                unit.Add(CreateUnit(positions[i], units.BuildPattern[k], units.ColorPattern[k], parent));
                 i++;
             }
         }
         return unit.ToArray();
     }
-    NpcUnit CreateUnit(MapData pos,UnitBuildData buildData, Color color)
+    NpcUnit CreateUnit(MapData pos,UnitBuildData buildData, Color color,Transform parent)
     {
         var unit = Instantiate(m_unitModelPrefab);
         unit.StartSet(new Vector2Int(pos.PosX, pos.PosZ), buildData, color);
+        unit.transform.SetParent(parent);
         return unit;
     }
 }

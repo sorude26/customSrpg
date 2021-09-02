@@ -28,12 +28,21 @@ public class MapManager : MonoBehaviour
     public int MaxZ { get => m_maxZ; }
     /// <summary> 地形サイズ </summary>
     public int MapScale { get => m_mapScale; }
+    public MapData this[int number]
+    {
+        get => MapDatas[number];
+    }
+    public MapData this[int x, int z]
+    {
+        get => MapDatas[GetPosition(x, z)];
+    }
     private void Awake()
     {
         Instance = this;
         MapDatas = m_mapCreater.MapCreate(m_maxX, m_maxZ, this.transform, MapScale);
         MoveList = new List<MapData>();
         AttackList = new List<MapData>();
+        m_mapCreater.CityCreate(this);
     }
     /// <summary>
     /// ユニットの出現可能箇所の配列を返す
@@ -413,5 +422,24 @@ public class MapManager : MonoBehaviour
             mapData.Add(MapDatas[position.PosID + 1]);
         }
         return mapData.ToArray();
+    }
+
+    public IEnumerable<MapData> GetArea(int startX, int sizeX, int startZ, int sizeZ)
+    {
+        int x = 0;
+        int z = 0;
+        while (x < sizeX && z < sizeZ)
+        {
+            if (startX + x < m_maxX && startZ + z < m_maxZ)
+            {
+                yield return this[startX + x, startZ + z];
+            }
+            x++;
+            if (x >= sizeX)
+            {
+                x = 0;
+                z++;
+            }
+        }
     }
 }
