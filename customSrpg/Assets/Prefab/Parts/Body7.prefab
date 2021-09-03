@@ -142,8 +142,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3667690233029330674}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.37}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 0.1}
   m_Children: []
   m_Father: {fileID: 611445697751923822}
   m_RootOrder: 2
@@ -155,7 +155,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3667690233029330674}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 4300000, guid: 6d976b451a5380d4b8cb7759d4625b33, type: 2}
 --- !u!23 &8075190584140974321
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -174,7 +174,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fd2efd973630f6548b84601f4dda00c1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -639,6 +639,7 @@ MonoBehaviour:
   m_partsData: {fileID: 11400000, guid: b8f9b07c9da447440873915e893206d2, type: 2}
   m_partsObject:
   - {fileID: 0}
+  m_anime: {fileID: 0}
   m_hitPos:
   - {fileID: 1596750712945445652}
   - {fileID: 1829492013390857942}
@@ -646,6 +647,7 @@ MonoBehaviour:
   m_damageSmoke: {fileID: 2953864718500735332}
   m_amors:
   - {fileID: 8390740286309794425}
+  - {fileID: 8075190584140974321}
   m_headParts: {fileID: 8109866299368950031}
   m_lArmParts: {fileID: 1829492013390857942}
   m_rArmParts: {fileID: 4492012378061558115}
