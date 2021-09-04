@@ -27,11 +27,11 @@ public enum ArmType
 public class UnitPartsData : PartsData
 {
     [Tooltip("パーツ耐久値")]
-    [SerializeField] protected int m_partsHp;
+    [SerializeField] protected int[] m_partsHp;
     [Tooltip("パーツ装甲値")]
-    [SerializeField] protected int m_defense;
+    [SerializeField] protected int[] m_defense;
     /// <summary> パーツ耐久値 </summary>
-    public int MaxPartsHp { get => m_partsHp; }
+    public int[] MaxPartsHp { get => m_partsHp; }
     /// <summary> パーツ装甲値 </summary>
-    public int Defense { get => m_defense; }
+    public int[] Defense { get => m_defense; }
 }

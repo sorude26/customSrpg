@@ -9,17 +9,17 @@ public class PartsData : ScriptableObject
     [Tooltip("パーツID")]
     [SerializeField] int m_partsID;
     [Tooltip("パーツ名")]
-    [SerializeField] string m_partsName;
+    [SerializeField] string[] m_partsName;
     [Tooltip("重量")]
-    [SerializeField] protected int m_weight = 10;
+    [SerializeField] protected int[] m_weight;
     [Tooltip("パーツサイズ")]
-    [SerializeField] int m_partsSize = 1;
+    [SerializeField] int[] m_partsSize;
     /// <summary> パーツID </summary>
     public int PartsID { get => m_partsID; }
     /// <summary> パーツ名 </summary>
-    public string PartsName { get => m_partsName; }
+    public string[] PartsName { get => m_partsName; }
     /// <summary> 重量 </summary>
-    public int Weight { get => m_weight; }
+    public int[] Weight { get => m_weight; }
     /// <summary> パーツサイズ </summary>
-    public int PartsSize { get => m_partsSize; }
+    public int[] PartsSize { get => m_partsSize; }
 }

@@ -31,9 +31,9 @@ public class PartsLeg : UnitPartsMaster<LegData>
     public Transform RLeg3 { get => m_rLeg3; }
     protected override void StartSet()
     {
-        CurrentMovePower = m_partsData.MovePower;
-        CurrentLiftingForce = m_partsData.LiftingForce;
-        CurrentAvoidance = m_partsData.Avoidance;
+        CurrentMovePower = m_partsData.MovePower[m_partsID];
+        CurrentLiftingForce = m_partsData.LiftingForce[m_partsID];
+        CurrentAvoidance = m_partsData.Avoidance[m_partsID];
         base.StartSet();
     }
     protected override void PartsBreak()

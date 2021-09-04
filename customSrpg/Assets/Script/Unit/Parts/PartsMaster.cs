@@ -19,11 +19,11 @@ public abstract class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     /// <summary> パーツID </summary>
     public int PartsID { get => m_partsID; }
     /// <summary> パーツ名 </summary>
-    public string PartsName { get => m_partsData.PartsName; }
+    public string PartsName { get => m_partsData.PartsName[m_partsID]; }
     /// <summary> 重量 </summary>
-    public int Weight { get => m_partsData.Weight; }
+    public int Weight { get => m_partsData.Weight[m_partsID]; }
     /// <summary> パーツサイズ </summary>
-    public int PartsSize { get => m_partsData.PartsSize; }
+    public int PartsSize { get => m_partsData.PartsSize[m_partsID]; }
     /// <summary> 破壊フラグ </summary>
     public bool Break { get; protected set; }
     /// <summary> パーツの固有アニメーション </summary>

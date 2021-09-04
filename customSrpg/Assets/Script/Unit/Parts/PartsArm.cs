@@ -15,7 +15,7 @@ public class PartsArm : UnitPartsMaster<ArmData>
     [Tooltip("腕下部")]
     [SerializeField] Transform m_armBottom;
     /// <summary> 命中精度 </summary>
-    public int HitAccuracy { get => m_partsData.HitAccuracy; }
+    public int HitAccuracy { get => m_partsData.HitAccuracy[m_partsID]; }
     /// <summary> 手の種類 </summary>
     public ArmType Arm { get => m_partsData.Arm; }
     /// <summary> 拳の位置 </summary>

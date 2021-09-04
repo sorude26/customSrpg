@@ -108,6 +108,10 @@ public class UnitMaster : MonoBehaviour
     public int GetAvoidance()
     {
         int avoidance = Body.GetAvoidance() - GetWeight();
+        if (avoidance < 0)
+        {
+            avoidance = 0;
+        }
         if (Leg)
         {
             avoidance += Leg.CurrentAvoidance;

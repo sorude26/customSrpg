@@ -46,7 +46,7 @@ namespace Customize
                 panel.OutSelect();
             }
             m_color = GetColor(number);
-            OnColorChange?.Invoke(m_color, m_colorNumbers[number]);
+            OnColorChange?.Invoke(m_color, number);
             m_number = number;
             m_panels[number].OnSelect();
         }

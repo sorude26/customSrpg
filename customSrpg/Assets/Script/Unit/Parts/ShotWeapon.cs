@@ -22,13 +22,13 @@ public class ShotWeapon : WeaponMaster
     {
         yield return new WaitForSeconds(0.5f);
         m_muzzleFlash.SetActive(true);
-        int count = m_partsData.MaxAttackNumber;
+        int count = m_partsData.MaxAttackNumber[m_partsID];
         while (count > 0)
         {
             count--;
             m_attack?.Invoke();
             EffectManager.PlayEffect(EffectType.Shot, m_muzzle.position);
-            yield return new WaitForSeconds(m_partsData.AttackInterval);
+            yield return new WaitForSeconds(m_partsData.AttackInterval[m_partsID]);
         }
         m_muzzleFlash.SetActive(false);
         yield return new WaitForSeconds(0.5f);
