@@ -49,6 +49,7 @@ MonoBehaviour:
   m_partsData: {fileID: 11400000, guid: 7c4a34d077778674883ee1b1ae8b473d, type: 2}
   m_partsObject:
   - {fileID: 8244552971623327768}
+  m_anime: {fileID: 0}
   m_hitPos:
   - {fileID: 4498704751117137458}
   m_damageSmoke: {fileID: 3881332794900924090}
@@ -209,6 +210,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7692936520533127904, guid: 457d6bcebb7b09043b52fbddc36153cc,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 457d6bcebb7b09043b52fbddc36153cc, type: 3}

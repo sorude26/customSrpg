@@ -6,13 +6,15 @@ using UnityEngine.UI;
 
 public class FadeController : MonoBehaviour
 {
+    public static FadeController Instance { get; private set; }
     [SerializeField] float m_fadeSpeed = 1f;
     [SerializeField] Image m_fadePanel = default;
     Color m_fadePanelColor;
     private void Awake()
     {
+        Instance = this;
+        m_fadePanel.gameObject.SetActive(true);
         m_fadePanelColor = m_fadePanel.color;
-        m_fadePanel.gameObject.SetActive(false);
     }
     public void StartFadeIn()
     {

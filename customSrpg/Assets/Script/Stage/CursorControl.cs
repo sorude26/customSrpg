@@ -14,9 +14,9 @@ public class CursorControl : MonoBehaviour
     /// <summary> ステージのサイズ記憶用数 </summary>
     Vector2Int m_stageSize;
     /// <summary> 現在のカーソル座標X </summary>
-    int m_currentPosX;
+    public int CurrentPosX { get; private set; }
     /// <summary> 現在のカーソル座標Z </summary>
-    int m_currentPosZ;
+    public int CurrentPosZ { get; private set; }
     /// <summary> カーソル操作停止フラグ </summary>
     bool m_notCursor;
     /// <summary> 描画されるカーソル </summary>
@@ -115,11 +115,11 @@ public class CursorControl : MonoBehaviour
             }
             if (m_move && m_moveTimer <= 0)
             {
-                this.transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
+                this.transform.position = new Vector3(CurrentPosX * m_stageScale, MapManager.Instance.GetLevel(CurrentPosX, CurrentPosZ), CurrentPosZ * m_stageScale);
                 m_move = false;
                 m_moveTimer = m_moveTime;
                 UnitGuideViewEnd();
-                m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(m_currentPosX, m_currentPosZ));
+                m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(CurrentPosX, CurrentPosZ));
             }
             yield return new WaitForEndOfFrame();
         }
@@ -129,7 +129,7 @@ public class CursorControl : MonoBehaviour
     /// </summary>
     public void Decision()
     {
-        StageManager.Instance.PointMove(m_currentPosX, m_currentPosZ);
+        StageManager.Instance.PointMove(CurrentPosX, CurrentPosZ);
     }
     /// <summary>
     /// カーソルを非表示にし、操作不能にする
@@ -152,11 +152,11 @@ public class CursorControl : MonoBehaviour
     public void Warp(int x, int z)
     {
         m_cursor.SetActive(true);
-        m_currentPosX = x;
-        m_currentPosZ = z;
+        CurrentPosX = x;
+        CurrentPosZ = z;
         UnitGuideViewEnd();
         m_dataGuideView3.ViewData(StageManager.Instance.GetPositionUnit(x, z));
-        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
+        transform.position = new Vector3(CurrentPosX * m_stageScale, MapManager.Instance.GetLevel(CurrentPosX, CurrentPosZ), CurrentPosZ * m_stageScale);
     }
     /// <summary>
     /// カーソルを指定ユニットの場所に移動する
@@ -169,11 +169,11 @@ public class CursorControl : MonoBehaviour
             return;
         }
         m_cursor.SetActive(true);
-        m_currentPosX = unit.CurrentPosX;
-        m_currentPosZ = unit.CurrentPosZ;
+        CurrentPosX = unit.CurrentPosX;
+        CurrentPosZ = unit.CurrentPosZ;
         UnitGuideViewEnd();
         m_dataGuideView3.ViewData(unit);
-        transform.position = new Vector3(m_currentPosX * m_stageScale, MapManager.Instance.GetLevel(m_currentPosX, m_currentPosZ), m_currentPosZ * m_stageScale);
+        transform.position = new Vector3(CurrentPosX * m_stageScale, MapManager.Instance.GetLevel(CurrentPosX, CurrentPosZ), CurrentPosZ * m_stageScale);
     }
     public void Warp(Vector3 point1, Vector3 point2)
     {
@@ -194,30 +194,30 @@ public class CursorControl : MonoBehaviour
         }
         if (x != 0)
         {
-            if (x > 0 && m_stageSize.x - 1 > m_currentPosX)
+            if (x > 0 && m_stageSize.x - 1 > CurrentPosX)
             {
-                m_currentPosX++;
+                CurrentPosX++;
                 m_move = true;
                 m_moveTimer = m_moveTime;
             }
-            else if (x < 0 && 0 < m_currentPosX)
+            else if (x < 0 && 0 < CurrentPosX)
             {
-                m_currentPosX--;
+                CurrentPosX--;
                 m_move = true;
                 m_moveTimer = m_moveTime;
             }
         }
         else
         {
-            if (z > 0 && m_stageSize.y - 1 > m_currentPosZ)
+            if (z > 0 && m_stageSize.y - 1 > CurrentPosZ)
             {
-                m_currentPosZ++;
+                CurrentPosZ++;
                 m_move = true;
                 m_moveTimer = m_moveTime;
             }
-            else if (z < 0 && 0 < m_currentPosZ)
+            else if (z < 0 && 0 < CurrentPosZ)
             {
-                m_currentPosZ--;
+                CurrentPosZ--;
                 m_move = true;
                 m_moveTimer = m_moveTime;
             }

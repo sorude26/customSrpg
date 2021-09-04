@@ -16,16 +16,19 @@ namespace Customize
         [SerializeField] GameObject m_panelBase;
         ColorPanel[] m_panels;
         int m_number = 0;
+        int[] m_colorNumbers;
         public void StartSet()
         {
             m_panels = new ColorPanel[m_colorData.PatternNum * m_colorData.ColorTypeNum * 2];
+            m_colorNumbers = new int[m_colorData.PatternNum * m_colorData.ColorTypeNum * 2];
             int count = 0;
             for (int y = 0; y < m_colorData.ColorTypeNum; y++)
             {
                 for (int i = 23; i >= 0; i--)
                 {
                     var panel = Instantiate(m_panel, m_panelBase.transform);
-                    panel.SetColor(m_colorData.GetColor(m_colorData.PatternNum * y * 2 + i), count);
+                    panel.SetColor(m_colorData.PatternNum * y * 2 + i, count);
+                    m_colorNumbers[count] = m_colorData.PatternNum * y * 2 + i;
                     panel.OnClickColor += SetColor;
                     m_panels[count] = panel;
                     count++;
@@ -43,7 +46,7 @@ namespace Customize
                 panel.OutSelect();
             }
             m_color = GetColor(number);
-            OnColorChange?.Invoke(m_color, number);
+            OnColorChange?.Invoke(m_color, m_colorNumbers[number]);
             m_number = number;
             m_panels[number].OnSelect();
         }

@@ -12,6 +12,7 @@ public class StagePanel : MonoBehaviour
     bool m_attackMode;
     int m_posX;
     int m_posZ;
+    bool m_startMode;
     public void SetPos(int x,int z)
     {
         m_posX = x;
@@ -20,6 +21,12 @@ public class StagePanel : MonoBehaviour
     public void ViewStartPanel()
     {
         m_attackPanel.SetActive(true);
+        m_startMode = true;
+    }
+    public void CloseStartPanel()
+    {
+        m_attackPanel.SetActive(false); ;
+        m_startMode = false;
     }
     /// <summary>
     /// 移動可能表示を出す
@@ -36,7 +43,6 @@ public class StagePanel : MonoBehaviour
     {
         m_attackPanel.SetActive(true);
         m_attackMode = true;
-        EventManager.OnAttackSearchEnd += CloseAttackPanel;
     }
     /// <summary>
     /// 攻撃可能表示を消す
@@ -45,7 +51,6 @@ public class StagePanel : MonoBehaviour
     {
         m_attackPanel.SetActive(false);
         m_attackMode = false;
-        EventManager.OnAttackSearchEnd -= CloseAttackPanel;
     }
     /// <summary>
     /// 表示パネルを閉じる
@@ -65,14 +70,23 @@ public class StagePanel : MonoBehaviour
         {
             StageManager.Instance.PointMove(m_posX, m_posZ);
         }
+        if (m_startMode)
+        {
+            StageManager.Instance.PointUnitSet(m_posX, m_posZ);
+            CloseStartPanel();
+        }
     }
     private void OnEnable()
     {
         ViewEnd();
         EventManager.OnStageGuideViewEnd += ViewEnd;
+        EventManager.OnGameStart += CloseStartPanel;
+        EventManager.OnAttackSearchEnd += CloseAttackPanel;
     }
     private void OnDisable()
     {
         EventManager.OnStageGuideViewEnd -= ViewEnd;
+        EventManager.OnGameStart -= CloseStartPanel;
+        EventManager.OnAttackSearchEnd -= CloseAttackPanel;
     }
 }

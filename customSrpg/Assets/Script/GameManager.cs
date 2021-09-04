@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] UnitBuildData[] m_playerUnits;
     public UnitBuildData[] PlayerUnits { get => m_playerUnits; }
     [SerializeField] int[] m_playerColor;
+    [SerializeField] ColorData m_colorData;
+    public Color GetColor(int colorNum) => m_colorData.GetColor(colorNum);
     public int[] PlayerColor { get => m_playerColor; }
     [SerializeField] int m_haveUnitNumber = 3;
     public int HaveUnitNumber { get => m_haveUnitNumber; }

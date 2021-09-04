@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// ターンの状態
@@ -25,9 +26,11 @@ public class StageManager : MonoBehaviour
     public TurnState Turn { get; private set; }
     /// <summary> 行動中のユニット </summary>
     public Unit TurnUnit { get; private set; }
-    [Tooltip("プレイヤーの全ユニット")]
-    [SerializeField] PlayerUnit[] m_players;
-    [SerializeField] Color m_playerColor;
+    [Tooltip("プレイヤーの合計数")]
+    [SerializeField] int m_playerNum = 5;
+    int m_playerCount = 0;
+    /// <summary> プレイヤーの全ユニット </summary>
+    List<PlayerUnit> m_players;
     /// <summary> 友軍の全ユニット </summary>
     NpcUnit[] m_allies;
     [SerializeField] SortieUnits m_alliesData;
@@ -42,6 +45,7 @@ public class StageManager : MonoBehaviour
     [SerializeField] StageUI m_uI;
     [SerializeField] GameObject m_targetMark;
     BattleManager m_battleManager;
+    MapData[] m_startData;
     MapData[] m_mapDatas;
     MapData[] m_attackDatas;
     bool m_gameEnd;
@@ -56,17 +60,29 @@ public class StageManager : MonoBehaviour
     {
         m_battleManager = BattleManager.Instance;
         m_units = new List<Unit>();
-        m_mapDatas = MapManager.Instance.GetArea(0, 4, 0, 4).Where(p => p.MapType != MapType.NonAggressive).ToArray();
-        foreach (var mapData in m_mapDatas)
+        m_players = new List<PlayerUnit>();
+        m_startData = MapManager.Instance.GetArea(0, 4, 0, 4).Where(p => p.MapType != MapType.NonAggressive).ToArray();
+        foreach (var mapData in m_startData)
         {
             mapData.StagePanel.ViewStartPanel();
-        }
-        m_players.ToList().ForEach(p =>
+        }        
+        StartSet();
+        FadeController.Instance.StartFadeIn();
+        GameScene.InputManager.Instance.OnInputDecision += UnitSet;
+    }
+    void GameStart()
+    {
+        m_players.ForEach(p =>
         {
             m_units.Add(p);
             m_battleManager.BattleEnd += p.ActionEnd;
         });
-        StartSet();
+        m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
+        Turn = TurnState.Player;
+        m_players.ForEach(p => p.WakeUp());
+        m_allies.ToList().ForEach(a => a.WakeUp());
+        GameScene.InputManager.Instance.OnInputDecision -= UnitSet;
+        NextUnit();
     }
     void StartSet()
     {
@@ -83,12 +99,6 @@ public class StageManager : MonoBehaviour
         m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_enemysData, m_alliesData.AllUnitNumber, m_stage);
         m_allies.ToList().ForEach(a => m_units.Add(a));
         m_enemys.ToList().ForEach(e => m_units.Add(e));
-        m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
-        m_players.ToList().ForEach(p =>
-        {
-            p.GetUnitData().UnitColorChange(m_playerColor);
-            p.WakeUp();
-        });
     }   
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
@@ -152,7 +162,7 @@ public class StageManager : MonoBehaviour
                 break;
             case TurnState.Allies:
                 Turn = TurnState.Enemy;
-                m_players.ToList().ForEach(p => p.TurnEnd());
+                m_players.ForEach(p => p.TurnEnd());
                 m_allies.ToList().ForEach(a => a.TurnEnd());
                 m_enemys.ToList().ForEach(p => p.WakeUp());
                 StartCoroutine(StageMassage(1, NextUnit));
@@ -164,7 +174,7 @@ public class StageManager : MonoBehaviour
                 break;
             case TurnState.End:
                 Turn = TurnState.Player;
-                m_players.ToList().ForEach(p => p.WakeUp());
+                m_players.ForEach(p => p.WakeUp());
                 m_allies.ToList().ForEach(a => a.UnitRest());
                 StartCoroutine(StageMassage(0, NextUnit));
                 break;
@@ -191,7 +201,7 @@ public class StageManager : MonoBehaviour
         }
         action?.Invoke();
     }
-    IEnumerator LastStageMassage(uint massageNum, Action action)
+    IEnumerator LastStageMassage(uint massageNum)
     {
         bool view = true;
         while (view)
@@ -199,12 +209,13 @@ public class StageManager : MonoBehaviour
             yield return m_massage.LastMessageView(massageNum);
             view = false;
         }
-        action?.Invoke();
+        yield return new WaitForSeconds(1f);
+        FadeController.Instance.StartFadeOut(() => { SceneManager.LoadScene("CustomizeScene"); });
     }
     public void TestEnemyTurn()
     {
         Turn = TurnState.Player;
-        m_players.ToList().ForEach(p => p.WakeUp());
+        m_players.ForEach(p => p.WakeUp());
         m_allies.ToList().ForEach(a => a.WakeUp());
         NextUnit();
     }
@@ -224,6 +235,27 @@ public class StageManager : MonoBehaviour
         TurnUnit.TargetMoveStart(x, z);
         m_targetMark.SetActive(true);
         m_targetMark.transform.position = m_cursor.transform.position;
+    }
+    public void PointUnitSet(int x, int z)
+    {
+        var area = m_startData.Where(p => p.PosX == x && p.PosZ == z).FirstOrDefault();
+        if (area == null)
+        {
+            return;
+        }
+          var unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitBuildDataManager.PlayerUnitBuildDatas[m_playerCount],
+            GameManager.Instanse.GetColor(UnitBuildDataManager.PlayerColors[m_playerCount]), this.transform);
+        m_players.Add(unit);
+        m_playerCount++;
+        if (m_playerCount >= m_playerNum)
+        {
+            EventManager.GameStart();
+            GameStart();
+        }
+    }
+    void UnitSet()
+    {
+        PointUnitSet(m_cursor.CurrentPosX, m_cursor.CurrentPosZ);
     }
     /// <summary>
     /// 終了条件の確認、後で勝利・敗北条件で分岐するようにする
@@ -250,7 +282,7 @@ public class StageManager : MonoBehaviour
             }
         }
         m_gameEnd = true;
-        StartCoroutine(LastStageMassage(2, () => Debug.Log("敗北")));
+        StartCoroutine(LastStageMassage(2));
         return true;
     }
     /// <summary>
@@ -268,7 +300,7 @@ public class StageManager : MonoBehaviour
         }
         m_gameEnd = true;
         m_cursor.Warp(TurnUnit);
-        StartCoroutine(LastStageMassage(3, () => Debug.Log("勝利")));
+        StartCoroutine(LastStageMassage(3));
         StartCoroutine(m_cursor.Camera.PointFocus());
         return true;
     }

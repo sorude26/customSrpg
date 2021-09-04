@@ -7,6 +7,7 @@ using UnityEngine;
 [CreateAssetMenu]
 public class StageUnitCreater : ScriptableObject
 {
+    [SerializeField] PlayerUnit m_playerUnitPrefab;
     [SerializeField] NpcUnit m_unitModelPrefab;
     public NpcUnit[] StageUnitCreate(MapData[] positions, SortieUnits units,int start,Transform parent)
     {
@@ -29,6 +30,13 @@ public class StageUnitCreater : ScriptableObject
     NpcUnit CreateUnit(MapData pos,UnitBuildData buildData, Color color,Transform parent)
     {
         var unit = Instantiate(m_unitModelPrefab);
+        unit.StartSet(new Vector2Int(pos.PosX, pos.PosZ), buildData, color);
+        unit.transform.SetParent(parent);
+        return unit;
+    }
+    public PlayerUnit PlayerCreate(MapData pos,UnitBuildData buildData, Color color, Transform parent)
+    {
+        var unit = Instantiate(m_playerUnitPrefab);
         unit.StartSet(new Vector2Int(pos.PosX, pos.PosZ), buildData, color);
         unit.transform.SetParent(parent);
         return unit;

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using GameScene;
+using UnityEngine.SceneManagement;
 
 namespace Customize
 {
@@ -31,6 +32,7 @@ namespace Customize
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
             m_colorControl.ClosePanel();
+            FadeController.Instance.StartFadeIn();
         }
         public void CursorMove(float x, float y)
         {
@@ -133,12 +135,13 @@ namespace Customize
             m_selectModel.ChangeParts(data);
             ModelSet();
         }
-        void DataSet()
+        public void DataSet()
         {
             foreach (var model in m_allModels)
             {
                 model.SaveModelData();
             }
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }

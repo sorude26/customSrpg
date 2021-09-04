@@ -58,7 +58,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: fc1d7b5a95a759e4b88e78a95c4b0f4e, type: 2}
+  - {fileID: 2100000, guid: de0f38436d8157049970328e5610b224, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -126,7 +126,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_partsID: 1
   m_partsData: {fileID: 11400000, guid: 4a85c40f731e6ed47a55c7ca8588cd71, type: 2}
-  m_partsObject: {fileID: 3468296585316815752}
+  m_partsObject:
+  - {fileID: 0}
+  m_anime: {fileID: 0}
   m_muzzle: {fileID: 6810587328364706802}
   m_muzzleFlash: {fileID: 8868751112660553724}
 --- !u!1 &8868751112660553724

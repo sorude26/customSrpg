@@ -13,12 +13,14 @@ namespace Customize
         [SerializeField] GameObject m_targetMark;
         public event Action<int> OnClickColor;
         int m_number;
+        int m_colorNum;
         Color m_color;
-        public void SetColor(Color32 color,int number)
+        public void SetColor(int color,int number)
         {
-            m_colorImage.color = color;
+            m_colorNum = color;
+            m_colorImage.color = GameManager.Instanse.GetColor(color);
             m_number = number;
-            m_color = color;
+            m_color = GameManager.Instanse.GetColor(color);
             m_targetMark.SetActive(false);
         }
         public Color GetColor()
