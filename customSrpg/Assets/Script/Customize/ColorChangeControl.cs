@@ -24,7 +24,7 @@ namespace Customize
             int count = 0;
             for (int y = 0; y < m_colorData.ColorTypeNum; y++)
             {
-                for (int i = 23; i >= 0; i--)
+                for (int i = 0; i < m_colorData.PatternNum * 2; i++)
                 {
                     var panel = Instantiate(m_panel, m_panelBase.transform);
                     panel.SetColor(m_colorData.PatternNum * y * 2 + i, count);
