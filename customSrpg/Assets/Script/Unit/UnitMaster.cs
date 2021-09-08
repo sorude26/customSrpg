@@ -26,15 +26,15 @@ public class UnitMaster : MonoBehaviour
     /// <summary> 機体脚部 </summary>
     public PartsLeg Leg { get; protected set; } = null;
     /// <summary> 左手武器 </summary>
-    protected WeaponMaster m_lAWeapon = null;
+    public WeaponMaster LAWeapon { get; protected set; } = null;
     /// <summary> 右手武器 </summary>
-    protected WeaponMaster m_rAWeapon = null;
+    public WeaponMaster RAWeapon { get; protected set; } = null;
     /// <summary> 肩武器 </summary>
-    protected WeaponMaster m_sWeapon = null;
+    public WeaponMaster SWeapon { get; protected set; } = null;
     /// <summary> 右肩武器 </summary>
-    protected WeaponMaster m_rSWeapon = null;
+    public WeaponMaster RSWeapon { get; protected set; } = null;
     /// <summary> 胴体武器 </summary>
-    protected WeaponMaster m_bodyWeapon = null;
+    public WeaponMaster BodyWeapon { get; protected set; } = null;
     protected int m_attackCount = 0;
     protected WeaponMaster m_attackerWeapon = null;
     protected List<IUnitParts> m_damegePartsList;
@@ -132,7 +132,7 @@ public class UnitMaster : MonoBehaviour
     public int GetWeight()
     {
         int weight = 0;
-        IParts[] allParts = { Body, Head, LArm, RArm, Leg, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon, m_bodyWeapon };
+        IParts[] allParts = { Body, Head, LArm, RArm, Leg, LAWeapon, RAWeapon, SWeapon, RSWeapon, BodyWeapon };
         foreach (var parts in allParts)
         {
             if (parts != null)
@@ -186,26 +186,26 @@ public class UnitMaster : MonoBehaviour
         switch (position)
         {
             case WeaponPosition.Body:
-                if (m_bodyWeapon)
-                hitAccuray += m_bodyWeapon.HitAccuracy;
+                if (BodyWeapon)
+                hitAccuray += BodyWeapon.HitAccuracy;
                 break;
             case WeaponPosition.LArm:
                 hitAccuray += LArm.HitAccuracy;
-                if(m_lAWeapon)
-                hitAccuray += m_lAWeapon.HitAccuracy;
+                if(LAWeapon)
+                hitAccuray += LAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.RArm:
                 hitAccuray += RArm.HitAccuracy;
-                if (m_rAWeapon)
-                hitAccuray += m_rAWeapon.HitAccuracy;
+                if (RAWeapon)
+                hitAccuray += RAWeapon.HitAccuracy;
                 break;
             case WeaponPosition.Shoulder:
-                if(m_sWeapon)
-                hitAccuray += m_sWeapon.HitAccuracy;
+                if(SWeapon)
+                hitAccuray += SWeapon.HitAccuracy;
                 break;
             case WeaponPosition.RShoulder:
-                if(m_rSWeapon)
-                hitAccuray += m_rSWeapon.HitAccuracy;
+                if(RSWeapon)
+                hitAccuray += RSWeapon.HitAccuracy;
                 break;
             default:
                 break;
@@ -222,15 +222,15 @@ public class UnitMaster : MonoBehaviour
         switch (position)
         {
             case WeaponPosition.Body:
-                return m_bodyWeapon;
+                return BodyWeapon;
             case WeaponPosition.LArm:
-                return m_lAWeapon;
+                return LAWeapon;
             case WeaponPosition.RArm:
-                return m_rAWeapon;
+                return RAWeapon;
             case WeaponPosition.Shoulder:
-                return m_sWeapon;
+                return SWeapon;
             case WeaponPosition.RShoulder:
-                return m_rSWeapon;
+                return RSWeapon;
             default:
                 break;
         }
@@ -243,23 +243,23 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public WeaponPosition GetWeaponPosition(WeaponMaster weapon)
     {
-        if (weapon == m_bodyWeapon)
+        if (weapon == BodyWeapon)
         {
             return WeaponPosition.Body;
         }
-        else if (weapon == m_lAWeapon)
+        else if (weapon == LAWeapon)
         {
             return WeaponPosition.LArm;
         }
-        else if (weapon == m_rAWeapon)
+        else if (weapon == RAWeapon)
         {
             return WeaponPosition.RArm;
         }
-        else if (weapon == m_sWeapon)
+        else if (weapon == SWeapon)
         {
             return WeaponPosition.Shoulder;
         }
-        else if (weapon == m_rSWeapon)
+        else if (weapon == RSWeapon)
         {
             return WeaponPosition.RShoulder;
         }
@@ -273,7 +273,7 @@ public class UnitMaster : MonoBehaviour
     public WeaponMaster[] GetWeapons()
     {
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
-        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon };
+        WeaponMaster[] weapons = { BodyWeapon, LAWeapon, RAWeapon, SWeapon, RSWeapon };
         foreach (var weapon in weapons)
         {
             if (weapon != null && !weapon.Break)
@@ -287,7 +287,7 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public WeaponMaster GetMaxPowerWeapon()
     {
-        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon };
+        WeaponMaster[] weapons = { BodyWeapon, LAWeapon, RAWeapon, SWeapon, RSWeapon };
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
@@ -302,7 +302,7 @@ public class UnitMaster : MonoBehaviour
     /// <returns></returns>
     public WeaponMaster GetMaxRangeWeapon()
     {
-        WeaponMaster[] weapons = { m_bodyWeapon, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon };
+        WeaponMaster[] weapons = { BodyWeapon, LAWeapon, RAWeapon, SWeapon, RSWeapon };
         List<WeaponMaster> weaponList = new List<WeaponMaster>();
         foreach (var weapon in weapons)
         {
@@ -449,21 +449,21 @@ public class UnitMaster : MonoBehaviour
         switch (weapon.WeaponPos)
         {
             case WeaponPosition.LArm:
-                m_lAWeapon = weapon;
-                LArm.SetGripWeapon(m_lAWeapon);
+                LAWeapon = weapon;
+                LArm.SetGripWeapon(LAWeapon);
                 break;
             case WeaponPosition.RArm:
-                m_rAWeapon = weapon;
-                RArm.SetGripWeapon(m_rAWeapon);
+                RAWeapon = weapon;
+                RArm.SetGripWeapon(RAWeapon);
                 break;
             case WeaponPosition.Shoulder:
-                m_sWeapon = weapon;
+                SWeapon = weapon;
                 break;
             case WeaponPosition.RShoulder:
-                m_rAWeapon = weapon;
+                RAWeapon = weapon;
                 break;
             case WeaponPosition.Body:
-                m_bodyWeapon = weapon;
+                BodyWeapon = weapon;
                 break;
             default:
                 break;
@@ -487,7 +487,7 @@ public class UnitMaster : MonoBehaviour
     public Animator[] GetAnimators()
     {
         List<Animator> animators = new List<Animator>();
-        IParts[] allParts = { Body, Head, LArm, RArm, Leg, m_lAWeapon, m_rAWeapon, m_sWeapon, m_rSWeapon, m_bodyWeapon };
+        IParts[] allParts = { Body, Head, LArm, RArm, Leg, LAWeapon, RAWeapon, SWeapon, RSWeapon, BodyWeapon };
         int count = 0;
         foreach (var parts in allParts)
         {

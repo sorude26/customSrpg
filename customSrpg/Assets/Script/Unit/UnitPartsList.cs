@@ -17,7 +17,8 @@ public struct UnitBuildData
     public int WeaponBodyID;
     public int WeaponRArmID;
     public int WeaponLArmID;
-    public UnitBuildData(int head,int body,int rArm,int lArm,int leg,int weaponB,int weaponRA,int weaponLA)
+    public int WeaponShoulderID;
+    public UnitBuildData(int head,int body,int rArm,int lArm,int leg,int weaponB,int weaponRA,int weaponLA,int weaponShoulder)
     {
         HeadID = head;
         BodyID = body;
@@ -27,7 +28,17 @@ public struct UnitBuildData
         WeaponBodyID = weaponB;
         WeaponRArmID = weaponRA;
         WeaponLArmID = weaponLA;
+        WeaponShoulderID = weaponShoulder;
     }
+}
+public enum PartsType
+{
+    Body,
+    Head,
+    RArm,
+    LArm,
+    Leg,
+    Weapon,
 }
 /// <summary>
 /// 全パーツを保有するオブジェクト

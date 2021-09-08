@@ -212,6 +212,10 @@ public class Unit : MonoBehaviour
     protected virtual void UnitDestroy()
     {
         EffectManager.PlayEffect(EffectType.Explosion, m_master.Body.BodyPos.position);
+        if (State == UnitState.Stop && StageManager.Instance.Turn == TurnState.Player)
+        {
+
+        }
         State = UnitState.Destory;
         m_motion.Destroy();
     }

@@ -219,6 +219,7 @@ public class BattleManager : MonoBehaviour
         {
             EffectManager.PlayMessage("Miss", m_target.transform.position, 500, 1f);
         }
+        yield return new WaitForSeconds(1f);
         BattleEnd?.Invoke();
     }
     /// <summary>
@@ -235,4 +236,44 @@ public class BattleManager : MonoBehaviour
     /// <param name="currentHP"></param>
     /// <returns></returns>
     public int GetPointDamage(int damage,int currentHP) => m_calculator.GetPointDamage(damage,currentHP);
+
+    public void PartsGet()
+    {
+        int number = 0;
+        if (number == 0)
+        {
+            if (m_target.GetUnitData().Body != null)
+            {
+
+            }
+        }
+        else if (number == 1)
+        {
+
+        }
+        else if (number == 2)
+        {
+
+        }
+        else if (number == 3)
+        {
+
+        }
+        else if (number == 4)
+        {
+
+        }
+        else if (number == 5)
+        {
+
+        }
+        else if (number == 6)
+        {
+
+        }
+        else if (number == 7)
+        {
+
+        }
+    }
 }
