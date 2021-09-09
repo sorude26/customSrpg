@@ -67,7 +67,7 @@ public class PartsBody : UnitPartsMaster<BodyData>
     }
     void DestroyEnd()
     {
-        EffectManager.PlayEffect(EffectType.ExplosionUnit, transform.position);
+        EffectManager.PlayEffect(EffectType.ExplosionUnit, BodyPos.position);
         gameObject.SetActive(false);
     }
 }

@@ -245,7 +245,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Body;
             if (parts != null)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.Body][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.Body][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Bodyを入手した");
             }
         }
@@ -254,7 +254,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Head;
             if (parts != null)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.Head][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.Head][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Headを入手した");
             }
         }
@@ -263,7 +263,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().RArm;
             if (parts != null)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.RArm][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.RArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：RArmを入手した");
             }
         }
@@ -272,7 +272,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().LArm;
             if (parts != null)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.LArm][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.LArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：LArmを入手した");
             }
         }
@@ -281,7 +281,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Leg;
             if (parts != null)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.Leg][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.Leg][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Legを入手した");
             }
         }
@@ -290,7 +290,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().RAWeapon;
             if (parts != null && parts.PartsID > 0)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}を入手した");
             }
         }
@@ -299,7 +299,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().LAWeapon;
             if (parts != null && parts.PartsID > 0)
             {
-                UnitBuildDataManager.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
+                UnitBuildDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}を入手した");
             }
         }

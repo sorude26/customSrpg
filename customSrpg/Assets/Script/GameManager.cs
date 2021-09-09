@@ -18,9 +18,9 @@ public class GameManager : MonoBehaviour
         }
         Instanse = this;
         DontDestroyOnLoad(gameObject);
-        UnitBuildDataManager.StartSet(m_partsList);
-        //SetSParts();
-        SetAllParts();
+        UnitBuildDataMaster.StartSet(m_partsList);
+        SetSParts();
+        //SetAllParts();
     }
 
     void SetAllParts()
@@ -28,9 +28,9 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < 6; i++)
         {
             var parts = (PartsType)i;
-            for (int x = 0; x < UnitBuildDataManager.HavePartsDic[parts].Length; x++)
+            for (int x = 0; x < UnitBuildDataMaster.HavePartsDic[parts].Length; x++)
             {
-                UnitBuildDataManager.HavePartsDic[parts][x]++;
+                UnitBuildDataMaster.HavePartsDic[parts][x]++;
             }
         }
     }
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
             var parts = (PartsType)i;
             for (int x = 0; x < 3; x++)
             {
-                UnitBuildDataManager.HavePartsDic[parts][x]++;
+                UnitBuildDataMaster.HavePartsDic[parts][x]++;
             }
         }
     }

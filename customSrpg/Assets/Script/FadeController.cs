@@ -10,6 +10,7 @@ public class FadeController : MonoBehaviour
     [SerializeField] float m_fadeSpeed = 1f;
     [SerializeField] Image m_fadePanel = default;
     Color m_fadePanelColor;
+    public static bool FadeNow { get; private set; }
     private void Awake()
     {
         Instance = this;
@@ -18,46 +19,74 @@ public class FadeController : MonoBehaviour
     }
     public void StartFadeIn()
     {
+        if (FadeNow)
+        {
+            return;
+        }
         StartCoroutine(FadeIn());
     }
     public void StartFadeIn(Action fadeInAction)
     {
+        if (FadeNow)
+        {
+            return;
+        }
         StartCoroutine(FadeIn(fadeInAction));
     }
     public void StartFadeOut(Action fadeOutAction)
     {
+        if (FadeNow)
+        {
+            return;
+        }
         StartCoroutine(FadeOut(fadeOutAction));
     }
     public void StartFadeOutIn(Action fadeInAction)
     {
+        if (FadeNow)
+        {
+            return;
+        }
         StartCoroutine(FadeOutIn(fadeInAction));
     }
     public void StartFadeOutIn(Action fadeOutAction, Action fadeInAction)
     {
+        if (FadeNow)
+        {
+            return;
+        }
         StartCoroutine(FadeOutIn(fadeOutAction, fadeInAction));
     }
     IEnumerator FadeIn(Action action)
     {
+        FadeNow = true;
         yield return FadeIn();
         action.Invoke();
+        FadeNow = false;
     }
     IEnumerator FadeOut(Action action)
     {
+        FadeNow = true;
         yield return FadeOut();
         action.Invoke();
+        FadeNow = false;
     }
     IEnumerator FadeOutIn(Action action)
     {
+        FadeNow = true;
         yield return FadeOut();
         yield return FadeIn();
         action.Invoke();
+        FadeNow = false;
     }
     IEnumerator FadeOutIn(Action fadeOutAction,Action fadeInAction)
     {
+        FadeNow = true;
         yield return FadeOut();
         fadeOutAction.Invoke();
         yield return FadeIn();
         fadeInAction.Invoke();
+        FadeNow = false;
     }
     IEnumerator FadeIn()
     {

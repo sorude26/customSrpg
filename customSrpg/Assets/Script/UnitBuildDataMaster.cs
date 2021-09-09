@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitBuildDataManager
+public class UnitBuildDataMaster
 {
     public const int MaxUintCount = 8;
     public int HaveUnitNumber { get; private set; } = 8;
@@ -33,5 +33,9 @@ public class UnitBuildDataManager
         HavePartsDic.Add(PartsType.Leg, allparts);
         allparts = new int[partsList.GetAllWeapons().Length];
         HavePartsDic.Add(PartsType.Weapon, allparts);
+        for (int i = 0; i < PlayerColors.Length; i++)
+        {
+            PlayerColors[i] = 22;
+        }
     }
 }

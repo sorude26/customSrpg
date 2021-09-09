@@ -14,6 +14,7 @@ namespace Customize
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
+        [SerializeField] UnitParameterView m_view;
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
@@ -24,7 +25,7 @@ namespace Customize
         void Start()
         {
             m_colorControl.StartSet();
-            m_maxNumber = UnitBuildDataManager.MaxUintCount;
+            m_maxNumber = UnitBuildDataMaster.MaxUintCount;
             for (int i = 0; i < m_maxNumber; i++)
             {
                 m_allModels[i].StartSet(m_colorControl.GetColor);
@@ -68,6 +69,12 @@ namespace Customize
             m_selectModel = m_allModels[m_number];
             m_cameraTarget.transform.position = m_selectModel.CameraPos.position;
             m_colorControl.SetColor(m_allModels[m_number].ColorNum);
+            StartCoroutine(SetParameter());
+        }
+        IEnumerator SetParameter()
+        {
+            yield return new WaitForEndOfFrame();
+            m_view.SetParameter(m_selectModel.Mastar);
         }
         public Action<float,float> OpenColorPanel()
         {
