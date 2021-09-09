@@ -1,0 +1,38 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d5fd2e753faddc4092f5d374360ddc6, type: 3}
+  m_Name: InPartsWeaponData
+  m_EditorClassIdentifier: 
+  m_partsID: 0
+  m_partsName:
+  - "MG\u30B9\u30BF\u30FC"
+  - S-BugMG
+  - S-BugRC
+  - "\u30D6\u30EC\u30A4\u30BARC"
+  m_weight: 070000001e0000005a0000001e000000
+  m_partsSize: 0a0000001e0000005a0000000a000000
+  m_power: 08000000140000004600000032000000
+  m_maxAttackNumber: 0a0000000f0000000100000001000000
+  m_attackInterval:
+  - 0.1
+  - 0.1
+  - 0.3
+  - 0.3
+  m_hitAccuracy: 6e000000500000006300000063000000
+  m_range: 03000000040000000800000006000000
+  m_minRange: 00000000000000000600000002000000
+  m_verticalRange:
+  - 2
+  - 2
+  - 5
+  - 3
+  m_weaponType: 00000000000000000000000000000000
