@@ -9,11 +9,13 @@ using UnityEngine;
 public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :UnitPartsData
 {
     /// <summary> パーツ耐久値 </summary>
-    public int MaxPartsHp { get => m_partsData.MaxPartsHp[m_partsID]; }
+    public int MaxPartsHP { get => m_partsData.MaxPartsHp[m_partsID]; }
     /// <summary> パーツ装甲値 </summary>
     public int Defense { get => m_partsData.Defense[m_partsID]; }
     /// <summary> 現在のパーツ耐久値 </summary>
-    public int CurrentPartsHp { get; protected set; }
+    protected int m_currentPartsHp;
+    /// <summary> 現在のパーツ耐久値 </summary>
+    public int CurrentPartsHp { get => m_currentPartsHp; }
     /// <summary> 表示用パーツ耐久値 </summary>
     public int ViewCurrentHp { get; protected set; }
     /// <summary> ダメージを受けた回数 </summary>
@@ -38,8 +40,8 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
     protected virtual void StartSet()
     {
         m_damageSmoke.SetActive(false);
-        CurrentPartsHp = MaxPartsHp;
-        ViewCurrentHp = MaxPartsHp;
+        m_currentPartsHp = MaxPartsHP;
+        ViewCurrentHp = MaxPartsHP;
         m_partsDamage = new List<int>();
     }
     /// <summary>
@@ -71,7 +73,7 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
 
     public virtual int Damage(int power)
     {
-        if (CurrentPartsHp <= 0)
+        if (m_currentPartsHp <= 0)
         {
             return 0;
         }
@@ -81,15 +83,15 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
             return 0;
         }
         int damage = BattleCalculator.GetDamage(power, Defense);
-        CurrentPartsHp -= damage;
+        m_currentPartsHp -= damage;
         m_partsDamage.Add(damage);
-        if (CurrentPartsHp < MaxPartsHp / 3)
+        if (m_currentPartsHp < MaxPartsHP / 3)
         {
             m_damageSmoke.SetActive(true);
         }
-        if (CurrentPartsHp <= 0)
+        if (m_currentPartsHp <= 0)
         {
-            CurrentPartsHp = 0;
+            m_currentPartsHp = 0;
             Break = true;
         }
         return damage;
@@ -103,7 +105,7 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
         m_damageCount++;
         if (m_damageCount >= m_partsDamage.Count)
         {
-            if (CurrentPartsHp <= 0)
+            if (m_currentPartsHp <= 0)
             {
                 EffectManager.PlayEffect(EffectType.ExplosionParts, transform.position);
                 PartsBreak();
@@ -134,10 +136,6 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
             item.SetActive(false);
         }
     }
-
-    public int GetMaxHP() => MaxPartsHp;
-    public int GetCurrentHP() => CurrentPartsHp;
-    public int GetDefense() => Defense;
     /// <summary>
     /// 被ダメージ時の色変化
     /// </summary>

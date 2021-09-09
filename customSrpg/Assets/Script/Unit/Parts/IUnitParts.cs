@@ -5,23 +5,20 @@ using UnityEngine;
 /// <summary>
 /// ユニットパーツが持つ情報を返す為のインターフェース
 /// </summary>
-public interface IUnitParts : IParts ,IBattleEffect
+public interface IUnitParts : IParts, IBattleEffect
 {
     /// <summary>
-    /// パーツの最大耐久値を返す
+    /// パーツの最大耐久値
     /// </summary>
-    /// <returns></returns>
-    int GetMaxHP();
+    int MaxPartsHP { get; }
     /// <summary>
-    /// パーツの現在耐久値を返す
+    /// パーツの現在耐久値
     /// </summary>
-    /// <returns></returns>
-    int GetCurrentHP();
+    int CurrentPartsHp { get; }
     /// <summary>
-    /// パーツの防御力を返す
+    /// パーツの防御力
     /// </summary>
-    /// <returns></returns>
-    int GetDefense();
+    int Defense { get; }
     /// <summary>
     /// パーツにダメージを与える
     /// </summary>

@@ -28,9 +28,6 @@ public abstract class PartsMaster<T> : MonoBehaviour, IParts where T:PartsData
     public bool Break { get; protected set; }
     /// <summary> パーツの固有アニメーション </summary>
     public Animator PartsAnime { get => m_anime; }
-    public int GetID() => PartsID;
-    public int GetWeight() => Weight;
     public virtual int GetSize() => PartsSize;
-    public bool GetBreak() => Break;
     public virtual void DestoryParts() => Destroy(this.gameObject);
 }

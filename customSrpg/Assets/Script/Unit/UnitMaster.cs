@@ -49,7 +49,7 @@ public class UnitMaster : MonoBehaviour
         foreach (var parts in allParts)
         {
             if (parts != null)
-                hp += parts.GetMaxHP();
+                hp += parts.MaxPartsHP;
         }
         return hp;
     }
@@ -64,7 +64,7 @@ public class UnitMaster : MonoBehaviour
         foreach (var parts in allParts)
         {
             if (parts != null)
-                hp += parts.GetCurrentHP();
+                hp += parts.CurrentPartsHp;
         }
         return hp;
     }
@@ -132,14 +132,18 @@ public class UnitMaster : MonoBehaviour
     public int GetWeight()
     {
         int weight = 0;
-        IParts[] allParts = { Body, Head, LArm, RArm, Leg, LAWeapon, RAWeapon, SWeapon, RSWeapon, BodyWeapon };
+        IParts[] allParts = { Body, Head, LArm, RArm, LAWeapon, RAWeapon, SWeapon, RSWeapon, BodyWeapon };
+        if (Leg != null)
+        {
+            weight += Leg.Weight;
+        }
         foreach (var parts in allParts)
         {
             if (parts != null)
             {
-                if (parts.GetBreak())
+                if (!parts.Break)
                 {
-                    weight += parts.GetWeight();
+                    weight += parts.Weight;
                 }
             }
         }
@@ -158,9 +162,9 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts != null)
             {
-                if (parts.GetCurrentHP() > 0)
+                if (parts.CurrentPartsHp > 0)
                 {
-                    armor += parts.GetDefense();
+                    armor += parts.Defense;
                     count++;
                 }
             }
@@ -328,7 +332,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts != null)
             {
-                if (parts.GetCurrentHP() > 0)
+                if (parts.CurrentPartsHp > 0)
                 {
                     hitPos += parts.GetSize();
                 }
@@ -340,7 +344,7 @@ public class UnitMaster : MonoBehaviour
         {
             if (parts != null)
             {
-                if (parts.GetBreak())
+                if (parts.Break)
                 {
                     continue;
                 }
@@ -484,6 +488,10 @@ public class UnitMaster : MonoBehaviour
             }
         }
     }
+    /// <summary>
+    /// パーツ固有アニメーションを返す
+    /// </summary>
+    /// <returns></returns>
     public Animator[] GetAnimators()
     {
         List<Animator> animators = new List<Animator>();

@@ -5,31 +5,31 @@ using UnityEngine;
 /// <summary>
 /// パーツが持つ情報を返す為のインターフェース
 /// </summary>
-public interface IParts 
+public interface IParts
 {
     /// <summary>
-    /// IDを返す
+    /// パーツID
     /// </summary>
-    /// <returns></returns>
-    int GetID();
+    int PartsID { get; }
     /// <summary>
-    /// 重量を返す
+    /// 破壊フラグ
     /// </summary>
-    /// <returns></returns>
-    int GetWeight();
+    bool Break { get; }
+    /// <summary>
+    /// 重量
+    /// </summary>
+    int Weight { get; }
     /// <summary>
     /// パーツのサイズを返す
     /// </summary>
     /// <returns></returns>
     int GetSize();
     /// <summary>
-    /// 破壊されているかを返す
-    /// </summary>
-    /// <returns></returns>
-    bool GetBreak();
-    /// <summary>
     /// パーツを消す
     /// </summary>
     void DestoryParts();
+    /// <summary>
+    /// パーツ固有アニメーション
+    /// </summary>
     Animator PartsAnime { get; }
 }

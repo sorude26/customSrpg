@@ -41,7 +41,7 @@ public class PartsArm : UnitPartsMaster<ArmData>
     }
     public override int Damage(int power)
     {
-        if (CurrentPartsHp <= 0)
+        if (m_currentPartsHp <= 0)
         {
             return 0;
         }
@@ -51,15 +51,15 @@ public class PartsArm : UnitPartsMaster<ArmData>
             return 0;
         }
         int damage = BattleCalculator.GetDamage(power, Defense);
-        CurrentPartsHp -= damage;
+        m_currentPartsHp -= damage;
         m_partsDamage.Add(damage);
-        if (CurrentPartsHp < MaxPartsHp / 3)
+        if (m_currentPartsHp < MaxPartsHP / 3)
         {
             m_damageSmoke.SetActive(true);
         }
-        if (CurrentPartsHp <= 0)
+        if (m_currentPartsHp <= 0)
         {
-            CurrentPartsHp = 0;
+            m_currentPartsHp = 0;
             Break = true;
             GripWeapon.SetBreak();
         }

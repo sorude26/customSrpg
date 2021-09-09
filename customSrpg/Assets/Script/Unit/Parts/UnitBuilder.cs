@@ -144,6 +144,7 @@ public class UnitBuilder : MonoBehaviour
         m_body.transform.position = bodybP.position;
         m_body.transform.SetParent(bodybP);
         if (m_body.BodyWeapon) { m_bodyWeapon = m_body.BodyWeapon; }
+        if (m_body.ShoulderWeapon) { m_shoulderWeapon = m_body.ShoulderWeapon; }
         rArmbP.transform.position = m_body.RArmPos.position;
         lArmbP.transform.position = m_body.LArmPos.position;
         headP.transform.position = m_body.HeadPos.position;
@@ -200,6 +201,7 @@ public class UnitBuilder : MonoBehaviour
         m_body.transform.position = bodybP.position;
         m_body.transform.SetParent(bodybP);
         if (m_body.BodyWeapon) { m_bodyWeapon = m_body.BodyWeapon; }
+        if (m_body.ShoulderWeapon) { m_shoulderWeapon = m_body.ShoulderWeapon; }
     }
     void BuildGiant(UnitBuildData data)
     {
