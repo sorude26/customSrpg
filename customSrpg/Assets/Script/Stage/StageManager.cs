@@ -239,7 +239,7 @@ public class StageManager : MonoBehaviour
     public void PointUnitSet(int x, int z)
     {
         var area = m_startData.Where(p => p.PosX == x && p.PosZ == z).FirstOrDefault();
-        if (area == null)
+        if (area == null || !area.StagePanel.StartMode)
         {
             return;
         }
@@ -247,6 +247,7 @@ public class StageManager : MonoBehaviour
             GameManager.Instanse.GetColor(UnitBuildDataManager.PlayerColors[m_playerCount]), this.transform);
         m_players.Add(unit);
         m_playerCount++;
+        area.StagePanel.CloseStartPanel();
         if (m_playerCount >= m_playerNum)
         {
             EventManager.GameStart();

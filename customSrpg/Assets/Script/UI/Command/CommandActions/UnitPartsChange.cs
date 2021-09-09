@@ -8,11 +8,11 @@ public class UnitPartsChange : CommandAction
 {
     public virtual event Action<int> OnPartsChange;
     protected int[] m_partsIDs;
-    public override int CommandNum { get => GameManager.Instanse.PartsList.GetAllBodys().Length; }
+    public override int CommandNum { get => GameManager.Instanse.PartsList.GetHaveAllBody().Length; }
 
     public override void SetData(CommandBase[] commands)
     {
-        var allParts = GameManager.Instanse.PartsList.GetAllBodys();
+        var allParts = GameManager.Instanse.PartsList.GetHaveAllBody();
         m_commandNames = new string[allParts.Length];
         m_partsIDs = new int[allParts.Length];
         for (int i = 0; i < allParts.Length; i++)

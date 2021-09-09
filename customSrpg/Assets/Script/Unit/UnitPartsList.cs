@@ -63,4 +63,76 @@ public class UnitPartsList : ScriptableObject
     public PartsArm[] GetAllLArms() => m_arms.Where(parts => parts.Arm == ArmType.Left).ToArray();
     public PartsLeg[] GetAllLegs() => m_legs;
     public WeaponMaster[] GetAllWeapons() => m_weapons;
+    public PartsBody[] GetHaveAllBody()
+    {
+        List<PartsBody> allParts = new List<PartsBody>();
+        for (int i = 0; i < m_bodys.Length; i++)
+        { 
+            if (UnitBuildDataManager.HavePartsDic[PartsType.Body][i] > 0)
+            {
+                allParts.Add(GetBody(i));
+            }
+        }
+        return allParts.ToArray();
+    }
+    public PartsHead[] GetHaveAllHead()
+    {
+        List<PartsHead> allParts = new List<PartsHead>();
+        for (int i = 0; i < m_heads.Length; i++)
+        {
+            if (UnitBuildDataManager.HavePartsDic[PartsType.Head][i] > 0)
+            {
+                allParts.Add(GetHead(i));
+            }
+        }
+        return allParts.ToArray();
+    }
+    public PartsArm[] GetHaveAllRArm()
+    {
+        List<PartsArm> allParts = new List<PartsArm>();
+        for (int i = 0; i < GetAllRArms().Length; i++)
+        {
+            if (UnitBuildDataManager.HavePartsDic[PartsType.RArm][i] > 0)
+            {
+                allParts.Add(GetRArm(i));
+            }
+        }
+        return allParts.ToArray();
+    }
+    public PartsArm[] GetHaveAllLArm()
+    {
+        List<PartsArm> allParts = new List<PartsArm>();
+        for (int i = 0; i < GetAllLArms().Length; i++)
+        {
+            if (UnitBuildDataManager.HavePartsDic[PartsType.LArm][i] > 0)
+            {
+                allParts.Add(GetLArm(i));
+            }
+        }
+        return allParts.ToArray();
+    }
+    public PartsLeg[] GetHaveAllLeg()
+    {
+        List<PartsLeg> allParts = new List<PartsLeg>();
+        for (int i = 0; i < m_legs.Length; i++)
+        {
+            if (UnitBuildDataManager.HavePartsDic[PartsType.Leg][i] > 0)
+            {
+                allParts.Add(GetLeg(i));
+            }
+        }
+        return allParts.ToArray();
+    }
+    public WeaponMaster[] GetHaveAllWeapon()
+    {
+        List<WeaponMaster> allParts = new List<WeaponMaster>();
+        for (int i = 0; i < m_weapons.Length; i++)
+        {
+            if (UnitBuildDataManager.HavePartsDic[PartsType.Weapon][i] > 0)
+            {
+                allParts.Add(GetWeapon(i));
+            }
+        }
+        return allParts.ToArray();
+    }
 }

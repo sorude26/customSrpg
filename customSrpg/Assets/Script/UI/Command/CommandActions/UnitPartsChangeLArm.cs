@@ -5,11 +5,11 @@ using UIControl;
 
 public class UnitPartsChangeLArm : UnitPartsChange
 {
-    public override int CommandNum { get => GameManager.Instanse.PartsList.GetAllLArms().Length; }
+    public override int CommandNum { get => GameManager.Instanse.PartsList.GetHaveAllLArm().Length; }
 
     public override void SetData(CommandBase[] commands)
     {
-        var allParts = GameManager.Instanse.PartsList.GetAllLArms();
+        var allParts = GameManager.Instanse.PartsList.GetHaveAllLArm();
         m_commandNames = new string[allParts.Length];
         m_partsIDs = new int[allParts.Length];
         for (int i = 0; i < allParts.Length; i++)

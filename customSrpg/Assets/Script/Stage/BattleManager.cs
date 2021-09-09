@@ -239,41 +239,69 @@ public class BattleManager : MonoBehaviour
 
     public void PartsGet()
     {
-        int number = 0;
+        int number = UnityEngine.Random.Range(0, 12);
         if (number == 0)
         {
-            if (m_target.GetUnitData().Body != null)
+            var parts = m_target.GetUnitData().Body;
+            if (parts != null)
             {
-
+                UnitBuildDataManager.HavePartsDic[PartsType.Body][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}：Bodyを入手した");
             }
         }
         else if (number == 1)
         {
-
+            var parts = m_target.GetUnitData().Head;
+            if (parts != null)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.Head][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}：Headを入手した");
+            }
         }
         else if (number == 2)
         {
-
+            var parts = m_target.GetUnitData().RArm;
+            if (parts != null)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.RArm][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}：RArmを入手した");
+            }
         }
         else if (number == 3)
         {
-
+            var parts = m_target.GetUnitData().LArm;
+            if (parts != null)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.LArm][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}：LArmを入手した");
+            }
         }
         else if (number == 4)
         {
-
+            var parts = m_target.GetUnitData().Leg;
+            if (parts != null)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.Leg][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}：Legを入手した");
+            }
         }
         else if (number == 5)
         {
-
+            var parts = m_target.GetUnitData().RAWeapon;
+            if (parts != null && parts?.GetID() > 0)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.Weapon][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}を入手した");
+            }
         }
         else if (number == 6)
         {
-
-        }
-        else if (number == 7)
-        {
-
+            var parts = m_target.GetUnitData().LAWeapon;
+            if (parts != null && parts?.GetID() > 0)
+            {
+                UnitBuildDataManager.HavePartsDic[PartsType.Weapon][parts.GetID()]++;
+                Debug.Log($"{parts.PartsName}を入手した");
+            }
         }
     }
 }

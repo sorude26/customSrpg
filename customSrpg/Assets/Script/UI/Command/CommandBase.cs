@@ -97,7 +97,10 @@ namespace UIControl
         }
         public virtual void MoveChild()
         {
-            m_children[SelectController.SelectNum].SelectCommand();
+            if (m_children.Length > 0)
+            {
+                m_children[SelectController.SelectNum].SelectCommand();
+            }
         }
         public virtual void MoveParent()
         {

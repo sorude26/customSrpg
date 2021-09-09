@@ -52,6 +52,10 @@ public class WeaponButtons : ButtonMaster
             {
                 return;
             }
+            if (BattleManager.Instance.AttackTarget.Count == 0)
+            {
+                return;
+            }
             BattleManager.Instance.SetWeaponPos((WeaponPosition)m_buttonNum);
         }
         base.Decision();

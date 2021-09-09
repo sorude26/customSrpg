@@ -6,11 +6,11 @@ using UIControl;
 
 public class UnitPartsChangeHead : UnitPartsChange
 {
-    public override int CommandNum { get => GameManager.Instanse.PartsList.GetAllHeads().Length; }
+    public override int CommandNum { get => GameManager.Instanse.PartsList.GetHaveAllHead().Length; }
 
     public override void SetData(CommandBase[] commands)
     {
-        var allParts = GameManager.Instanse.PartsList.GetAllHeads();
+        var allParts = GameManager.Instanse.PartsList.GetHaveAllHead();
         m_commandNames = new string[allParts.Length];
         m_partsIDs = new int[allParts.Length];
         for (int i = 0; i < allParts.Length; i++)

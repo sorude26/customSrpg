@@ -214,7 +214,7 @@ public class Unit : MonoBehaviour
         EffectManager.PlayEffect(EffectType.Explosion, m_master.Body.BodyPos.position);
         if (State == UnitState.Stop && StageManager.Instance.Turn == TurnState.Player)
         {
-
+            BattleManager.Instance.PartsGet();
         }
         State = UnitState.Destory;
         m_motion.Destroy();
