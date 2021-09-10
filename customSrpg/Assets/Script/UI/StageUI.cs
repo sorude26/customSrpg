@@ -4,14 +4,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public enum ButtonType 
-{
-    Move,
-    Attack,
-    Rest,
-    Back,
-}
-
 public class StageUI : MonoBehaviour
 {
     [SerializeField] ButtonMaster m_actionB;
@@ -65,8 +57,7 @@ public class StageUI : MonoBehaviour
         else
         {
             EventManager.StageGuideViewEnd();
-            StageManager.Instance.TurnUnit.UnitRest();
-            StageManager.Instance.NextUnit();
+            StageManager.Instance.TurnUnit.GetComponent<PlayerUnit>().ActionEnd();
             CommandClose();
         }
     }

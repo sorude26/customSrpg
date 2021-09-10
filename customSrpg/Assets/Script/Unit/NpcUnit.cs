@@ -86,6 +86,7 @@ public class NpcUnit : Unit
     {
         yield return new WaitForSeconds(m_waitTime);
         m_waitTime = 0.1f;
+        m_movelControl.MoveEnd();
         UnitRest();
         StageManager.Instance.NextUnit();
     }
