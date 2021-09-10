@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb9c1bf2104cd8e47b809c9ae6d155c5, type: 3}
   m_Name: SortieUnits2
   m_EditorClassIdentifier: 
-  m_sortieUnitsPattern: 04000000
+  m_sortieUnitsPattern: 05000000
   m_unitsColorPattern:
-  - {r: 0.7169812, g: 0.7169812, b: 0.7169812, a: 0}
+  - {r: 0.7971698, g: 0.97550064, b: 1, a: 1}
   m_sortieUnitsBuildPattern:
   - HeadID: 2
     BodyID: 9
@@ -25,3 +25,5 @@ MonoBehaviour:
     WeaponRArmID: 1
     WeaponLArmID: 5
     WeaponShoulderID: 0
+  m_popPartsPattern:
+  - {fileID: 11400000, guid: 4bdcba19bc0ea45438147048d71f7023, type: 2}

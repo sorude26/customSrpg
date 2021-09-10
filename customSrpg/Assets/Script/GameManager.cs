@@ -19,8 +19,8 @@ public class GameManager : MonoBehaviour
         Instanse = this;
         DontDestroyOnLoad(gameObject);
         UnitBuildDataMaster.StartSet(m_partsList);
-        //SetSParts();
-        SetAllParts();
+        SetSParts();
+        //SetAllParts();
     }
 
     void SetAllParts()
