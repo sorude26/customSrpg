@@ -91,6 +91,7 @@ public class UnitBuilder : MonoBehaviour
     public Transform ResetBuildModel(UnitBuildData data, UnitMaster unitMaster)
     {
         DestroyAllParts();
+        unitMaster.FullReset();
         return SetDataModel(data, unitMaster);
     }
     public void DestroyAllParts() 

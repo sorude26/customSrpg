@@ -511,4 +511,17 @@ public class UnitMaster : MonoBehaviour
         }
         return animators.ToArray();
     }
+    public void FullReset()
+    {
+        Body = null;
+        Head = null;
+        LArm = null;
+        RArm = null;
+        Leg = null;
+        LAWeapon = null;
+        RAWeapon = null;
+        SWeapon = null;
+        RSWeapon = null;
+        BodyWeapon = null;
+    }
 }
