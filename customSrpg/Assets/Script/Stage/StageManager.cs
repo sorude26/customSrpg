@@ -41,6 +41,7 @@ public class StageManager : MonoBehaviour
     List<Unit> m_units;
     [SerializeField] StageUnitCreater m_unitCreater;
     [SerializeField] StageMassage m_massage;
+    public StageMassage Massage { get => m_massage; }
     [SerializeField] CursorControl m_cursor;
     [SerializeField] StageUI m_uI;
     [SerializeField] GameObject m_targetMark;

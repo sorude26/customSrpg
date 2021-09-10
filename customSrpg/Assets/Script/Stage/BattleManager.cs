@@ -27,6 +27,7 @@ public class BattleManager : MonoBehaviour
     /// <summary> 攻撃時の合計ダメージ </summary>
     int m_totalDamage;
     public event Action BattleEnd;
+    string m_getName;
     private void Awake()
     {
         Instance = this;
@@ -50,7 +51,7 @@ public class BattleManager : MonoBehaviour
         foreach (var unit in targetUnit)
         {
             var t = targetPos.Where(px => unit.State == UnitState.Stop && px.PosX == unit.CurrentPosX && px.PosZ == unit.CurrentPosZ).FirstOrDefault();
-            if(t != null)
+            if (t != null)
             {
                 m_attackTarget.Add(unit);
             }
@@ -122,10 +123,11 @@ public class BattleManager : MonoBehaviour
         }
         AttackNow = true;
         m_totalDamage = 0;
+        m_getName = "";
         m_attacker.TargetLook(m_target);
         m_target.TargetLook(m_attacker);
         StartCoroutine(BattleStart());
-        StageManager.Instance.Cursor.Warp(m_target.transform.position,m_attacker.transform.position);
+        StageManager.Instance.Cursor.Warp(m_target.transform.position, m_attacker.transform.position);
         return true;
     }
     IEnumerator BattleStart()
@@ -165,7 +167,7 @@ public class BattleManager : MonoBehaviour
     /// <param name="target"></param>
     /// <param name="hit"></param>
     /// <param name="power"></param>
-    void Attack(Unit target,int hit,int power)
+    void Attack(Unit target, int hit, int power)
     {
         int r = UnityEngine.Random.Range(0, 100);
         if (r <= hit)
@@ -182,7 +184,7 @@ public class BattleManager : MonoBehaviour
     /// </summary>
     /// <param name="attackWeapon"></param>
     /// <returns></returns>
-    public int GetHit(WeaponPosition attackWeapon) => 
+    public int GetHit(WeaponPosition attackWeapon) =>
         m_calculator.GetHit(m_attacker.GetUnitData().GetHitAccuracy(attackWeapon), m_target.GetUnitData().GetAvoidance());
     /// <summary>
     /// 武装の命中率を返す
@@ -203,24 +205,38 @@ public class BattleManager : MonoBehaviour
     /// <summary>
     /// 攻撃終了時の処理
     /// </summary>
-    void AttackEnd() 
+    void AttackEnd()
     {
         StartCoroutine(AllBattleEnd());
     }
     IEnumerator AllBattleEnd()
     {
         yield return StageManager.Instance.Cursor.Camera.FocusEnd();
-        AttackNow = false;
         if (m_totalDamage > 0)
         {
-            EffectManager.PlayMessage($"Total:{m_totalDamage}", m_target.transform.position, 550, 1f);
+            StartCoroutine(StageManager.Instance.Massage.ShortMessageView($"Total:{m_totalDamage}", 5f, 1f, 100));
+
         }
         else
         {
-            EffectManager.PlayMessage("Miss", m_target.transform.position, 500, 1f);
+            StartCoroutine(StageManager.Instance.Massage.ShortMessageView("Miss", 5f, 0.8f, 90));
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.05f);
+        while (StageManager.Instance.Massage.ViewNow)
+        {
+            yield return null;
+        }
+        if (m_getName != "")
+        {
+            StartCoroutine(StageManager.Instance.Massage.ShortMessageView(m_getName, 3f, 2f, 95));
+        }
+        yield return new WaitForSeconds(0.05f);
+        while (StageManager.Instance.Massage.ViewNow)
+        {
+            yield return null;
+        }
         BattleEnd?.Invoke();
+        AttackNow = false;
     }
     /// <summary>
     /// 耐久得点
@@ -235,7 +251,7 @@ public class BattleManager : MonoBehaviour
     /// <param name="damage"></param>
     /// <param name="currentHP"></param>
     /// <returns></returns>
-    public int GetPointDamage(int damage,int currentHP) => m_calculator.GetPointDamage(damage,currentHP);
+    public int GetPointDamage(int damage, int currentHP) => m_calculator.GetPointDamage(damage, currentHP);
 
     public void PartsGet()
     {
@@ -247,6 +263,7 @@ public class BattleManager : MonoBehaviour
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.Body][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Bodyを入手した");
+                m_getName = $"Body:{parts.PartsName}、Get";
             }
         }
         else if (number == 1)
@@ -256,6 +273,7 @@ public class BattleManager : MonoBehaviour
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.Head][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Headを入手した");
+                m_getName = $"Head:{parts.PartsName}、Get";
             }
         }
         else if (number == 2)
@@ -265,6 +283,7 @@ public class BattleManager : MonoBehaviour
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.RArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：RArmを入手した");
+                m_getName = $"RArm:{parts.PartsName}、Get";
             }
         }
         else if (number == 3)
@@ -274,6 +293,7 @@ public class BattleManager : MonoBehaviour
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.LArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：LArmを入手した");
+                m_getName = $"LArm:{parts.PartsName}、Get";
             }
         }
         else if (number == 4)
@@ -283,6 +303,7 @@ public class BattleManager : MonoBehaviour
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.Leg][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Legを入手した");
+                m_getName = $"Leg:{parts.PartsName}、Get";
             }
         }
         else if (number == 5)
@@ -291,7 +312,8 @@ public class BattleManager : MonoBehaviour
             if (parts != null && parts.PartsID > 0)
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
-                Debug.Log($"{parts.PartsName}を入手した");
+                Debug.Log($"{parts.PartsName}、入手");
+                m_getName = $"Weapon:{parts.PartsName}、Get";
             }
         }
         else if (number == 6)
@@ -300,7 +322,8 @@ public class BattleManager : MonoBehaviour
             if (parts != null && parts.PartsID > 0)
             {
                 UnitBuildDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
-                Debug.Log($"{parts.PartsName}を入手した");
+                Debug.Log($"{parts.PartsName}、入手");
+                m_getName = $"Weapon:{parts.PartsName}、Get";
             }
         }
     }

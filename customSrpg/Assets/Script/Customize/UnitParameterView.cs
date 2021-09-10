@@ -24,7 +24,6 @@ namespace Customize
             m_adoParameter.fillAmount = (float)unitData.GetAvoidance() / m_maxParameter[4];
             m_hitParameter.fillAmount = (float)unitData.GetHitAccuracy(WeaponPosition.RShoulder) / m_maxParameter[5];
             m_weightParameter.fillAmount = (float)unitData.GetWeight() / m_maxParameter[6];
-            Debug.Log($"耐久値{unitData.GetMaxHP()}");
         }
     }
 }

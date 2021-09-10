@@ -84,11 +84,7 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
         }
         int damage = BattleCalculator.GetDamage(power, Defense);
         m_currentPartsHp -= damage;
-        m_partsDamage.Add(damage);
-        if (m_currentPartsHp < MaxPartsHP / 3)
-        {
-            m_damageSmoke.SetActive(true);
-        }
+        m_partsDamage.Add(damage);        
         if (m_currentPartsHp <= 0)
         {
             m_currentPartsHp = 0;
@@ -119,6 +115,10 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
             EffectManager.PlayEffect(EffectType.ShotHit, m_hitPos[r].position);
             EffectManager.PlayDamage(damage, m_hitPos[r].position);
             ViewCurrentHp -= damage;
+            if (ViewCurrentHp < MaxPartsHP / 3)
+            {
+                m_damageSmoke.SetActive(true);
+            }
             if (!m_damageColor)
             {
                 m_damageColor = true;
