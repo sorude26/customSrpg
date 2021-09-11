@@ -10,12 +10,12 @@ namespace UIControl
         [SerializeField] Vector2 m_commandSpan = Vector2.down;
         [SerializeField] Vector2 m_commandStartPos = Vector2.zero;
         [SerializeField] RectTransform m_rect;
+        [SerializeField] RectTransform m_targetMark;
         int m_maxCommandNumber;
         public int SelectNum { get; private set; }
         Vector2[] m_commandPos;
         public RectTransform BasePos { get => m_rect; }
         public override event Action<int> OnCommand;
-        CommandBase[] m_commandBases;
         public override void StartSet(int id, Action<int> action)
         {
             CommandID = id;
@@ -26,6 +26,10 @@ namespace UIControl
             m_maxCommandNumber = commands.Length;
             m_commandPos = new Vector2[m_maxCommandNumber];
             m_rect.localPosition = m_commandStartPos;
+            if (m_targetMark)
+            {
+                m_targetMark.localPosition = m_rect.localPosition;
+            }
             Vector2 commandPos = Vector2.zero;
             for (int i = 0; i < m_maxCommandNumber; i++)
             {
@@ -33,7 +37,6 @@ namespace UIControl
                 commands[i].GetComponent<RectTransform>().localPosition = commandPos;
                 commandPos += m_commandSpan;
             }
-            m_commandBases = commands;
         }
         public void Next()
         {
@@ -42,11 +45,25 @@ namespace UIControl
             if (SelectNum > m_maxCommandNumber - 1)
             {
                 SelectNum = 0;
-                BasePos.localPosition = m_commandStartPos;
+                if (m_targetMark)
+                {
+                    m_targetMark.localPosition = m_commandStartPos;
+                }
+                else
+                {
+                    BasePos.localPosition = m_commandStartPos;
+                }
             }
             else
             {
-                BasePos.localPosition = (Vector2)BasePos.localPosition - m_commandSpan;
+                if (m_targetMark)
+                {
+                    m_targetMark.localPosition = (Vector2)m_targetMark.localPosition + m_commandSpan;
+                }
+                else
+                {
+                    BasePos.localPosition = (Vector2)BasePos.localPosition - m_commandSpan;
+                }
             }
             SelectOn();
         }
@@ -57,11 +74,25 @@ namespace UIControl
             if (SelectNum < 0)
             {
                 SelectNum = m_maxCommandNumber - 1;
-                BasePos.localPosition = (Vector2)BasePos.localPosition - m_commandSpan * SelectNum;
+                if (m_targetMark)
+                {
+                    m_targetMark.localPosition = (Vector2)m_targetMark.localPosition + m_commandSpan * SelectNum;
+                }
+                else
+                {
+                    BasePos.localPosition = (Vector2)BasePos.localPosition - m_commandSpan * SelectNum;
+                }
             }
             else
             {
-                BasePos.localPosition = (Vector2)BasePos.localPosition + m_commandSpan;
+                if (m_targetMark)
+                {
+                    m_targetMark.localPosition = (Vector2)m_targetMark.localPosition - m_commandSpan;
+                }
+                else
+                {
+                    BasePos.localPosition = (Vector2)BasePos.localPosition + m_commandSpan;
+                }
             }
             SelectOn();
         }
@@ -80,11 +111,19 @@ namespace UIControl
         {
             m_button.Select();
             m_rect.gameObject.SetActive(true);
+            if (m_targetMark)
+            {
+                m_targetMark.gameObject.SetActive(true);
+            }
         }
 
         public override void OutCommand()
         {
             m_rect.gameObject.SetActive(false);
+            if (m_targetMark)
+            {
+                m_targetMark.gameObject.SetActive(false);
+            }
         }
     }
 }

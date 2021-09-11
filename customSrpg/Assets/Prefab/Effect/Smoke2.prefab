@@ -106,7 +106,7 @@ ParticleSystem:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  moveWithTransform: 0
+  moveWithTransform: 1
   moveWithCustomTransform: {fileID: 0}
   scalingMode: 1
   randomSeed: 0
@@ -4775,6 +4775,16 @@ PrefabInstance:
     - target: {fileID: 1028536660251671181, guid: 87c191c61ab04c24ba53e2baa895e612,
         type: 3}
       propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028536660251671181, guid: 87c191c61ab04c24ba53e2baa895e612,
+        type: 3}
+      propertyPath: prewarm
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1028536660251671181, guid: 87c191c61ab04c24ba53e2baa895e612,
+        type: 3}
+      propertyPath: lengthInSec
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1028536660251671182, guid: 87c191c61ab04c24ba53e2baa895e612,
