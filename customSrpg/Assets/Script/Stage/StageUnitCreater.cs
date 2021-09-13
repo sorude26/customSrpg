@@ -21,7 +21,7 @@ public class StageUnitCreater : ScriptableObject
                 {
                     break;
                 }
-                unit.Add(CreateUnit(positions[i], units.PatternUnit(k), units.ColorPattern[k], parent));
+                unit.Add(CreateUnit(positions[i], units.SoriteData(k), units.ColorPattern[k], parent));
                 i++;
             }
         }
