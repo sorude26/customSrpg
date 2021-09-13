@@ -19,7 +19,7 @@ namespace UIControl
         [SerializeField] CommandBase[] m_defaultCommandes;
         [SerializeField] CommandBase m_protoCommande;
         [SerializeField] CommandAction m_action;
-        CommandBase[] m_children;
+        protected CommandBase[] m_children;
         public virtual void StartSet()
         {
             SelectController = GetComponent<ViewCommandControl>();

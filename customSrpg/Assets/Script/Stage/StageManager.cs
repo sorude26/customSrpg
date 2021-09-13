@@ -244,15 +244,15 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
-          var unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitBuildDataMaster.PlayerUnitBuildDatas[m_playerCount],
-            GameManager.Instanse.GetColor(UnitBuildDataMaster.PlayerColors[m_playerCount]), this.transform);
+          var unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitDataMaster.PlayerUnitBuildDatas[m_playerCount],
+            GameManager.Instanse.GetColor(UnitDataMaster.PlayerColors[m_playerCount]), this.transform);
         m_players.Add(unit);
         m_playerCount++;
         area.StagePanel.CloseStartPanel();
         if (m_playerCount >= m_playerNum)
         {
             EventManager.GameStart();
-            GameStart();
+            StartCoroutine(StageMassage(4, GameStart));
         }
     }
     void UnitSet()

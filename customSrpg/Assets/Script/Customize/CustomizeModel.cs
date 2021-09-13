@@ -24,13 +24,18 @@ namespace Customize
 
         public void StartSet(Func<int,Color> getColor)
         {
-            m_buildData = UnitBuildDataMaster.PlayerUnitBuildDatas[m_modelNum];
+            m_buildData = UnitDataMaster.PlayerUnitBuildDatas[m_modelNum];
             m_builder = GetComponent<UnitBuilder>();
             m_master = GetComponent<UnitMaster>();
             CameraPos = m_builder.SetDataModel(m_buildData, m_master);
-            m_colorNum = UnitBuildDataMaster.PlayerColors[m_modelNum];
+            m_colorNum = UnitDataMaster.PlayerColors[m_modelNum];
             m_color = getColor.Invoke(m_colorNum);
             m_master.UnitColorChange(m_color);
+        }
+        public void StartSet(Func<int, Color> getColor,int modelNum)
+        {
+            m_modelNum = modelNum;
+            StartSet(getColor);
         }
         public void ChangeColor(Color color,int number)
         {
@@ -46,7 +51,7 @@ namespace Customize
         }
         public void SaveModelData()
         {
-            UnitBuildDataMaster.SetData(m_modelNum, m_buildData, m_colorNum);
+            UnitDataMaster.SetData(m_modelNum, m_buildData, m_colorNum);
         }
     }
 }

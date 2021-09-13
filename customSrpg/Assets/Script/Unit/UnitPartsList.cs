@@ -68,7 +68,7 @@ public class UnitPartsList : ScriptableObject
         List<PartsBody> allParts = new List<PartsBody>();
         for (int i = 0; i < m_bodys.Length; i++)
         { 
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.Body][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.Body][i] > 0)
             {
                 allParts.Add(GetBody(i));
             }
@@ -80,7 +80,7 @@ public class UnitPartsList : ScriptableObject
         List<PartsHead> allParts = new List<PartsHead>();
         for (int i = 0; i < m_heads.Length; i++)
         {
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.Head][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.Head][i] > 0)
             {
                 allParts.Add(GetHead(i));
             }
@@ -92,7 +92,7 @@ public class UnitPartsList : ScriptableObject
         List<PartsArm> allParts = new List<PartsArm>();
         for (int i = 0; i < GetAllRArms().Length; i++)
         {
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.RArm][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.RArm][i] > 0)
             {
                 allParts.Add(GetRArm(i));
             }
@@ -104,7 +104,7 @@ public class UnitPartsList : ScriptableObject
         List<PartsArm> allParts = new List<PartsArm>();
         for (int i = 0; i < GetAllLArms().Length; i++)
         {
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.LArm][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.LArm][i] > 0)
             {
                 allParts.Add(GetLArm(i));
             }
@@ -116,7 +116,7 @@ public class UnitPartsList : ScriptableObject
         List<PartsLeg> allParts = new List<PartsLeg>();
         for (int i = 0; i < m_legs.Length; i++)
         {
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.Leg][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.Leg][i] > 0)
             {
                 allParts.Add(GetLeg(i));
             }
@@ -128,7 +128,7 @@ public class UnitPartsList : ScriptableObject
         List<WeaponMaster> allParts = new List<WeaponMaster>();
         for (int i = 0; i < m_weapons.Length; i++)
         {
-            if (UnitBuildDataMaster.HavePartsDic[PartsType.Weapon][i] > 0)
+            if (UnitDataMaster.HavePartsDic[PartsType.Weapon][i] > 0)
             {
                 allParts.Add(GetWeapon(i));
             }

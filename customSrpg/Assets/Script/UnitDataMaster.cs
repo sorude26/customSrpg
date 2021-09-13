@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UnitBuildDataMaster
+public class UnitDataMaster
 {
     public const int MaxUintCount = 8;
     public int HaveUnitNumber { get; private set; } = 8;

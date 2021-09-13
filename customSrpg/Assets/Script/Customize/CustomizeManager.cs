@@ -25,7 +25,7 @@ namespace Customize
         void Start()
         {
             m_colorControl.StartSet();
-            m_maxNumber = UnitBuildDataMaster.MaxUintCount;
+            m_maxNumber = UnitDataMaster.MaxUintCount;
             for (int i = 0; i < m_maxNumber; i++)
             {
                 m_allModels[i].StartSet(m_colorControl.GetColor);
