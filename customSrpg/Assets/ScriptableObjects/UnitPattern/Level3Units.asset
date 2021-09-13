@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb9c1bf2104cd8e47b809c9ae6d155c5, type: 3}
+  m_Name: Level3Units
+  m_EditorClassIdentifier: 
+  m_sortieUnitsPattern: 0500000001000000
+  m_unitsColorPattern:
+  - {r: 0.26, g: 0.45, b: 0.3, a: 1}
+  - {r: 0.3773585, g: 0.23673905, b: 0.34520626, a: 1}
+  m_popPartsPattern:
+  - {fileID: 11400000, guid: 4bdcba19bc0ea45438147048d71f7023, type: 2}
+  - {fileID: 11400000, guid: ae3a35f65a4071840881c83be1ef9342, type: 2}
+  m_randamBuild: 1
