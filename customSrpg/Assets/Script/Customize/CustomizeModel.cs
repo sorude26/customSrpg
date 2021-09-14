@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 namespace Customize
 {
     /// <summary>
@@ -10,6 +11,9 @@ namespace Customize
     public class CustomizeModel : MonoBehaviour
     {
         [SerializeField] int m_modelNum;
+        [SerializeField] Text m_text;
+        [SerializeField] GameObject m_selectOnMark;
+        [SerializeField] GameObject m_selectMark;
         public int ModelNum { get => m_modelNum; }
         UnitMaster m_master;
         UnitBuilder m_builder;
@@ -31,6 +35,29 @@ namespace Customize
             m_colorNum = UnitDataMaster.PlayerColors[m_modelNum];
             m_color = getColor.Invoke(m_colorNum);
             m_master.UnitColorChange(m_color);
+        }
+        public void SelectSet()
+        {
+            m_selectMark?.SetActive(false);
+            m_selectOnMark?.SetActive(false);
+        }
+        public void SelectOn()
+        {
+            m_selectMark?.SetActive(true);
+        }
+        public void SelectOnTarget(string onText)
+        {
+            m_selectOnMark?.SetActive(true);
+            m_text.text = onText;
+        }
+        public void SelectOut()
+        {
+            m_selectMark?.SetActive(false);
+        }
+        public void SelectOutTarget()
+        {
+            m_selectOnMark?.SetActive(false);
+            m_text.text = "";
         }
         public void StartSet(Func<int, Color> getColor,int modelNum)
         {
