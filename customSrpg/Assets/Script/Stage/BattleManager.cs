@@ -255,15 +255,16 @@ public class BattleManager : MonoBehaviour
 
     public void PartsGet()
     {
-        int number = UnityEngine.Random.Range(0, 12);
+        int number = UnityEngine.Random.Range(0, 7);
         if (number == 0)
         {
             var parts = m_target.GetUnitData().Body;
             if (parts != null)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.Body][parts.PartsID] > 0) { return; }
                 UnitDataMaster.HavePartsDic[PartsType.Body][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Bodyを入手した");
-                m_getName = $"Body:{parts.PartsName}、Get";
+                m_getName = $"Body:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 1)
@@ -271,9 +272,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Head;
             if (parts != null)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.Body][parts.PartsID] > 0)
+                { 
+                    return; 
+                }
                 UnitDataMaster.HavePartsDic[PartsType.Head][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Headを入手した");
-                m_getName = $"Head:{parts.PartsName}、Get";
+                m_getName = $"Head:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 2)
@@ -281,9 +286,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().RArm;
             if (parts != null)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.RArm][parts.PartsID] > 0)
+                { 
+                    return;
+                }
                 UnitDataMaster.HavePartsDic[PartsType.RArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：RArmを入手した");
-                m_getName = $"RArm:{parts.PartsName}、Get";
+                m_getName = $"RArm:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 3)
@@ -291,9 +300,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().LArm;
             if (parts != null)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.LArm][parts.PartsID] > 0)
+                {
+                    return;
+                }
                 UnitDataMaster.HavePartsDic[PartsType.LArm][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：LArmを入手した");
-                m_getName = $"LArm:{parts.PartsName}、Get";
+                m_getName = $"LArm:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 4)
@@ -301,9 +314,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Leg;
             if (parts != null)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.Leg][parts.PartsID] > 0)
+                {
+                    return;
+                }
                 UnitDataMaster.HavePartsDic[PartsType.Leg][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}：Legを入手した");
-                m_getName = $"Leg:{parts.PartsName}、Get";
+                m_getName = $"Leg:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 5)
@@ -311,9 +328,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().RAWeapon;
             if (parts != null && parts.PartsID > 0)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID] > 0)
+                {
+                    return;
+                }
                 UnitDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}、入手");
-                m_getName = $"Weapon:{parts.PartsName}、Get";
+                m_getName = $"Weapon:{parts.PartsName}、入手しました";
             }
         }
         else if (number == 6)
@@ -321,9 +342,13 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().LAWeapon;
             if (parts != null && parts.PartsID > 0)
             {
+                if (UnitDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID] > 0)
+                {
+                    return;
+                }
                 UnitDataMaster.HavePartsDic[PartsType.Weapon][parts.PartsID]++;
                 Debug.Log($"{parts.PartsName}、入手");
-                m_getName = $"Weapon:{parts.PartsName}、Get";
+                m_getName = $"Weapon:{parts.PartsName}、入手しました";
             }
         }
     }
