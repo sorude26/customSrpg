@@ -67,6 +67,10 @@ public class EffectManager : MonoBehaviour
     /// <param name="pos"></param>
     public static void PlayEffect(EffectType effectType, Vector3 pos)
     {
+        if (effectType == EffectType.None)
+        {
+            return;
+        }
         foreach (var effect in m_instance.m_effectDic[effectType])
         {
             if (effect.IsActive())

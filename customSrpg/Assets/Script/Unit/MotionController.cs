@@ -257,7 +257,10 @@ public class MotionController : MonoBehaviour
 
     public void Damage()
     {
-        m_anime.Play("HumanWaitDamage");
+        if (m_unitType == UnitType.Human)
+        {
+            m_anime.Play("HumanWaitDamage");
+        }
     }
     public void HeavyDamage()
     {

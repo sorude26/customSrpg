@@ -25,7 +25,7 @@ namespace Customize
         public int ColorNum { get => m_colorNum; }
         public Color ModelColor { get => m_color; }
         public Transform CameraPos { get; private set; }
-
+        public bool Select { get; private set; }
         public void StartSet(Func<int,Color> getColor)
         {
             m_buildData = UnitDataMaster.PlayerUnitBuildDatas[m_modelNum];
@@ -49,6 +49,7 @@ namespace Customize
         {
             m_selectOnMark?.SetActive(true);
             m_text.text = onText;
+            Select = true;
         }
         public void SelectOut()
         {
@@ -58,6 +59,7 @@ namespace Customize
         {
             m_selectOnMark?.SetActive(false);
             m_text.text = "";
+            Select = false;
         }
         public void StartSet(Func<int, Color> getColor,int modelNum)
         {

@@ -12,6 +12,7 @@ namespace UIControl
         bool m_cursorMove;
         public event Action<float, float> OnMove;
         public event Action OnDecide;
+        bool m_moveMode;
         private void Awake()
         {
             Instance = this;
@@ -19,6 +20,7 @@ namespace UIControl
         private void Start()
         {
             GameScene.InputManager.Instance.OnInputArrow += CommandMove;
+            m_moveMode = true;
             GameScene.InputManager.Instance.OnInputDecision += CommandDecide;
             m_allCommandBase[0].StartSet();
             m_allCommandBase[0].SelectCommand();
@@ -51,6 +53,22 @@ namespace UIControl
             OnMove?.Invoke(x, y);
             yield return new WaitForSeconds(m_changeSpeed);
             m_cursorMove = false;
+        }
+        public void CommandMoveSet()
+        {
+            if (!m_moveMode)
+            {
+                GameScene.InputManager.Instance.OnInputArrow += CommandMove;
+                m_moveMode = true;
+            }
+        }
+        public void CommandMoveOff()
+        {
+            if (m_moveMode)
+            {
+                GameScene.InputManager.Instance.OnInputArrow -= CommandMove;
+                m_moveMode = false;
+            }
         }
     }
 }

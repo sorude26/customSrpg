@@ -57,7 +57,7 @@ public class Unit : MonoBehaviour
         m_movelControl.StartSet(SetCurrentPos, m_startPos.x, m_startPos.y);
         m_motion.StartSet();
         m_movelControl.MoveStartEvent += m_motion.Walk;
-        //m_master.OnDamage += m_motion.Damage;
+        m_master.OnDamage += m_motion.Damage;
         if (m_master.Body.BodyPartsType == UnitType.Giant)
         {
             Animator anime = m_master.Body.GetComponent<Animator>();

@@ -148,7 +148,7 @@ namespace Customize
             {
                 model.SaveModelData();
             }
-            SceneManager.LoadScene("SampleScene");
+            SceneManager.LoadScene("StageSelect");
         }
     }
 }

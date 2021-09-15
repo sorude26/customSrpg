@@ -39,7 +39,7 @@ public abstract class UnitPartsMaster<T> : PartsMaster<T>, IUnitParts where T :U
     /// </summary>
     protected virtual void StartSet()
     {
-        m_damageSmoke.SetActive(false);
+        m_damageSmoke?.SetActive(false);
         m_currentPartsHp = MaxPartsHP;
         ViewCurrentHp = MaxPartsHP;
         m_partsDamage = new List<int>();
