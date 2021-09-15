@@ -29,6 +29,7 @@ public class StageManager : MonoBehaviour
     [Tooltip("プレイヤーの合計数")]
     [SerializeField] int m_playerNum = 5;
     int m_playerCount = 0;
+    [SerializeField] StageLevelData m_levelData;
     /// <summary> プレイヤーの全ユニット </summary>
     List<PlayerUnit> m_players;
     /// <summary> 友軍の全ユニット </summary>
@@ -66,10 +67,11 @@ public class StageManager : MonoBehaviour
         foreach (var mapData in m_startData)
         {
             mapData.StagePanel.ViewStartPanel();
-        }        
+        }
         StartSet();
         FadeController.Instance.StartFadeIn();
         GameScene.InputManager.Instance.OnInputDecision += UnitSet;
+        
     }
     void GameStart()
     {
@@ -87,7 +89,10 @@ public class StageManager : MonoBehaviour
     }
     void StartSet()
     {
-        m_units.ForEach(u => u.StartSet());
+        foreach (var unit in m_units)
+        {
+            unit.StartSet();
+        }
         m_mapDatas = MapManager.Instance.GetOutArea(0, 4, 0, 4).Where(p => p.MapType != MapType.NonAggressive).ToArray();
         for (int i = 0; i < m_mapDatas.Length; i++)
         {
@@ -96,11 +101,17 @@ public class StageManager : MonoBehaviour
             m_mapDatas[i] = m_mapDatas[r];
             m_mapDatas[r] = map;
         }
-        m_allies = m_unitCreater.StageUnitCreate(m_mapDatas, m_alliesData,0, m_stage);
-        m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_enemysData, m_alliesData.AllUnitNumber, m_stage);
-        m_allies.ToList().ForEach(a => m_units.Add(a));
-        m_enemys.ToList().ForEach(e => m_units.Add(e));
-    }   
+        m_allies = m_unitCreater.StageUnitCreate(m_mapDatas, m_alliesData, 0, m_stage);
+        m_enemys = m_unitCreater.StageUnitCreate(m_mapDatas, m_levelData.LevelData[SortieManager.StageLevel], m_alliesData.AllUnitNumber, m_stage);
+        foreach (var allie in m_allies)
+        {
+            m_units.Add(allie);
+        }
+        foreach (var enemy in m_enemys)
+        {
+            m_units.Add(enemy);
+        }
+    }
     /// <summary>
     /// 各ユニットの行動終了時に呼ばれ、次のユニットを登録する
     /// </summary>
@@ -213,13 +224,6 @@ public class StageManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         FadeController.Instance.StartFadeOut(() => { SceneManager.LoadScene("CustomizeScene"); });
     }
-    public void TestEnemyTurn()
-    {
-        Turn = TurnState.Player;
-        m_players.ForEach(p => p.WakeUp());
-        m_allies.ToList().ForEach(a => a.WakeUp());
-        NextUnit();
-    }
     public void PointMove(int x, int z)
     {
         EventManager.AttackSearchEnd();
@@ -244,12 +248,29 @@ public class StageManager : MonoBehaviour
         {
             return;
         }
-          var unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitDataMaster.PlayerUnitBuildDatas[m_playerCount],
+        PlayerUnit unit = null;
+        if (SortieManager.SoriteNumber > 0)
+        {
+            unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitDataMaster.PlayerUnitBuildDatas[SortieManager.SoriteUnit[m_playerCount]],
+            GameManager.Instanse.GetColor(UnitDataMaster.PlayerColors[SortieManager.SoriteUnit[m_playerCount]]), this.transform);
+        }
+        else
+        {
+            unit = m_unitCreater.PlayerCreate(MapManager.Instance[x, z], UnitDataMaster.PlayerUnitBuildDatas[m_playerCount],
             GameManager.Instanse.GetColor(UnitDataMaster.PlayerColors[m_playerCount]), this.transform);
+        }
         m_players.Add(unit);
         m_playerCount++;
         area.StagePanel.CloseStartPanel();
-        if (m_playerCount >= m_playerNum)
+        if (SortieManager.SoriteNumber > 0)
+        {
+            if (m_playerCount >= SortieManager.SoriteNumber)
+            {
+                EventManager.GameStart();
+                StartCoroutine(StageMassage(4, GameStart));
+            }
+        }
+        else if (m_playerCount >= m_playerNum)
         {
             EventManager.GameStart();
             StartCoroutine(StageMassage(4, GameStart));

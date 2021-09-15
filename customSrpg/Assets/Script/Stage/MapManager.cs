@@ -8,7 +8,7 @@ using System.Linq;
 public class MapManager : MonoBehaviour
 {
     public static MapManager Instance { get; private set; }
-    /// <summary>  </summary>
+    [SerializeField] StageLevelData m_stageLevelData;
     [SerializeField] MapCreater m_mapCreater;
     /// <summary> マップの全情報 </summary>
     public MapData[] MapDatas { get; private set; }
@@ -20,6 +20,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] int m_maxX = 15;
     /// <summary> ステージの最大Z座標 </summary>
     [SerializeField] int m_maxZ = 15;
+    [SerializeField] Vector2Int[] m_sizeData = { new Vector2Int(10, 10), new Vector2Int(16, 16) };
     /// <summary> 地形サイズ </summary>
     [SerializeField] int m_mapScale = 10;
     /// <summary> ステージの最大X座標 </summary>
@@ -39,6 +40,8 @@ public class MapManager : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        m_maxX = m_sizeData[m_stageLevelData.StageSizeID[SortieManager.StageLevel]].x;
+        m_maxZ = m_sizeData[m_stageLevelData.StageSizeID[SortieManager.StageLevel]].y;
         MapDatas = m_mapCreater.MapCreate(m_maxX, m_maxZ, this.transform, MapScale);
         MoveList = new List<MapData>();
         AttackList = new List<MapData>();

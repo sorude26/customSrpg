@@ -4142,6 +4142,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_playerNum: 4
+  m_levelData: {fileID: 11400000, guid: f61a5e92c3a6d404d8129ae56e9d5454, type: 2}
   m_alliesData: {fileID: 11400000, guid: 670ffbf851d8754428c03396bf028649, type: 2}
   m_enemysData: {fileID: 11400000, guid: b7ca1fbc77634b3489ddbb115904926c, type: 2}
   m_unitCreater: {fileID: 11400000, guid: 91ff718562e2d9549ab7ab43bf15771e, type: 2}
@@ -7509,9 +7510,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db40bca83ac8e6b418d73724a09cdd35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_stageLevelData: {fileID: 11400000, guid: f61a5e92c3a6d404d8129ae56e9d5454, type: 2}
   m_mapCreater: {fileID: 11400000, guid: f35bed3ae7ac5c040b5a817850119e70, type: 2}
   m_maxX: 20
   m_maxZ: 20
+  m_sizeData:
+  - {x: 10, y: 10}
+  - {x: 16, y: 16}
   m_mapScale: 8
 --- !u!4 &939756072
 Transform:
@@ -11431,6 +11436,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915ccb78399b4814d864c6c81d57883d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_lateTime: 0.2
 --- !u!114 &1490397627
 MonoBehaviour:
   m_ObjectHideFlags: 0

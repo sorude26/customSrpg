@@ -8,14 +8,14 @@ public class SortieManager
     public static int SoriteNumber { get; private set; }
     public static int StageLevel { get; private set; }
     public static int AlliesLevel { get; private set; }
-    public static void SetStageData(int soriteNumber, int level, int alliesNumber)
+    public static void SetStageData(int level, int alliesNumber)
     {
-        SoriteNumber = soriteNumber;
         StageLevel = level;
         AlliesLevel = alliesNumber;
     }
-    public static void SetPlayer(int[] sriteUnit)
+    public static void SetPlayer(int soriteNumber, int[] sriteUnit)
     {
+        SoriteNumber = soriteNumber;
         SoriteUnit = sriteUnit;
     }
 }
