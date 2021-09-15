@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] UnitPartsList m_partsList;
     public UnitPartsList PartsList { get => m_partsList; }
     [SerializeField] ColorData m_colorData;
+    [SerializeField] int[] m_sParts;
     public Color GetColor(int colorNum) => m_colorData.GetColor(colorNum);
     private void Awake()
     {
@@ -19,8 +20,8 @@ public class GameManager : MonoBehaviour
         Instanse = this;
         DontDestroyOnLoad(gameObject);
         UnitDataMaster.StartSet(m_partsList);
-        //SetSParts();
-        SetAllParts();
+        SetSParts();
+        //SetAllParts();
     }
 
     void SetAllParts()
@@ -36,13 +37,15 @@ public class GameManager : MonoBehaviour
     }
     void SetSParts()
     {
+        UnitDataMaster.HavePartsDic[PartsType.Weapon][0]++;
         for (int i = 0; i < 6; i++)
         {
             var parts = (PartsType)i;
-            for (int x = 0; x < 3; x++)
-            {
-                UnitDataMaster.HavePartsDic[parts][x]++;
-            }
+            UnitDataMaster.HavePartsDic[parts][m_sParts[i]]++;
+        }
+        for (int i = 0; i < UnitDataMaster.MaxUintCount; i++)
+        {
+            UnitDataMaster.SetData(i, new UnitBuildData(m_sParts[1], m_sParts[0], m_sParts[2], m_sParts[3], m_sParts[4], 0, m_sParts[5], 0, 0), 22);
         }
     }
 }
