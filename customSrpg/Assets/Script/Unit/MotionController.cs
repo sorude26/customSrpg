@@ -8,6 +8,7 @@ using UnityEngine;
 public class MotionController : MonoBehaviour
 {
     UnitType m_unitType = UnitType.Human;
+    LegType m_legType = LegType.Normal;
     private Animator m_anime;
     private List<Animator> m_childAnime;
     public void SetAnime(Animator anime,UnitType unitType)
@@ -16,10 +17,14 @@ public class MotionController : MonoBehaviour
         m_unitType = unitType;
         Wait();
     }
-    public void StartSet()
+    public void StartSet(UnitMaster master)
     {
         m_anime = GetComponent<Animator>();
         Wait();
+        if (master.Leg)
+        {
+            m_legType = master.Leg.Type;
+        }
     }
     public void SetChildAnime(Animator[] animes)
     {
@@ -225,6 +230,10 @@ public class MotionController : MonoBehaviour
     /// </summary>
     public virtual void Walk()
     {
+        if (m_legType == LegType.Crawler)
+        {
+            return;
+        }
         switch (m_unitType)
         {
             case UnitType.Human:
@@ -242,7 +251,8 @@ public class MotionController : MonoBehaviour
                 break;
             default:
                 break;
-        }if (m_childAnime != null)
+        }
+        if (m_childAnime != null)
         {
             foreach (var anime in m_childAnime)
             {

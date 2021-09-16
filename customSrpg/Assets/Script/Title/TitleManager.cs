@@ -5,9 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class TitleManager : MonoBehaviour
 {
+    [SerializeField] GameObject m_nextButton;
     void Start()
     {
         FadeController.Instance.StartFadeIn();
+        m_nextButton.SetActive(false);
+    }
+    public void OnClickStart()
+    {
+        m_nextButton.SetActive(true);
     }
     public void NextScene()
     {
@@ -19,6 +25,7 @@ public class TitleManager : MonoBehaviour
     }
     public void LoadData()
     {
-        FadeController.Instance.StartFadeOutIn(GameManager.Instanse.Load);
+        FadeController.Instance.StartFadeOut(SceneChange);
+        GameManager.Instanse.Load();
     }
 }

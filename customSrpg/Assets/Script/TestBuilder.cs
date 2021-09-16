@@ -17,7 +17,7 @@ public class TestBuilder : MonoBehaviour
         m_motion = GetComponent<MotionController>();
         m_master = GetComponent<UnitMaster>();
         m_builder.SetData(m_buildData, m_master);
-        m_motion.StartSet();
+        m_motion.StartSet(m_master);
     }
     public void ChangeColor()
     {

@@ -12,6 +12,8 @@ public class PartsLeg : UnitPartsMaster<LegData>
     public float CurrentLiftingForce { get; private set; }
     /// <summary> 現在の回避力 </summary>
     public int CurrentAvoidance { get; private set; }
+    /// <summary> 脚部の種類 </summary>
+    public LegType Type { get => m_partsData.LegType[m_partsID]; }
     [Tooltip("脚部パーツの頂点")]
     [SerializeField] Transform m_legTop;
     [SerializeField] Transform m_lLeg1;

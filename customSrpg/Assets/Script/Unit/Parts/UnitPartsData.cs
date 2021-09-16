@@ -22,6 +22,14 @@ public enum ArmType
     Right,
 }
 /// <summary>
+/// 脚の種類
+/// </summary>
+public enum LegType
+{
+    Normal,
+    Crawler,
+}
+/// <summary>
 /// 機体パーツデータの基底クラス
 /// </summary>
 public class UnitPartsData : PartsData
