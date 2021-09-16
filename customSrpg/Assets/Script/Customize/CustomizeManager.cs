@@ -150,5 +150,13 @@ namespace Customize
             }
             SceneManager.LoadScene("StageSelect");
         }
+        public void DataSave()
+        {
+            foreach (var model in m_allModels)
+            {
+                model.SaveModelData();
+            }
+            FadeController.Instance.StartFadeOutIn(GameManager.Instanse.Save);
+        }
     }
 }

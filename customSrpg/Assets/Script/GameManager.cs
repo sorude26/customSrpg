@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
     public UnitPartsList PartsList { get => m_partsList; }
     [SerializeField] ColorData m_colorData;
     [SerializeField] int[] m_sParts;
+    [SerializeField] GameDataManager m_dataManager;
     public Color GetColor(int colorNum) => m_colorData.GetColor(colorNum);
     private void Awake()
     {
@@ -45,7 +46,15 @@ public class GameManager : MonoBehaviour
         }
         for (int i = 0; i < UnitDataMaster.MaxUintCount; i++)
         {
-            UnitDataMaster.SetData(i, new UnitBuildData(m_sParts[1], m_sParts[0], m_sParts[2], m_sParts[3], m_sParts[4], 0, m_sParts[5], 0, 0), 22);
+            UnitDataMaster.SetData(i, new UnitBuildData(m_sParts[1], m_sParts[0], m_sParts[2], m_sParts[3], m_sParts[4], m_sParts[5], 0), 22);
         }
+    }
+    public void Save()
+    {
+        m_dataManager.SaveData();
+    }
+    public void Load()
+    {
+        m_dataManager.LoadData();
     }
 }

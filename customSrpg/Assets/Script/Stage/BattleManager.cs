@@ -272,7 +272,7 @@ public class BattleManager : MonoBehaviour
             var parts = m_target.GetUnitData().Head;
             if (parts != null)
             {
-                if (UnitDataMaster.HavePartsDic[PartsType.Body][parts.PartsID] > 0)
+                if (UnitDataMaster.HavePartsDic[PartsType.Head][parts.PartsID] > 0)
                 { 
                     return; 
                 }

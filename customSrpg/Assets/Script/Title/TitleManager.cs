@@ -17,4 +17,8 @@ public class TitleManager : MonoBehaviour
     {
         SceneManager.LoadScene("CustomizeScene");
     }
+    public void LoadData()
+    {
+        FadeController.Instance.StartFadeOutIn(GameManager.Instanse.Load);
+    }
 }

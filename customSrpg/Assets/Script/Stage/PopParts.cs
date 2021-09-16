@@ -31,7 +31,7 @@ public class PopParts : ScriptableObject
         int wr = Random.Range(0, m_popWeapon.Length);
         int wl = Random.Range(0, m_popWeapon.Length);
         return new UnitBuildData(m_popHead[h].PartsID, m_popBody[b].PartsID, m_popRArm[ar].PartsID, m_popLArm[al].PartsID, m_popLeg[l].PartsID,
-            0, m_popWeapon[wr].PartsID, m_popWeapon[wl].PartsID, 0);
+            m_popWeapon[wr].PartsID, m_popWeapon[wl].PartsID);
     }
     /// <summary>
     /// 一定のパターンの構築データを返す（要：武器以外の個数統一）
@@ -43,6 +43,6 @@ public class PopParts : ScriptableObject
         int wr = Random.Range(0, m_popWeapon.Length);
         int wl = Random.Range(0, m_popWeapon.Length);
         return new UnitBuildData(m_popHead[p].PartsID, m_popBody[p].PartsID, m_popRArm[p].PartsID, m_popLArm[p].PartsID, m_popLeg[p].PartsID,
-            0, m_popWeapon[wr].PartsID, m_popWeapon[wl].PartsID, 0);
+            m_popWeapon[wr].PartsID, m_popWeapon[wl].PartsID);
     }
 }

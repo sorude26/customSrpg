@@ -25,7 +25,7 @@ public class PartsMeshCreater : MonoBehaviour
             Debug.Log("対象がありません");
             return;
         }
-        AssetDatabase.CreateAsset(m_meshFilter.mesh, "Assets/Material/Mesh/"+ m_meshName +".asset");
-        AssetDatabase.SaveAssets();
+        //AssetDatabase.CreateAsset(m_meshFilter.mesh, "Assets/Material/Mesh/"+ m_meshName +".asset");
+        //AssetDatabase.SaveAssets();
     }
 }

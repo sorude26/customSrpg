@@ -14,21 +14,17 @@ public struct UnitBuildData
     public int RArmID;
     public int LArmID;
     public int LegID;
-    public int WeaponBodyID;
     public int WeaponRArmID;
     public int WeaponLArmID;
-    public int WeaponShoulderID;
-    public UnitBuildData(int head,int body,int rArm,int lArm,int leg,int weaponB,int weaponRA,int weaponLA,int weaponShoulder)
+    public UnitBuildData(int head,int body,int rArm,int lArm,int leg,int weaponRA,int weaponLA)
     {
         HeadID = head;
         BodyID = body;
         RArmID = rArm;
         LArmID = lArm;
         LegID = leg;
-        WeaponBodyID = weaponB;
         WeaponRArmID = weaponRA;
         WeaponLArmID = weaponLA;
-        WeaponShoulderID = weaponShoulder;
     }
 }
 public enum PartsType
