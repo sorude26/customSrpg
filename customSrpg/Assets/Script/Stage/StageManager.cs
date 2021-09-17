@@ -81,6 +81,10 @@ public class StageManager : MonoBehaviour
             m_battleManager.BattleEnd += p.ActionEnd;
         });
         m_units.ForEach(u => u.GetUnitData().OnDamage += BattleManager.Instance.BattleTargetDataView);
+        if (GameManager.Instanse.AutoMode)
+        {
+            ChangeAutoMode();
+        }
         Turn = TurnState.Player;
         m_players.ForEach(p => p.WakeUp());
         m_allies.ToList().ForEach(a => a.WakeUp());
@@ -110,6 +114,13 @@ public class StageManager : MonoBehaviour
         foreach (var enemy in m_enemys)
         {
             m_units.Add(enemy);
+        }
+    }
+    public void ChangeAutoMode()
+    {
+        foreach (var player in m_players)
+        {
+            player.ChangeMode();
         }
     }
     /// <summary>

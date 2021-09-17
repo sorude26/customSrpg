@@ -20,7 +20,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] int m_maxX = 15;
     /// <summary> ステージの最大Z座標 </summary>
     [SerializeField] int m_maxZ = 15;
-    [SerializeField] Vector2Int[] m_sizeData = { new Vector2Int(10, 10), new Vector2Int(16, 16) };
+    [SerializeField] Vector2Int[] m_sizeData = { new Vector2Int(10, 10), new Vector2Int(16, 16), new Vector2Int(20, 20) };
     /// <summary> 地形サイズ </summary>
     [SerializeField] int m_mapScale = 10;
     /// <summary> ステージの最大X座標 </summary>

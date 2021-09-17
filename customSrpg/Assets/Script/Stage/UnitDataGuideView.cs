@@ -11,6 +11,7 @@ public class UnitDataGuideView : MonoBehaviour
     [SerializeField] GaugeControl m_lArmGauge;
     [SerializeField] GaugeControl m_legGauge;
     [SerializeField] GameObject[] m_partsView;
+    [SerializeField] Customize.UnitParameterView m_panel;
     public void ViewData(in Unit unit)
     {
         if (unit == null)
@@ -35,6 +36,10 @@ public class UnitDataGuideView : MonoBehaviour
                 break;
             default:
                 break;
+        }
+        if (m_panel)
+        {
+            m_panel.SetParameter(unit.GetUnitData());
         }
     }
     void DataSetHuman(in Unit unit)

@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] ColorData m_colorData;
     [SerializeField] int[] m_sParts;
     [SerializeField] GameDataManager m_dataManager;
+    public bool AutoMode { get; set; }
     public Color GetColor(int colorNum) => m_colorData.GetColor(colorNum);
     private void Awake()
     {

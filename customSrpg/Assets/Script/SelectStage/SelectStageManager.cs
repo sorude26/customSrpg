@@ -18,6 +18,7 @@ public class SelectStageManager : MonoBehaviour
     int m_sortieNum = 0;
     int[] m_soriteUnit;
     bool m_unitSelectMode = false;
+    [SerializeField] GameObject m_autoMark;
     private void Awake()
     {
         Instance = this;
@@ -33,6 +34,14 @@ public class SelectStageManager : MonoBehaviour
         FadeController.Instance.StartFadeIn();
         GameScene.InputManager.Instance.OnInputArrowLate += SelectChange;
         SortieManager.SetPlayer(0, m_soriteUnit);
+        if (GameManager.Instanse.AutoMode)
+        {
+            m_autoMark.SetActive(true);
+        }
+        else
+        {
+            m_autoMark.SetActive(false);
+        }
     }
     public void SetStageData(int id)
     {
@@ -164,5 +173,18 @@ public class SelectStageManager : MonoBehaviour
     void ChangeScene()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+    public void ChangeMode()
+    {
+        if (GameManager.Instanse.AutoMode)
+        {
+            GameManager.Instanse.AutoMode = false;
+            m_autoMark.SetActive(false);
+        }
+        else
+        {
+            GameManager.Instanse.AutoMode = true;
+            m_autoMark.SetActive(true);
+        }
     }
 }
