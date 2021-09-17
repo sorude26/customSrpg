@@ -217,10 +217,12 @@ MonoBehaviour:
   m_amors:
   - {fileID: 6136427855507153721}
   - {fileID: 7547458208788697482}
+  - {fileID: 1255723060075629437}
+  - {fileID: 5578170046249672312}
   m_headParts: {fileID: 1866125967294736459}
   m_lArmParts: {fileID: 8073386827423410066}
   m_rArmParts: {fileID: 6286764174478684199}
-  m_weapon: {fileID: 0}
+  m_weapon: {fileID: 4786856264367625309}
   m_weaponShoulder: {fileID: 0}
   m_bodyPos: {fileID: 6995653036064496938}
 --- !u!1 &1614696300982863064
@@ -486,8 +488,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4172629988598751560}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.12, z: -0.07}
-  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
+  m_LocalPosition: {x: 0, y: 1.154, z: 0.054}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 6995653036064496938}
   m_RootOrder: 4
@@ -518,7 +520,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: e8a6bda264650244191abf61fb0cb613, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -641,8 +643,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4875956625712213384}
-  m_LocalRotation: {x: 0.000000014901159, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.012, y: 0, z: 0}
+  m_LocalRotation: {x: 0.000000014901161, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.25, y: 0.0009999871, z: -0.06799996}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3511026205962686087}
@@ -672,8 +674,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4979651091649032952}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.506, y: -0.32, z: 1.178}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.65, y: 0.329, z: 1.178}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 3082835360507226987}
@@ -693,7 +695,7 @@ GameObject:
   - component: {fileID: 8350417117748976083}
   - component: {fileID: 6261394132352330729}
   m_Layer: 0
-  m_Name: BodyArmor (2)
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -707,8 +709,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5252146748495186916}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.436, z: -0.29}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 0.6}
+  m_LocalPosition: {x: 0, y: 0.549, z: -0.18}
+  m_LocalScale: {x: 1.2, y: 1, z: 0.6}
   m_Children: []
   m_Father: {fileID: 6995653036064496938}
   m_RootOrder: 9
@@ -965,7 +967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf817040b9cb4944f8f57a9475d0eac6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_partsID: 1
+  m_partsID: 6
   m_partsData: {fileID: 11400000, guid: e1e6737706e46b54fb5dc6fc66daf00d, type: 2}
   m_partsObject:
   - {fileID: 5969713571149229117}
@@ -1595,17 +1597,17 @@ PrefabInstance:
     - target: {fileID: 7175206901212930012, guid: 9d8446012d74459408fa9d671da6863f,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -0.02
       objectReference: {fileID: 0}
     - target: {fileID: 7175206901212930012, guid: 9d8446012d74459408fa9d671da6863f,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 7175206901212930012, guid: 9d8446012d74459408fa9d671da6863f,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: 0.15
       objectReference: {fileID: 0}
     - target: {fileID: 7175206901212930012, guid: 9d8446012d74459408fa9d671da6863f,
         type: 3}
