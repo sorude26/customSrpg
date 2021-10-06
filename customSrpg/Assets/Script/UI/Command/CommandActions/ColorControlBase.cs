@@ -16,6 +16,7 @@ public class ColorControlBase : CommandBase
     }
     public override void SelectCommand()
     {
+        Customize.CustomizeManager.Instance.ViewMessage(m_commandType);
         CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.OpenColorPanel(), MoveParent);
     }
     public override void SelectOut()

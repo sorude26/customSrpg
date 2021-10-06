@@ -9,6 +9,7 @@ namespace UIControl
     public partial class CommandBase : MonoBehaviour
     {
         [SerializeField] protected string m_name;
+        [SerializeField] protected int m_commandType = 0;
         [SerializeField] protected int m_moveType = 0;
         [SerializeField] protected int m_setType = 0;
         protected CommandSet[] m_sets = { new DecOn(), new DecInCanOut(), new DecMessCanOut(), new DecOut() };
@@ -113,6 +114,7 @@ namespace UIControl
         }
         public virtual void SelectCommand()
         {
+            Customize.CustomizeManager.Instance.ViewMessage(m_commandType);
             CommandBaseControl.Instance.SetAction(CursorMove, CommandDecide);
             SelectController.SelectCommand();
         }

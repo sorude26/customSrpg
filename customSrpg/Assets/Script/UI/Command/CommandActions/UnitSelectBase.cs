@@ -17,6 +17,7 @@ public class UnitSelectBase : CommandBase
     }
     public override void SelectCommand()
     {
+        Customize.CustomizeManager.Instance.ViewMessage(m_commandType);
         CommandBaseControl.Instance.SetAction(Customize.CustomizeManager.Instance.CursorMove, MoveParent);
     }
     public override void SelectOut()

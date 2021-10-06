@@ -101,6 +101,7 @@ Transform:
   - {fileID: 8581428899048929166}
   - {fileID: 4254590834103072042}
   - {fileID: 606227962731960600}
+  - {fileID: 3737885741979221131}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -174,10 +175,8 @@ MonoBehaviour:
     RArmID: 0
     LArmID: 0
     LegID: 0
-    WeaponBodyID: 0
     WeaponRArmID: 0
     WeaponLArmID: 0
-    WeaponShoulderID: 0
 --- !u!114 &3186946768248204815
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -746,12 +745,12 @@ RectTransform:
   - {fileID: 3200569918091322249}
   - {fileID: 5348719167614694937}
   - {fileID: 4602894705980088578}
-  m_Father: {fileID: 8117141673640044084}
-  m_RootOrder: 0
+  m_Father: {fileID: 848342569413078251}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 0, y: 5}
   m_SizeDelta: {x: 2, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &2607372336487250057
@@ -1072,8 +1071,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children:
-  - {fileID: 3737885741979221131}
+  m_Children: []
   m_Father: {fileID: 6462453473769819083}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

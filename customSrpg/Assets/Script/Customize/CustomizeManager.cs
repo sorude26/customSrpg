@@ -9,12 +9,13 @@ namespace Customize
 {
     public class CustomizeManager : MonoBehaviour
     {
-        public static CustomizeManager Instance { get; private set; } 
+        public static CustomizeManager Instance { get; private set; }
         [SerializeField] CustomizeUI m_ui;
         [SerializeField] CustomizeModel[] m_allModels;
         [SerializeField] GameObject m_cameraTarget;
         [SerializeField] ColorChangeControl m_colorControl;
         [SerializeField] UnitParameterView m_view;
+        [SerializeField] GameObject[] m_controlMessage;
         CustomizeModel m_selectModel;
         int m_number = 0;
         int m_maxNumber;
@@ -33,6 +34,7 @@ namespace Customize
             m_colorControl.OnColorChange += ChangeColor;
             ModelSet();
             m_colorControl.ClosePanel();
+            ViewMessage(1);
             FadeController.Instance.StartFadeIn();
         }
         public void CursorMove(float x, float y)
@@ -76,7 +78,7 @@ namespace Customize
             yield return new WaitForEndOfFrame();
             m_view.SetParameter(m_selectModel.Mastar);
         }
-        public Action<float,float> OpenColorPanel()
+        public Action<float, float> OpenColorPanel()
         {
             m_colorControl.OpenPanel();
             return m_colorControl.CursorMove;
@@ -85,9 +87,9 @@ namespace Customize
         {
             m_colorControl.ClosePanel();
         }
-        public void ChangeColor(Color color,int number)
+        public void ChangeColor(Color color, int number)
         {
-            m_selectModel.ChangeColor(color,number);
+            m_selectModel.ChangeColor(color, number);
         }
         public void ChangeParts(UnitBuildData buildData)
         {
@@ -157,6 +159,18 @@ namespace Customize
                 model.SaveModelData();
             }
             FadeController.Instance.StartFadeOutIn(GameManager.Instanse.Save);
+        }
+        public void ViewMessage(int target)
+        {
+            if (target >= m_controlMessage.Length || target < 0)
+            {
+                return;
+            }
+            foreach (var message in m_controlMessage)
+            {
+                message.SetActive(false);
+            }
+            m_controlMessage[target].SetActive(true);
         }
     }
 }
