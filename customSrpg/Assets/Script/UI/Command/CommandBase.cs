@@ -114,7 +114,7 @@ namespace UIControl
         }
         public virtual void SelectCommand()
         {
-            Customize.CustomizeManager.Instance.ViewMessage(m_commandType);
+            Customize.CustomizeManager.Instance?.ViewMessage(m_commandType);
             CommandBaseControl.Instance.SetAction(CursorMove, CommandDecide);
             SelectController.SelectCommand();
         }

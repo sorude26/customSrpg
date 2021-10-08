@@ -162,12 +162,16 @@ namespace Customize
         }
         public void ViewMessage(int target)
         {
-            if (target >= m_controlMessage.Length || target < 0)
+            if (target >= m_controlMessage.Length || target < 0 || m_controlMessage.Length <= 0)
             {
                 return;
             }
             foreach (var message in m_controlMessage)
             {
+                if (!message)
+                {
+                    return;
+                }
                 message.SetActive(false);
             }
             m_controlMessage[target].SetActive(true);

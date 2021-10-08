@@ -12,6 +12,7 @@ public class SelectStageManager : MonoBehaviour
     [SerializeField] Customize.CustomizeModel[] m_allModels;
     [SerializeField] int m_maxHorizonalModelCount = 4;
     [SerializeField] GameObject m_modelBase;
+    [SerializeField] GameObject[] m_message;
     int m_tagetStageID = -1;
     int m_selectNum = 0;
     int m_alliesNum = 0;
@@ -42,6 +43,8 @@ public class SelectStageManager : MonoBehaviour
         {
             m_autoMark.SetActive(false);
         }
+        m_message[0].SetActive(true);
+        m_message[1].SetActive(false);
     }
     public void SetStageData(int id)
     {
@@ -67,6 +70,8 @@ public class SelectStageManager : MonoBehaviour
             m_modelBase.transform.position = Vector3.zero;
             UIControl.CommandBaseControl.Instance.CommandMoveOff();
             m_allModels[m_selectNum].SelectOn();
+            m_message[1].SetActive(true);
+            m_message[0].SetActive(false);
         }
     }
     void SelectChange(float x, float y)
